@@ -1,0 +1,65 @@
+name: DramaCraft
+main: dogonfire.DramaCraft.DramaCraft
+version: 0.5.2
+api-version: 1.14
+authors: [DogOnFire]
+softdepend: 
+  - PermissionsBukkit
+  - PermissionsEx
+  - bPermissions
+  - GroupManager
+loadbefore:
+  - GAListener 
+commands:
+    appoint:
+        description: Appoint a rank
+        usage: /<command> [stuff]
+        permissions: imperials.*
+    track:
+        description: Track rebel transmitters or imperial statues
+        usage: /<command> [stuff]
+        permissions: imperials.*
+    terminator:
+        description: Checks bounties on rebels
+        usage: /<command> [stuff]
+        permissions: imperials.*
+    guard:
+        description: Checks bounties on rebels
+        usage: /<command> [stuff]
+        permissions: imperials.*
+    bounty:
+        description: Checks bounties on rebels
+        usage: /<command> [stuff]
+        permissions: imperials.*
+    updateprefix:
+        description: update Empire prefix for a player
+        usage: /<command> [stuff]
+        permissions: vote.*
+    addbounty:
+        description: set a bounty on a player
+        usage: /<command> [stuff]
+        permissions: imperials.*
+    clearimperialrebel:
+        description: vote for king & stuff
+        usage: /<command> [stuff]
+        permissions: imperials.*
+    setimperial:
+        description: vote for king & stuff
+        usage: /<command> [stuff]
+        permissions: imperials.*
+    setrebel:
+        description: vote for king & stuff
+        usage: /<command> [stuff]
+        permissions: imperials.*
+    imperials:
+        description: vote for king & stuff
+        usage: /<command> [stuff]
+        permissions: imperials.*
+    rebels:
+        description: vote for king & stuff
+        usage: /<command> [stuff]
+        permissions: rebels.*
+    vote:
+        description: vote for king & stuff
+        usage: /<command> [stuff]
+        permissions: vote.*
