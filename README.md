@@ -9,7 +9,7 @@ DramaCraft
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DogOnFire_Werewolf&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=DogOnFire_Werewolf)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=DogOnFire_Werewolf&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=DogOnFire_Werewolf)
 
-![Werewolf](https://raw.githubusercontent.com/DoggyCraftDK/Werewolf/master/img/Werewolf.jpg)
+![DramaCraft](https://upgrade-your-lifestyle.com/wp-content/uploads/2018/11/drama.jpg)
 
 The plugin for adding Drama to the DoggyCraft minecraft server!
 
