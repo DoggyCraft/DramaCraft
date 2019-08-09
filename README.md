@@ -1,13 +1,13 @@
 DramaCraft
 ======
 
-[![Build Status](https://travis-ci.com/DoggyCraftDK/Werewolf.svg?branch=master)](https://travis-ci.com/DoggyCraftDK/Werewolf)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DogOnFire_Werewolf&metric=alert_status)](https://sonarcloud.io/dashboard?id=DogOnFire_Werewolf)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=DogOnFire_Werewolf&metric=ncloc)](https://sonarcloud.io/dashboard?id=DogOnFire_Werewolf)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=DogOnFire_Werewolf&metric=bugs)](https://sonarcloud.io/dashboard?id=DogOnFire_Werewolf)
+[![Build Status](https://travis-ci.com/DoggyCraftDK/Werewolf.svg?branch=master)](https://travis-ci.com/DoggyCraftDK/DramaCraft)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DoggyCraftDK_DramaCraft&metric=alert_status)](https://sonarcloud.io/dashboard?id=DoggyCraftDK_DramaCraft)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=DoggyCraftDK_DramaCraft&metric=ncloc)](https://sonarcloud.io/dashboard?id=DoggyCraftDK_DramaCraft)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=DoggyCraftDK_DramaCraft&metric=bugs)](https://sonarcloud.io/dashboard?id=DoggyCraftDK_DramaCraft)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8296799b90684dbe8745823d38e26bf0)](https://www.codacy.com/app/Fido2603/Werewolf?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DoggyCraftDK/Werewolf&amp;utm_campaign=Badge_Grade)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DogOnFire_Werewolf&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=DogOnFire_Werewolf)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=DogOnFire_Werewolf&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=DogOnFire_Werewolf)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DoggyCraftDK_DramaCraft&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=DoggyCraftDK_DramaCraft)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=DoggyCraftDK_DramaCraft&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=DoggyCraftDK_DramaCraft)
 
 ![DramaCraft](https://upgrade-your-lifestyle.com/wp-content/uploads/2018/11/drama.jpg)
 
