@@ -54,7 +54,33 @@ public class VoteManager
 		VOTE_QUEEN,
 		VOTE_BOSS1,
 		VOTE_BOSS2,
+		VOTE_FAME,
+		VOTE_SHAME,
 	}
+	
+	/*
+	most
+	least
+	
+	singer
+	builder
+	funny
+	badass
+	prettiest
+	
+	
+	boy
+	girl
+	
+	public void setPlayerSign()
+	{
+		HOF_QUEEN
+		HOF_KING
+		HOF_CUTEST_GIRL
+		HOF_BEST_BUILDER
+		HOF_
+	}
+	*/	
 
 	public List<String>	all				= new ArrayList();
 	public List<String>	yes				= new ArrayList();
@@ -610,6 +636,20 @@ public class VoteManager
 		this.startVoteTime = System.nanoTime();
 		this.lastVoterId = voter.getUniqueId();
 
+		//TODO: Encapsulate votes logic into its own class and replace entire content with this:
+		//if(currentVote.newVote(world, voter, voteText, vote, voteType))
+		//{
+		//this.broadcast = currentVote.getBroadcastText();
+		//this.voteString =currentVote.getVoteText();
+		//DramaCraft.broadcastMessage(broadcast);
+
+		//plugin.getLanguageManager().setAmount1(voteCost);
+		//String message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_COST, ChatColor.AQUA);
+		//voter.sendMessage(message);
+		//DramaCraft.economy.withdrawPlayer(voter.getName(), voteCost);
+		//}
+		
+		
 		switch (voteType)
 		{
 			case VOTE_REVOLUTION:

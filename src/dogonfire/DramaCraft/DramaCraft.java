@@ -588,29 +588,7 @@ public class DramaCraft extends JavaPlugin
 		saveConfig();				
 	}
 	
-	/*
-	most
-	least
 	
-	singer
-	builder
-	funny
-	badass
-	prettiest
-	
-	
-	boy
-	girl
-	
-	public void setPlayerSign()
-	{
-		HOF_QUEEN
-		HOF_KING
-		HOF_CUTEST_GIRL
-		HOF_BEST_BUILDER
-		HOF_
-	}
-	*/	
 	
 	public void setHead(UUID ownerId, Location location)
 	{		

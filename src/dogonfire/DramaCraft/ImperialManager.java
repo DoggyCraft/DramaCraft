@@ -21,6 +21,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Sign;
 
@@ -80,6 +81,35 @@ public class ImperialManager implements Listener
 		return null;
 	}
 	
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event)
+	{
+		if (DramaCraft.instance().isKing(event.getPlayer()))
+		{
+			for(Player player : DramaCraft.instance().getServer().getOnlinePlayers())
+			{
+				if(player.getUniqueId().equals(event.getPlayer().getUniqueId()))
+				{
+					continue;
+				}
+				
+				TitleManager.sendTitle(player, 1*20, 3*20, 1*20, ChatColor.GOLD + "The King has arrived", ChatColor.GREEN + "Please greet his majesty " + ChatColor.GOLD + event.getPlayer().getName() + ChatColor.GREEN + "!");
+			}
+		}		
+		if (DramaCraft.instance().isKing(event.getPlayer()))
+		{
+			for(Player player : DramaCraft.instance().getServer().getOnlinePlayers())
+			{
+				if(player.getUniqueId().equals(event.getPlayer().getUniqueId()))
+				{
+					continue;
+				}
+				
+				TitleManager.sendTitle(event.getPlayer(), 1*20, 3*20, 1*20, ChatColor.GOLD + "The Queen has arrived", ChatColor.GREEN + "Please greet her majesty " + ChatColor.GOLD + event.getPlayer().getName() + ChatColor.GREEN + "!");
+			}
+		}		
+	}
+
 
 	public void update()
 	{

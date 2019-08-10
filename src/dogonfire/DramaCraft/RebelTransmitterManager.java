@@ -385,10 +385,12 @@ public class RebelTransmitterManager implements Listener
 			RegionQuery query = container.createQuery();
 			ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(location));
 			
+			//TODO: Check for GriefPrevention regions as well
+			
 			if (set.size() > 0)
 			{
 				removeTransmitter(location);
-				plugin.log("transmitter was inside an region. Destroyed the transmitter.");
+				plugin.log("Transmitter was located inside an region. Destroyed the transmitter.");
 				return;
 			}
 		}
