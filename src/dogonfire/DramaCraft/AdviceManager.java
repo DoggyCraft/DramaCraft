@@ -2,26 +2,14 @@ package dogonfire.DramaCraft;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Sign;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -73,22 +61,20 @@ public class AdviceManager implements Listener
 
 			lastRebelHelpTime = System.currentTimeMillis();
 		}
-		
-		
+				
 		if(transmitters.size()==0)
 		{
 			//plugin.log("transmitMessage NO MESSAGE");
 			return;
 		}
-
 		
 		Set<String> keys = config.getConfigurationSection("transmitters").getKeys(false);
-			int n = random.nextInt(keys.size());
-			String hash = (String) keys.toArray()[n];
-			String path = "transmitters." + hash;
+		int n = random.nextInt(keys.size());
+		String hash = (String) keys.toArray()[n];
+		String path = "transmitters." + hash;
 
-			String message = config.getString(path + ".Message");
+		String message = config.getString(path + ".Message");
 
-			plugin.getServer().broadcastMessage(ChatColor.RED + "Rebel Message >> " + message);
+		plugin.getServer().broadcastMessage(ChatColor.RED + "Rebel Message >> " + message);
 	}
 }
