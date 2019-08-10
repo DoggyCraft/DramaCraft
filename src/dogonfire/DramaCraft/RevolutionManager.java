@@ -280,7 +280,7 @@ public class RevolutionManager implements Listener
 		{
 			plugin.broadcastMessage(ChatColor.GREEN + "The Revolution SUCEEDED!");
 			plugin.broadcastMessage(ChatColor.GOLD + plugin.getKingName() + ChatColor.AQUA + " was removed from the throne!");
-			plugin.broadcastMessage(ChatColor.GOLD + plugin.getQueenId() + ChatColor.AQUA + " was removed from the throne!");
+			plugin.broadcastMessage(ChatColor.GOLD + plugin.getQueenName() + ChatColor.AQUA + " was removed from the throne!");
 			
 			plugin.downgradeRank(plugin.getKing());
 			plugin.downgradeRank(plugin.getQueen());

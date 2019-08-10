@@ -131,9 +131,9 @@ public class VoteManager
 					}
 					break;
 				case 1:
-					if(plugin.getQueenId()!=null)
+					if(plugin.getQueenName()!=null)
 					{
-						broadcast = "Hil vores dronning, hendes majestæt " + ChatColor.GOLD + plugin.getQueenId() + " dronningen af DoggyCraft!";
+						broadcast = "Hil vores dronning, hendes majestæt " + ChatColor.GOLD + plugin.getQueenName() + " dronningen af DoggyCraft!";
 					}
 					break;
 			}

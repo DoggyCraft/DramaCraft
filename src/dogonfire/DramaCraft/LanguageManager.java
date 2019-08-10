@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -149,11 +150,19 @@ public class LanguageManager
 	
 	private void downloadLanguageFile(String fileName) throws IOException
 	{
-		BufferedInputStream in = new BufferedInputStream(new URL("https://raw.githubusercontent.com/DoggyCraftDK/DramaCraft/master/lang/" + fileName).openStream());
+		
+		BufferedInputStream in = null;
+		
+		BufferedOutputStream bout = null;
+		
+		try {
+			
+	
+		in = new BufferedInputStream(new URL("https://raw.githubusercontent.com/DoggyCraftDK/DramaCraft/master/lang/" + fileName).openStream());
 
 		FileOutputStream fos = new FileOutputStream(this.plugin.getDataFolder() + "/lang/" + fileName);
 
-		BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
+		bout = new BufferedOutputStream(fos, 1024);
 
 		byte[] data = new byte[1024];
 
@@ -162,9 +171,17 @@ public class LanguageManager
 		{
 			bout.write(data, 0, x);
 		}
+		
+		} catch (Exception ex) {
+
+			this.plugin.logDebug(Arrays.toString(ex.getStackTrace()));
+			
+		}
+		finally {
 		bout.close();
 
 		in.close();
+		}
 	}
 
 	private boolean loadLanguageFile(String fileName)

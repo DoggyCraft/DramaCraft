@@ -259,11 +259,6 @@ public class RebelTransmitterManager implements Listener
 	{
 		Player player = event.getPlayer();
 		
-		if (player == null)
-		{
-			return;
-		}
-		
 		if(!plugin.isRebel(player.getUniqueId()) && !player.isOp())
 		{
 			return;
@@ -284,10 +279,6 @@ public class RebelTransmitterManager implements Listener
 	@EventHandler
 	public void OnBlockBreak(BlockBreakEvent event)
 	{
-		if (event.getBlock() == null)
-		{
-			return;
-		}
 
 		if(isTransmitterBlock(event.getBlock().getLocation()))
 		{

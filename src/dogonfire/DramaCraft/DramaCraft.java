@@ -77,11 +77,11 @@ public class DramaCraft extends JavaPlugin
 		log.info("[" + getDescription().getFullName() + "] " + message);
 	}
 
-	public void logDebug(String message)
+	public void logDebug(Object object)
 	{
 		if (this.debug)
 		{
-			log.info("[" + getDescription().getFullName() + "] " + message);
+			log.info("[" + getDescription().getFullName() + "] " + object);
 		}
 	}
 
@@ -507,11 +507,6 @@ public class DramaCraft extends JavaPlugin
 
 		OfflinePlayer player = this.getServer().getOfflinePlayer(UUID.fromString(king));
 
-		if (player == null)
-		{
-			return null;
-		}
-
 		return player.getName();
 	}
 
@@ -527,7 +522,7 @@ public class DramaCraft extends JavaPlugin
 		return UUID.fromString(queen);
 	}
 
-	public String getQueenId()
+	public String getQueenName()
 	{
 		String queen = config.getString("Queen.Id");
 
@@ -537,11 +532,6 @@ public class DramaCraft extends JavaPlugin
 		}
 
 		OfflinePlayer player = this.getServer().getOfflinePlayer(UUID.fromString(queen));
-
-		if (player == null)
-		{
-			return null;
-		}
 
 		return player.getName();
 	}
@@ -1074,22 +1064,12 @@ public class DramaCraft extends JavaPlugin
 	{
 		List<String> nobles = config.getStringList("Nobles");
 		
-		if(nobles == null)
-		{
-			return 0;			
-		}
-		
 		return nobles.size();
 	}
 
 	public int getNumberOfInnerCircle()
 	{
 		List<String> inner = config.getStringList("InnerCircle");
-		
-		if(inner == null)
-		{
-			return 0;			
-		}
 		
 		return inner.size();
 	}

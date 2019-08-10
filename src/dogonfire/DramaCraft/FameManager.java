@@ -207,12 +207,6 @@ public class FameManager implements Listener
 	@EventHandler
 	public void OnSignChange(SignChangeEvent event)
 	{
-		Player player = event.getPlayer();
-
-		if (player == null)
-		{
-			return;
-		}
 		
 		if (!isFameSign(event.getBlock()))
 		{

@@ -1,5 +1,6 @@
 package dogonfire.DramaCraft;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 
@@ -22,7 +23,6 @@ public class InfoTask implements Runnable
 		this.playerId = playerId;
 		this.message = m;
 		this.name1 = name1;
-		this.name2 = this.name2;
 		this.amount = amount;
 		this.color = color;
 	}
@@ -34,7 +34,6 @@ public class InfoTask implements Runnable
 		this.name1 = name1;
 		this.name2 = name2;
 		this.message = m;
-		this.amount = this.amount;
 		this.color = color;
 	}
 
@@ -65,7 +64,7 @@ public class InfoTask implements Runnable
 		}
 		catch (Exception ex)
 		{
-			this.plugin.logDebug(ex.getStackTrace().toString());
+			this.plugin.logDebug(Arrays.toString(ex.getStackTrace()));
 		}
 
 		this.plugin.getLanguageManager().setAmount1(this.amount);

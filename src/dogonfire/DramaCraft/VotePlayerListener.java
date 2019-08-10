@@ -161,7 +161,7 @@ public class VotePlayerListener implements Listener
 	private void sendKingQueenWho(CommandSender sender)
 	{
 		String kingName = plugin.getKingName();
-		String queenName = plugin.getQueenId();
+		String queenName = plugin.getQueenName();
 		
 		if (kingName == null)
 		{
@@ -827,7 +827,7 @@ public class VotePlayerListener implements Listener
 			return;
 		}
 		
-		String queenName = plugin.getQueenId();		
+		String queenName = plugin.getQueenName();		
 		
 		if(queenName!=null)
 		{

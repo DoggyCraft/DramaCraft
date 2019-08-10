@@ -255,11 +255,6 @@ public class RebelDetectorManager implements Listener
 	{
 		Player player = event.getPlayer();
 		
-		if (player == null)
-		{
-			return;
-		}
-		
 		if(!plugin.isImperial(player.getUniqueId()) && !player.isOp())
 		{
 			return;
@@ -280,11 +275,6 @@ public class RebelDetectorManager implements Listener
 	@EventHandler
 	public void OnBlockBreak(BlockBreakEvent event)
 	{
-		if (event.getBlock() == null)
-		{
-			return;
-		}
-
 		if(isStatueBlock(event.getBlock().getLocation()))
 		{
 			removeStatue(event.getBlock().getLocation());
