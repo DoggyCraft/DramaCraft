@@ -15,6 +15,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Sign;
 import org.bukkit.block.Skull;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,14 +29,12 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.material.Sign;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 
 public class FameManager implements Listener
-{
-	
+{	
 	enum FameType
 	{
 		FAME_MOST_CUTES,
@@ -47,13 +46,11 @@ public class FameManager implements Listener
 		
 	}
 	
-	private DramaCraft plugin;
-	private Random random = new Random();
-	ScoreboardManager 					manager;
-	Scoreboard 							board;
-	private FileConfiguration			config		= null;
-	private File						configFile	= null;	
-	
+	private Random 							random = new Random();
+	private FileConfiguration				config		= null;
+	private File							configFile	= null;
+	private HashMap<FameType, List<Long>> 	fameBlockLocations = new HashMap<FameType, List<Long>>();
+		
 	public FameManager()
 	{
 		
@@ -63,15 +60,15 @@ public class FameManager implements Listener
 	{
 		try
 		{
-			this.configFile = new File(this.plugin.getDataFolder(), "fame.yml");
+			this.configFile = new File(DramaCraft.instance().getDataFolder(), "fame.yml");
 
 			this.config = YamlConfiguration.loadConfiguration(this.configFile);
 
-			this.plugin.log("Loaded " + this.config.getConfigurationSection("Players").getKeys(false).size() + " fame players.");				
+			DramaCraft.instance().log("Loaded " + this.config.getConfigurationSection("Players").getKeys(false).size() + " fame players.");				
 		}
 		catch(Exception ex)
 		{
-			this.plugin.log("No bounties loaded.");			
+			DramaCraft.instance().log("No bounties loaded.");			
 		}
 		
 	}
@@ -80,8 +77,8 @@ public class FameManager implements Listener
 	{
 		if (this.config == null || this.configFile == null)
 		{
-			plugin.log("Config: " + this.config);
-			plugin.log("Configfile: " + this.configFile);
+			DramaCraft.instance().log("Config: " + this.config);
+			DramaCraft.instance().log("Configfile: " + this.configFile);
 			return;
 		}
 		
@@ -91,10 +88,10 @@ public class FameManager implements Listener
 		}
 		catch (Exception ex)
 		{
-			this.plugin.log("Could not save config to " + this.configFile + ": " + ex.getMessage());
+			DramaCraft.instance().log("Could not save config to " + this.configFile + ": " + ex.getMessage());
 		}
 		
-		this.plugin.log("Saved configuration.");
+		DramaCraft.instance().log("Saved configuration.");
 	}
 	
 	public boolean setQueenHead(Location location)
@@ -117,9 +114,7 @@ public class FameManager implements Listener
 		
 		save();				
 	}
-	
-	
-	
+		
 	public void setHead(UUID ownerId, Location location)
 	{		
 		location.getBlock().setType(Material.PLAYER_HEAD);
@@ -128,10 +123,10 @@ public class FameManager implements Listener
 	
 		OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(ownerId);
 		
-		Skull s = (Skull)location.getBlock().getState();
-		s.setOwningPlayer(player);
-		s.setRotation(BlockFace.SOUTH);
-		s.update();		
+		//Skull s = (Skull)location.getBlock().getState();
+		//s.setOwningPlayer(player);
+		//s.setRotation(BlockFace.SOUTH);
+		//s.update();		
 		
 		ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
 		SkullMeta meta = (SkullMeta) skull.getItemMeta();
@@ -150,6 +145,17 @@ public class FameManager implements Listener
 	{
 		
 	}
+	
+	private FameType getFameTypeFromBlock(Block block)
+	{			
+		Sign sign = (Sign) block.getBlockData();
+		switch(sign.getLine(0))
+		{
+			case "Cute" :  return FameType.FAME_MOST_CUTES;
+		}
+		
+		return null;
+	}
 		
 	public boolean isFameBlock(Block block)
 	{
@@ -157,7 +163,8 @@ public class FameManager implements Listener
 		{
 			return false;
 		}
-		if ((block.getRelative(BlockFace.UP).getType() != Material.TORCH) && (block.getRelative(BlockFace.UP).getType() != Material.REDSTONE_TORCH))
+
+		if (block.getRelative(BlockFace.UP).getType() != Material.PLAYER_HEAD)
 		{
 			return false;
 		}
@@ -178,24 +185,23 @@ public class FameManager implements Listener
 		if ((block == null) || (block.getType() != Material.OAK_WALL_SIGN))
 		{
 			return false;
-		}
-			
-		WallSign wallSign = (org.bukkit.block.data.type.WallSign) block.getBlockData();
-		Block altarBlock = block.getRelative(wallSign.getFacing().getOppositeFace());
+		}		
 
-		DramaCraft.instance().logDebug("isFameSign(): FameBlock block is " + altarBlock.getType().name());
+		DramaCraft.instance().logDebug("isFameSign(): FameSignBlock block is " + block.getType().name());
 		
-		//if (getFameSignType == null)
-		//{
-		//	return false;
-		//}
-		
-		if (!altarBlock.getRelative(BlockFace.UP).getType().equals(Material.PLAYER_HEAD))
+		if (getFameTypeFromBlock(block) == null)
 		{
 			return false;
 		}
-		
+				
 		return true;
+	}
+	
+	private Block getFameBlockFromSign(Block block)
+	{
+		WallSign wallSign = (org.bukkit.block.data.type.WallSign) block.getBlockData();
+		Block fameBlock = block.getRelative(wallSign.getFacing().getOppositeFace());
+		return fameBlock;
 	}
 	
 	@EventHandler
@@ -208,12 +214,21 @@ public class FameManager implements Listener
 			return;
 		}
 		
-		if (isFameSign(event.getBlock()))
+		if (!isFameSign(event.getBlock()))
 		{
-			//if (!handleNewFameBlock(event))
-			//{
-			// TODO add this block to list of blocks for this fametype	
-			//}
+			return;
 		}
+		
+		Block fameBlock = getFameBlockFromSign(event.getBlock());
+
+		if (!isFameBlock(fameBlock))
+		{
+			return;
+		}
+				
+		//if (!handleNewFameBlock(event))
+		//{
+		// TODO add this block to list of blocks for this fametype	
+		//}
 	}
 }
