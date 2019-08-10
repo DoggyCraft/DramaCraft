@@ -5,7 +5,7 @@ addons:
   sonarcloud:
     organization: "doggycraftdk"
     token:
-      secure: "Z2+85SilKlwUJzavmXe1fjSymJjjEtx6nbLBrvi/Q970QPr05syfRx/2+AKaK6Ul89m2zmN+9DVy20oZ3qHxTXayuCo8wOezCAifmK0ZCEzf2hlwo6z4vAMblG4JrC5LFBVpMvBT0ZMGy7iA1K8ikgEoi2LtAHuTwjRswwV6HkJB64JY+JDcIAngmqu2ED6hOAIhNxgYCNGrjPA1Wd+Z/YHfYj9rIntm8rsNifUM4rdUXQ4v3W5n1bAQ+5pgTdTJoB0u91MtNwlLeYNurYmJOhcyj2gQ7iRy+Ilaz6Qc/VLoDzGiUh8SQr00it87ZJL/g1vwy9d9NcB5jd03kU6vjmm0/CYak7p2fjsgtmxRs1RgCLOXRoaS2QeyRotewsKJ2faRlpqqijco4eXiTN1li6Bd2mN5HE/69Cavm2Sqsn1MX5oA0fPYZQnDgjw7foHVs7PEldsnckldb2/LJ7TmsRLNxM2TVgjoypDBTjBIYIT+K2aqZXQKxRcRXFqfGRJf6GEuo4qrlA2JZ0bl5xnusOMs6vL81oP9WwtLRy9Yb7KksSNYzhv2opF/CV3+Vp+OKEY6yIXEAdrdmtHvl+VF7Yy8AuEhAohd1IpJlzlYpBqSiF89t1bX1mDZ8NzrHBLUmvo10Y/SWcImp+6BNvrrJ4iDoYQV7q0enaMkq4FzYio="
+      secure: $SONAR_TOKEN
 
 script:
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=DoggyCraftDK_DramaCraft

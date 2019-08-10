@@ -27,8 +27,8 @@ The concept is that this will provide a lore/culture to the server that everyone
 
 Installation
 ---------
-* [Install a Spigot server](https://github.com/DogOnFire/Werewolf/#obtain-a-build-of-spigot)
-* [Download DramaCraft](https://github.com/DogOnFire/DramaCraft/#download)
+* [Install a Spigot server](https://github.com/DoggyCraftDK/DramaCraft/#obtain-a-build-of-spigot)
+* [Download DramaCraft](https://github.com/DoggyCraftDK/DramaCraft/#download)
 * Drop the DramaCraft.jar into the plugins folder.
 * Start your Spigot/CraftBukkit server.
 
@@ -36,9 +36,9 @@ Links
 ---------
 
 ###### Developers
-* [License (GPLv3)](https://github.com/DogOnFire/DramaCraft/blob/master/LICENSE.txt)
-* [API](https://github.com/DogOnFire/Docs/wiki/API)
-* [Contribute](https://github.com/DogOnFire/Werewolf/blob/master/CONTRIBUTING.md)
+* [License (GPLv3)](https://github.com/DoggyCraftDK/DramaCraft/blob/master/LICENSE.txt)
+* [API](https://github.com/DoggyCraftDK/DramaCraft/Docs/wiki/API)
+* [Contribute](https://github.com/DoggyCraftDK/DramaCraft/blob/master/CONTRIBUTING.md)
 
 Compiling DramaCraft.jar
 ---------

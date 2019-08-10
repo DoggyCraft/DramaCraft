@@ -32,12 +32,6 @@ import org.bukkit.material.Sign;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-
-import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
-
 
 public class FameManager implements Listener
 {
