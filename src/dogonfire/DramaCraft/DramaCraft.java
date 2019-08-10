@@ -55,8 +55,8 @@ public class DramaCraft extends JavaPlugin
 	public int							votePayment				= 10;
 	public int							startVoteCost			= 10;
 	
-	private String pattern = "HH:mm:ss dd-MM-yyyy";
-	DateFormat formatter = new SimpleDateFormat(this.pattern);
+	private String 						pattern = "HH:mm:ss dd-MM-yyyy";
+	DateFormat 							formatter = new SimpleDateFormat(this.pattern);
 
 	private boolean						debug					= true;
 	boolean								downloadLanguageFile	= true;

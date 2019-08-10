@@ -31,7 +31,6 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 
 
-
 public class RebelDetectorManager implements Listener
 {
 	private DramaCraft plugin;
@@ -239,7 +238,7 @@ public class RebelDetectorManager implements Listener
 		return (int) (hash % 100);
 	}
 	
-	private void removeStatue(Location location)
+	private void removeDetector(Location location)
 	{
 		long hash = hashLocation(location);
 		String key = "statues." + hash;
@@ -277,7 +276,7 @@ public class RebelDetectorManager implements Listener
 	{
 		if(isStatueBlock(event.getBlock().getLocation()))
 		{
-			removeStatue(event.getBlock().getLocation());
+			removeDetector(event.getBlock().getLocation());
 			plugin.log(event.getPlayer().getName() + " removed a rebel detector at " + event.getBlock().getLocation());
 			
 			if(plugin.isRebel(event.getPlayer().getUniqueId()))
@@ -370,7 +369,7 @@ public class RebelDetectorManager implements Listener
 		
 		if(set.size() > 0)
 		{
-			removeStatue(location);
+			removeDetector(location);
 			plugin.log("Statue was inside an region. Destroyed the statue.");
 			return;			
 		}							

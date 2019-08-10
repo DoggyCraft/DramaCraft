@@ -2,7 +2,6 @@ package dogonfire.DramaCraft;
 
 import java.util.HashMap;
 
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
