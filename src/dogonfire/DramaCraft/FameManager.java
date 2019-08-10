@@ -37,13 +37,12 @@ public class FameManager implements Listener
 {	
 	enum FameType
 	{
-		FAME_MOST_CUTES,
+		FAME_MOST_CUTE,
 		FAME_MOST_NICE,
 		FAME_MOST_NASTY,
 		FAME_MOST_FUNNY,
 		FAME_MOST_FRIENDLY,
-		FAME_MOST_INTELLIGENT,
-		
+		FAME_MOST_INTELLIGENT,		
 	}
 	
 	private Random 							random = new Random();
@@ -64,11 +63,11 @@ public class FameManager implements Listener
 
 			this.config = YamlConfiguration.loadConfiguration(this.configFile);
 
-			DramaCraft.instance().log("Loaded " + this.config.getConfigurationSection("Players").getKeys(false).size() + " fame players.");				
+			DramaCraft.instance().log("Loaded " + this.config.getConfigurationSection("Blocks").getKeys(false).size() + " fame blocks.");				
 		}
 		catch(Exception ex)
 		{
-			DramaCraft.instance().log("No bounties loaded.");			
+			DramaCraft.instance().log("No fame blocks loaded.");			
 		}
 		
 	}
@@ -94,16 +93,16 @@ public class FameManager implements Listener
 		DramaCraft.instance().log("Saved configuration.");
 	}
 	
-	public boolean setQueenHead(Location location)
+	public boolean setFameHead(Location location)
 	{
-		UUID ownerId = UUID.fromString(config.getString("Queen.Id"));
+		UUID ownerId = UUID.fromString(config.getString("Fame.Id"));
 		
-		setQueenHead(ownerId, location);
+		setFameHead(ownerId, location);
 		
 		return true;
 	}
 
-	public void setQueenHead(UUID ownerId, Location location)
+	public void setFameHead(UUID ownerId, Location location)
 	{
 		setHead(ownerId, location);
 		
@@ -134,6 +133,19 @@ public class FameManager implements Listener
 		skull.setItemMeta(meta);
 	}
 	
+	private boolean handleNewFameBlock(Block signBlock, Block fameBlock)
+	{
+		FameType fameType = getFameTypeFromBlock(signBlock);
+		
+		long hash = 0;
+		
+		fameBlockLocations.get(fameType).add(hash);
+		
+		//setFameHead();
+		
+		return true;
+	}
+	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event)
 	{
@@ -151,7 +163,7 @@ public class FameManager implements Listener
 		Sign sign = (Sign) block.getBlockData();
 		switch(sign.getLine(0))
 		{
-			case "Cute" :  return FameType.FAME_MOST_CUTES;
+			case "Cute" :  return FameType.FAME_MOST_CUTE;
 		}
 		
 		return null;
@@ -226,9 +238,9 @@ public class FameManager implements Listener
 			return;
 		}
 				
-		//if (!handleNewFameBlock(event))
-		//{
+		if (!handleNewFameBlock(event.getBlock(), fameBlock))
+		{
 		// TODO add this block to list of blocks for this fametype	
-		//}
+		}
 	}
 }

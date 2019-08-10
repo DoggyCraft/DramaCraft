@@ -34,8 +34,8 @@ import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
 // Also to encourage them to use their powers and maintain a level of tension (drama) among the factions, thereby creating a lore and culture. 
 public class AdviceManager implements Listener
 {
-	private DramaCraft plugin;
-	private Random random = new Random();
+	private DramaCraft 					plugin;
+	private Random 						random = new Random();
 	private FileConfiguration			config		= null;
 	private File						configFile	= null;
 	private HashMap<Long, Location>  	transmitters = new HashMap<Long, Location>(); 
@@ -52,7 +52,7 @@ public class AdviceManager implements Listener
 		
 	// King/Queen : Check time since last treasure hunt + Check numbers of online players > 3 -> Advice to start treasure hunt
 	// King/Queen : Check time since last bounty set + Rebel online -> Advice to set a bounty
-	// King/Queen : Check time since last donation -> Encourage players to donate
+	// King/Queen : Check time since last donation -> Encourage players to donate to the empire
 	//
 	public void sendMessage()
 	{
