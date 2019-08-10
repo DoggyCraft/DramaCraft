@@ -149,7 +149,7 @@ public class LanguageManager
 	
 	private void downloadLanguageFile(String fileName) throws IOException
 	{
-		BufferedInputStream in = new BufferedInputStream(new URL("http://www.doggycraft.dk/plugins/dramacraft/lang/" + fileName).openStream());
+		BufferedInputStream in = new BufferedInputStream(new URL("https://raw.githubusercontent.com/DoggyCraftDK/DramaCraft/master/lang/" + fileName).openStream());
 
 		FileOutputStream fos = new FileOutputStream(this.plugin.getDataFolder() + "/lang/" + fileName);
 
@@ -203,14 +203,14 @@ public class LanguageManager
 			}
 			else
 			{
-				this.plugin.logDebug("Directory FAILED!");
+				this.plugin.logDebug(ChatColor.DARK_RED + "Directory creation FAILED!");
 				return;
 			}
 		}
 		
 		if (!loadLanguageFile(this.generalLanguageFileName))
 		{
-			this.plugin.log("Could not load " + this.generalLanguageFileName + " from the /lang folder!");
+			this.plugin.log(ChatColor.DARK_RED + "Could not load " + this.generalLanguageFileName + " from the /lang folder!");
 			
 			if (this.plugin.downloadLanguageFile)
 			{
@@ -222,7 +222,7 @@ public class LanguageManager
 				}
 				catch (Exception ex)
 				{
-					this.plugin.log("Could not download " + this.generalLanguageFileName + " language file from DogOnFire: " + ex.getMessage());
+					this.plugin.log(ChatColor.DARK_RED + "Could not download " + this.generalLanguageFileName + " language file from DogOnFire: " + ex.getMessage());
 					return;
 				}
 				
@@ -233,7 +233,7 @@ public class LanguageManager
 			}
 			else
 			{
-				this.plugin.log("Will NOT download from DogOnFire. Please place a valid language file in your /lang folder!");
+				this.plugin.log(ChatColor.DARK_RED + "Will NOT download from DogOnFire. Please place a valid language file in your /lang folder!");
 			}
 		}
 	}
