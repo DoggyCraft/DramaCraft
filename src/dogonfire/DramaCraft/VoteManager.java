@@ -90,24 +90,61 @@ public class VoteManager
 	private VOTE_TYPE	currentVoteType;
 	private Random		random			= new Random();
 	private DramaCraft	plugin;
+	private Vote currentVote;
 	
+	public abstract class Vote
+	{
+		public VOTE_TYPE 	voteType;
+		public float  		reqYesPercentage 	= 0.60f;
+		public int 			reqVotes 			= plugin.requiredVotes;
+		public int 			voteCost 			= plugin.startVoteCost;
+		public long			startVoteTime;
+		public long 		voteInterval 		= plugin.voteTimeLengthBetween;
+		public List<String>	all					= new ArrayList<String>();
+		public List<String>	yes					= new ArrayList<String>();
+		public List<String>	no					= new ArrayList<String>();
+		
+		public boolean isCompleted()
+		{			
+			if ((this.yes.size() + this.no.size() >= reqVotes) || (System.nanoTime() - this.startVoteTime > plugin.voteTimeLength))
+			{
+				String broadcast = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_FINISHED, ChatColor.AQUA);
+
+				DramaCraft.broadcastMessage(broadcast);
+
+				if (this.yes.size() + this.no.size() < reqVotes)
+				{
+					broadcast = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOT_ENOUGH_VOTES, ChatColor.RED);
+					DramaCraft.broadcastMessage(broadcast);
+					resetVotes();
+					return false;
+				}
+
+				boolean success = ((float)this.yes.size()) / ((float)(this.no.size() + this.yes.size())) >= reqYesPercentage;
+				
+				plugin.logDebug("success " + ((float)this.yes.size()) / ((float)(this.no.size() + this.yes.size())));
+				plugin.logDebug("reqYesPercentage/100 " + reqYesPercentage / 100.0);
+
+				broadcast = "MISSING_SUCCESS";
+				
+				return true;
+			}
+			
+			return false;
+		}
+		
+		public abstract boolean checkVote(int timeFactor);  // This is called periodically while the vote is running
+		public abstract boolean newVote(World world, Player voter, String voteText, boolean vote, VOTE_TYPE voteType); // This is called when a player is trying to start the vote
+		public abstract boolean tryVote(World world, Player voter, boolean vote, VOTE_TYPE voteType); // This is called when a player is voting yes or no towards this vote		
+	}
+		
 	private void resetVotes()
 	{
 		this.currentVoteType = VOTE_TYPE.VOTE_NONE;
 		this.yes.clear();
 		this.no.clear();
 	}
-
-	public VoteManager(DramaCraft plugin)
-	{
-		this.currentVoteType = VOTE_TYPE.VOTE_NONE;
-		this.startVoteTime = System.nanoTime();
-		this.name = "No Vote";
-		this.plugin = plugin;
-	}
-	
-
-	
+		
 	public void checkVote(int timeFactor)
 	{
 		String broadcast = "";
@@ -707,7 +744,7 @@ public class VoteManager
 		String message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_COST, ChatColor.AQUA);
 		voter.sendMessage(message);
 
-		DramaCraft.economy.withdrawPlayer(voter.getName(), voteCost);
+		DramaCraft.economy.withdrawPlayer(voter, voteCost);
 
 		return true;
 	}
@@ -849,7 +886,7 @@ public class VoteManager
 
 			voter.sendMessage(message);
 
-			DramaCraft.economy.depositPlayer(voter.getName(), plugin.votePayment);
+			DramaCraft.economy.depositPlayer(voter, plugin.votePayment);
 		}
 	}
 }

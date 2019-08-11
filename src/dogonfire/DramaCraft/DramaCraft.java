@@ -177,7 +177,6 @@ public class DramaCraft extends JavaPlugin
 
 	public boolean isImperial(UUID playerId)
 	{	
-		//return this.permissionsManager.isInGroup(this.getServer().getOfflinePlayer(playerId), "DoggyCraft", "imperial");
 		return config.getString("Imperials." + playerId.toString()) != null;
 	}
 
@@ -387,31 +386,49 @@ public class DramaCraft extends JavaPlugin
 
 	public int getActiveImperials()
 	{
-		int numberOfActiveNobles = 0;
+		int numberOfActiveImperials = 0;
 		
-		for(Player player : server.getOnlinePlayers())
+		ConfigurationSection section = config.getConfigurationSection("Imperials");	
+		
+		if(section==null)
 		{
-			if(isImperial(player.getUniqueId()))
+			return 0;
+		}
+		
+		for(String playerIdString : section.getKeys(false))
+		{
+			UUID playerId = UUID.fromString(playerIdString);
+
+			if(isImperial(playerId))
 			{
-				if(this.getImperialLastOnlineDays(player.getUniqueId()) < 7)
+				if(this.getImperialLastOnlineDays(playerId) < 7)
 				{
-					numberOfActiveNobles++;
+					numberOfActiveImperials++;
 				}
 			}			
 		}
 		
-		return numberOfActiveNobles;
+		return numberOfActiveImperials;
 	}
 
 	public int getActiveNobles()
 	{
 		int numberOfActiveNobles = 0;
 		
-		for(Player player : server.getOnlinePlayers())
+		ConfigurationSection section = config.getConfigurationSection("Imperials");	
+		
+		if(section==null)
 		{
-			if(isNoble(player.getUniqueId()))
+			return 0;
+		}
+		
+		for(String playerIdString : section.getKeys(false))
+		{
+			UUID playerId = UUID.fromString(playerIdString);
+			
+			if(isNoble(playerId))
 			{
-				if(this.getImperialLastOnlineDays(player.getUniqueId()) < 7)
+				if(this.getImperialLastOnlineDays(playerId) < 7)
 				{
 					numberOfActiveNobles++;
 				}
@@ -425,11 +442,20 @@ public class DramaCraft extends JavaPlugin
 	{
 		int numberOfActiveInnerCircle = 0;
 		
-		for(Player player : server.getOnlinePlayers())
+		ConfigurationSection section = config.getConfigurationSection("Rebels");	
+		
+		if(section==null)
 		{
-			if(isInnerCircle(player.getUniqueId()))
+			return 0;
+		}
+
+		for(String playerIdString : section.getKeys(false))
+		{
+			UUID playerId = UUID.fromString(playerIdString);
+			
+			if(isInnerCircle(playerId))
 			{
-				if(this.getRebelLastOnlineDays(player.getUniqueId()) < 7)
+				if(this.getRebelLastOnlineDays(playerId) < 7)
 				{
 					numberOfActiveInnerCircle++;
 				}
@@ -604,9 +630,7 @@ public class DramaCraft extends JavaPlugin
 	
 	public void	clearImperial(Player player)
 	{
-		permissionsManager.setPrefix(player, "");		
-		permissionsManager.setDramaCraftGroup(player, "citizen");		
-
+		setRank(player, "citizen");
 		clearImperialLastLogin(player);
 
 		saveSettings();								
@@ -614,9 +638,7 @@ public class DramaCraft extends JavaPlugin
 
 	public void	clearRebel(Player player)
 	{
-		permissionsManager.setPrefix(player, "");		
-		permissionsManager.setDramaCraftGroup(player, "citizen");		
-		
+		setRank(player, "citizen");
 		clearRebelLastLogin(player);
 		
 		saveSettings();								
@@ -624,23 +646,9 @@ public class DramaCraft extends JavaPlugin
 
 	public void	clearNoble(Player player)
 	{
-		permissionsManager.setPrefix(player, "");		
-		permissionsManager.setDramaCraftGroup(player, "citizen");		
-
-		/*
-		String oldClientId = config.getString("Nobles." + player.getUniqueId().toString() + ".Client.Id");
-		if(oldClientId!=null)
-		{
-			String oldClientName = getServer().getOfflinePlayer(UUID.fromString(oldClientId)).getName();
-			String oldClientRank = config.getString("Nobles." + player.getUniqueId().toString() + ".Client.OldRank");
-			
-			OfflinePlayer oldPlayer = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(oldClientId));
-			permissionsManager.setRankGroup(oldPlayer, oldClientRank);		
-		}
-
-		//config.set("Nobles." + player.getUniqueId().toString(), null);
-		config.set("Imperials." + player.getUniqueId().toString() + ".Noble", null);
-	*/
+		setRank(player, "citizen");
+		clearRebelLastLogin(player);
+		
 		saveSettings();								
 	}
 
@@ -1062,16 +1070,12 @@ public class DramaCraft extends JavaPlugin
 	
 	public int getNumberOfNobles()
 	{
-		List<String> nobles = config.getStringList("Nobles");
-		
-		return nobles.size();
+		return getNobles().size();
 	}
 
 	public int getNumberOfInnerCircle()
-	{
-		List<String> inner = config.getStringList("InnerCircle");
-		
-		return inner.size();
+	{		
+		return getInnerCircle().size();
 	}
 
 	public Set<String> getNobles()
@@ -1102,7 +1106,7 @@ public class DramaCraft extends JavaPlugin
 	public Set<String> getInnerCircle()
 	{
 		Set<String> innercircle = new HashSet<String>();
-		ConfigurationSection section = config.getConfigurationSection("Imperials");
+		ConfigurationSection section = config.getConfigurationSection("Rebels");
 
 		if(section==null)
 		{
@@ -1430,103 +1434,28 @@ public class DramaCraft extends JavaPlugin
 	
 	public void setNoble(UUID playerId)
 	{
-		/*
-		List<String> nobles = config.getStringList("Nobles");
-		
-		if(nobles.contains(playerId) || nobles==null)
-		{
-			return;			
-		}
-		
-		OfflinePlayer player = this.getServer().getOfflinePlayer(playerId);
-		String playerName = player.getName();
-		
-		/*
-		if(oldQueenId!=null)
-		{
-			oldQueenName = this.getServer().getOfflinePlayer(UUID.fromString(oldQueenId)).getName();
-		}*/
-
-		/*
-		String queenHeadWorld = config.getString("Queen.Head.World");
-		if(queenHeadWorld!=null)
-		{
-			try
-			{
-				String queenHeadX = config.getString("Queen.Head.X");
-				String queenHeadY = config.getString("Queen.Head.Y");
-				String queenHeadZ = config.getString("Queen.Head.Z");
-				
-				Location location = new Location(this.getServer().getWorld(queenHeadWorld), Integer.parseInt(queenHeadX), Integer.parseInt(queenHeadY), Integer.parseInt(queenHeadZ));
-				
-				setHead(playerName, location);
-			}
-			catch(Exception ex)
-			{
-				
-			}
-		}
-*/
 		OfflinePlayer player = getServer().getOfflinePlayer(playerId);
 
-		permissionsManager.setDramaCraftGroup(player, "noble");
-
-		setPrefix(playerId);
+		setRank(player, "noble");		
 
 		Date thisDate = new Date();
 		
-		//System.out.println("[KingVote] Setting new noble '" + playerName + "' dayjob to '" + permissionsManager.getGroup(playerName, worldName) + "'");
-		//config.set("Nobles." + playerId.toString() + ".Dayjob", permissionsManager.getGroup(playerName, worldName));
-		//permissionsManager.addPermission(player.getPlayer(), "kingvote.noble");
 		config.set("Imperials." + player.getUniqueId().toString() + ".Noble.JoinDate", formatter.format(thisDate));
-
-		//config.set("Nobles." + playerId.toString() + ".ElectionTime", formatter.format(thisDate));
-		//config.set("Rebels." + playerId.toString() + ".Noble", null);
 
 		getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addmember castle " + player.getName() + " -w " + this.getServer().getWorlds().get(0).getName());
 		
 		saveSettings();
 	}
 
-/*	
-	public void removeInnerCircle(UUID playerId)
-	{
-		String playerName = this.getServer().getOfflinePlayer(playerId).getName();
-
-		config.set("Rebels." + playerId.toString() + ".InnerCircle", null);
-		//config.set("InnerCircle." + playerId.toString(), null);
-		getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember dannevirke " + playerName + " -w " + this.getServer().getWorlds().get(0).getName());
-		
-		setRebelPrefix(playerId);
-
-		saveSettings();
-	}
-*/	
 	public void setInnerCircle(UUID playerId)
 	{
-		/*
-		List<String> nobles = config.getStringList("InnerCircle");
-		//String oldQueenDayjob = config.getString("Queen.DayJob");
-		
-		if(nobles.contains(playerId) || nobles==null)
-		{
-			return;			
-		}
-		
-		String playerName = this.getServer().getOfflinePlayer(playerId).getName();
-	*/				
 		OfflinePlayer player = getServer().getOfflinePlayer(playerId);
 
-		permissionsManager.setDramaCraftGroup(player, "innercircle");
-
-		setPrefix(playerId);
+		setRank(player, "innercircle");		
 	
 		Date thisDate = new Date();
 
-		//log("Setting new innercircle '" + player.getName() + "' dayjob to '" + permissionsManager.getGroup(player) + "'");
-		//permissionsManager.setRankGroup(playerName, "kingvote.innercircle");
 		config.set("Rebels." + playerId.toString() + ".InnerCircle.JoinDate", formatter.format(thisDate));
-		//config.set("InnerCircle." + playerId.toString() + ".ElectionTime", formatter.format(thisDate));
 		
 		getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addmember dannevirke " + player.getName() + " -w " + this.getServer().getWorlds().get(0).getName());
 		
@@ -1693,7 +1622,7 @@ public class DramaCraft extends JavaPlugin
 		permissionsManager = new PermissionsManager();
 		permissionsManager.load();
 
-		voteManager = new VoteManager(this);
+		voteManager = new VoteManager();
 
 		revolutionManager = new RevolutionManager(this);
 		server.getPluginManager().registerEvents(revolutionManager, this);

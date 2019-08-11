@@ -48,7 +48,7 @@ public class ImperialManager implements Listener
 		this.plugin = plugin;	
 	}
 	
-	public List<String> getRandomTitles(Player player)
+	public List<String> generateRandomTitles(Player player, int amount)
 	{
 		// Mix up 4 suggestions
 		List<String> possibleTitles = new ArrayList<String>();
@@ -70,7 +70,7 @@ public class ImperialManager implements Listener
 			possibleTitles.addAll(imperialTitles);
 		}
 
-		for(int i=0; i<4; i++)
+		for(int i=0; i<amount; i++)
 		{
 			String p1 = possibleTitles.get(random.nextInt(possibleTitles.size()));
 			String p2 = possibleTitles.get(random.nextInt(possibleTitles.size()));
