@@ -1412,7 +1412,7 @@ public class DramaCraft extends JavaPlugin
 		Date thisDate = new Date();
 
 		config.set("Players." + player.getUniqueId().toString() + ".PreviousRank", permissionsManager.getGroup(player.getName()));
-		permissionsManager.setDramaCraftGroup(player, "queen");		
+		permissionsManager.setDramaCraftGroup(player, groupname);		
 		config.set("Players." + player.getUniqueId().toString() + ".CurrentRank", groupname);
 		config.set("Players." + player.getUniqueId().toString() + ".ChangeDate", formatter.format(thisDate));
 		setPrefix(player.getUniqueId());
@@ -1641,7 +1641,7 @@ public class DramaCraft extends JavaPlugin
 		getServer().getPluginManager().registerEvents(rebelDetectorManager, this);
 		rebelDetectorManager.load();
 
-		imperialManager = new ImperialManager(this);
+		imperialManager = new ImperialManager();
 
 		bountyManager = new BountyManager(this);
 		bountyManager.load();

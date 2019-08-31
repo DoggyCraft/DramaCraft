@@ -3,11 +3,8 @@ main: dogonfire.DramaCraft.DramaCraft
 version: 0.5.2
 api-version: 1.14
 authors: [DogOnFire]
-softdepend: 
-  - PermissionsBukkit
-  - PermissionsEx
-  - bPermissions
-  - GroupManager
+depend: 
+  - WorldGuard
 loadbefore:
   - GAListener 
 commands:
