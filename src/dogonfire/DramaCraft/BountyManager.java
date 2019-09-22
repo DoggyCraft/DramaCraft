@@ -3,42 +3,35 @@ package dogonfire.DramaCraft;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
 
 
 
 public class BountyManager implements Listener
 {
 	private DramaCraft plugin;
-	private Random random = new Random();
 	ScoreboardManager 					manager;
 	Scoreboard 							board;
 	private FileConfiguration			config		= null;
@@ -107,6 +100,15 @@ public class BountyManager implements Listener
 		}
 	}
 
+	public boolean isBountySign(Block block)
+	{
+		if (block == null || block.getType() != Material.OAK_WALL_SIGN)
+		{
+			return false;
+		}		
+				
+		return true;
+	}
 	
 	@EventHandler
 	public void OnSignChange(SignChangeEvent event)
@@ -118,13 +120,11 @@ public class BountyManager implements Listener
 			return;
 		}
 		
-		if(event.getBlock().getType() != Material.OAK_WALL_SIGN)
+		if(isBountySign(event.getBlock()))
 		{
 			return;
 		}
-		
-		Sign sign = (Sign) event.getBlock().getState();
-			
+					
 		if(!event.getLine(0).trim().equalsIgnoreCase("wanted"))
 		{
 			return;
@@ -226,7 +226,7 @@ public class BountyManager implements Listener
 		}
 		
 		int bounty = plugin.getBountyManager().getBounty(victim.getUniqueId());
-		plugin.getEconomyManager().depositPlayer(killer.getName(), bounty);
+		plugin.getEconomyManager().depositPlayer(DramaCraft.instance().getServer().getOfflinePlayer(killer.getUniqueId()), bounty);
 		
 		clearBounty(victim);
 	
@@ -340,7 +340,7 @@ public class BountyManager implements Listener
 			Location location = new Location(world, x, y, z);
 			try
 			{
-				Sign sign = (Sign) world.getBlockAt(location).getState();
+				org.bukkit.block.Sign sign = (Sign) world.getBlockAt(location).getState();
 
 				UUID playerId = getRankedPlayer(rank);
 

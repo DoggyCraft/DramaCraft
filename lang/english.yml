@@ -199,6 +199,9 @@ Info:
   - We do not have a King! Use §f/vote king <playername>
   INFO_IMPERIAL_VOTE_QUEEN : 
   - We do not have a Queen! Use §f/vote queen <playername>
+  INFO_REBEL_REVOLUTION
+  - You can now vote for a revolution! Use /vote revolution
+  - There are now enough rebels online to vote for a revolution! Use /vote revolution
   INFO_REBEL_BUILD_TRANSMITTERS : 
   - The truth must be told about the evil Empire! See how to build a transmitter with §f/rebels help
   - Don't let evil Empire get away with their lies! Tell the truth by building a rebel transmitter with §f/rebels help

@@ -44,6 +44,27 @@ public class AdviceManager implements Listener
 	//
 	public void sendMessage()
 	{
+		if(System.currentTimeMillis() > lastRebelHelpTime + 5*60*1000)
+		{
+			if(DramaCraft.instance().getOnlineRebels() >= 5)
+			{
+				for(Player rebelPlayer : plugin.getOnlineRebelPlayers())
+				{
+					plugin.sendInfo(
+						rebelPlayer.getUniqueId(), 
+						LANGUAGESTRING.INFO_REBEL_REVOLUTION, 
+						ChatColor.AQUA,
+						0,
+						120
+						);			
+				}
+				
+				//plugin.log("transmitMessage rebel CHECK");
+
+				lastRebelHelpTime = System.currentTimeMillis();				
+			}
+		}
+		
 		if(System.currentTimeMillis() > lastRebelHelpTime + (5*60*1000 + 7*60*1000*transmitters.size()))
 		{
 			for(Player rebelPlayer : plugin.getOnlineRebelPlayers())

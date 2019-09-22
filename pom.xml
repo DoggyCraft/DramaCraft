@@ -9,7 +9,8 @@
     <repository>
       <id>sk89q-repo</id>
       <url>http://maven.sk89q.com/repo/</url>
-    </repository>    <repository>
+    </repository>
+    <repository>
       <id>spigot-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
     </repository>
@@ -21,8 +22,12 @@
 		<id>elmakers-repo</id>
 		<url>http://maven.elmakers.com/repository/</url>
 	</repository>
+	<repository>
+	    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	</repository>
   </repositories>  
-  <dependencies>
+  <dependencies>  
     <dependency>
       <groupId>com.sk89q.worldguard</groupId>
       <artifactId>worldguard-bukkit</artifactId>

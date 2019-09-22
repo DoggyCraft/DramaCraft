@@ -362,6 +362,8 @@ public class VoteManager
 					{
 						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_REVOLUTION_FAILED, ChatColor.RED);
 					}
+					
+				default: break;
 			}
 
 			DramaCraft.broadcastMessage(broadcast);
@@ -432,6 +434,8 @@ public class VoteManager
 				DramaCraft.instance().getLanguageManager().setPlayerName(this.voteString);
 				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_GENERAL, ChatColor.AQUA);
 				break;
+				
+			default: break;	
 		}
 
 		DramaCraft.broadcastMessage(broadcast);
@@ -462,7 +466,7 @@ public class VoteManager
 		String broadcast = "";
 
 		int reqVotes = DramaCraft.instance().requiredVotes;
-		int voteCost = DramaCraft.instance().startVoteCost;
+		int voteCost = 0;//DramaCraft.instance().startVoteCost;
 		long voteInterval = DramaCraft.instance().voteTimeLengthBetween;
 
 		if (System.nanoTime() - this.startVoteTime < voteInterval)

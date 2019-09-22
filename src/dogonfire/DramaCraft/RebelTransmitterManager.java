@@ -2,7 +2,6 @@ package dogonfire.DramaCraft;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -12,8 +11,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Sign;
-import org.bukkit.block.data.type.WallSign;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -28,12 +27,12 @@ import org.bukkit.material.Attachable;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 
 import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
+//import me.ryanhamshire.GriefPrevention.GriefPrevention;
+
 
 
 
@@ -45,6 +44,7 @@ public class RebelTransmitterManager implements Listener
 	private File						configFile	= null;
 	private HashMap<Long, Location>  	transmitters = new HashMap<Long, Location>(); 
 	private WorldGuardPlugin 			worldGuard;
+	//private GriefPrevention 			griefPrevention;
 	private long 						lastRebelHelpTime;
 	private long 						lastImperialHelpTime;
 	
@@ -52,6 +52,7 @@ public class RebelTransmitterManager implements Listener
 	{
 		worldGuard = (WorldGuardPlugin) plugin.getServer().getPluginManager().getPlugin("WorldGuard");
 		this.plugin = plugin;	
+		//this.griefPrevention = GriefPrevention.instance;
 	}
 	
 	public void load()
@@ -110,12 +111,19 @@ public class RebelTransmitterManager implements Listener
 	{
 		if (block == null || block.getType() != Material.OAK_WALL_SIGN)
 		{
-			this.plugin.log("Not isTransmitterSign");
+			this.plugin.log("Not isTransmitterSign OAK_WALL_SIGN");
 			return false;
 		}		
 		
-		Attachable s = (Attachable) block.getState().getData();
-        Block connected = block.getRelative(s.getAttachedFace());
+		BlockData bd = block.getBlockData();
+		if (!(bd instanceof Directional)) 
+		{
+			return false;
+		}
+		
+		Directional directional = (Directional) bd;
+
+		Block connected = block.getRelative(directional.getFacing().getOppositeFace());
         
 		if (connected.getType() != Material.STONE)
 		{
@@ -315,10 +323,17 @@ public class RebelTransmitterManager implements Listener
 		{
 			return null;
 		}
-
-		Attachable s = (Attachable) block.getState().getData();
-        Block connected = block.getRelative(s.getAttachedFace());
         
+        BlockData bd = block.getBlockData();
+		if (!(bd instanceof Directional)) 
+		{
+			return null;
+		}
+		
+		Directional directional = (Directional) bd;
+
+		Block connected = block.getRelative(directional.getFacing().getOppositeFace());
+                
 		if (!connected.getRelative(BlockFace.UP).getType().equals(Material.TORCH))
 		{
 			return null;
@@ -330,7 +345,7 @@ public class RebelTransmitterManager implements Listener
 	
 	public void transmitMessage()
 	{
-		if(System.currentTimeMillis() > lastRebelHelpTime + (5*60*1000 + 7*60*1000*transmitters.size()))
+		if(System.currentTimeMillis() > lastRebelHelpTime + (10*60*1000 + 8*60*1000*transmitters.size()))
 		{
 			for(Player rebelPlayer : plugin.getOnlineRebelPlayers())
 			{
@@ -340,7 +355,10 @@ public class RebelTransmitterManager implements Listener
 					ChatColor.AQUA,
 					0,
 					120
-					);			
+					);
+				
+				plugin.log("Send INFO_REBEL_BUILD_TRANSMITTERS to " + rebelPlayer.getName());
+
 			}
 			
 			//plugin.log("transmitMessage rebel CHECK");
@@ -377,6 +395,7 @@ public class RebelTransmitterManager implements Listener
 			ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(location));
 			
 			//TODO: Check for GriefPrevention regions as well
+			//ClaimBlockSystem system = griefPrevention.
 			
 			if (set.size() > 0)
 			{

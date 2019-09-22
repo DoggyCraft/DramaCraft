@@ -1,5 +1,6 @@
 package dogonfire.DramaCraft;
 
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class PermissionsManager
 
 	private String				pluginName			= "null";
 	private Permission 			vaultPermission;
+	private Chat 				vaultChat;
 	
 	public PermissionsManager()
 	{
@@ -45,6 +47,16 @@ public class PermissionsManager
 		
 		vaultPermission = permissionProvider.getProvider();
 		
+		RegisteredServiceProvider<Chat> chatProvider = DramaCraft.instance().getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+		
+		if(chatProvider==null)
+		{
+			//Gods.instance().log(ChatColor.RED + "Could not detect Vault plugin.");
+			return;
+		}
+		
+		vaultChat = chatProvider.getProvider();
+
 		dramaCraftGroups.add("Rebel");
 		dramaCraftGroups.add("Imperial");
 		dramaCraftGroups.add("King");
@@ -102,19 +114,17 @@ public class PermissionsManager
 
 	public boolean isInGroup(OfflinePlayer player, String worldName, String groupName)
 	{
-		return vaultPermission.playerInGroup("DoggyCraft", player, groupName);//playerInGroup(worldName, playerName, groupName);		
+		return vaultPermission.playerInGroup("DoggyCraft", player, groupName);		
 	}
 
 	public void setRankGroup(OfflinePlayer player, String groupName)
 	{
-		//Player player = DramaCraft.instance().getServer().getPlayer(playerName);
 		vaultPermission.playerAddGroup("DoggyCraft", player, groupName);
 	}
 
 	public void setPrefix(OfflinePlayer player, String prefix)
 	{
-		//Player player = DramaCraft.instance().getServer().getPlayer(playerName);
-		//vaultPermission.set(player, prefix);
+		vaultChat.setPlayerPrefix("DoggyCraft", player, prefix);
 	}
 
 }

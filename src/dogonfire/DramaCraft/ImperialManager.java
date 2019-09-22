@@ -82,7 +82,7 @@ public class ImperialManager implements Listener
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
-		if (DramaCraft.instance().isKing(event.getPlayer()))
+		if (DramaCraft.instance().isKing(event.getPlayer().getUniqueId()))
 		{
 			for(Player player : DramaCraft.instance().getServer().getOnlinePlayers())
 			{
@@ -94,7 +94,7 @@ public class ImperialManager implements Listener
 				TitleManager.sendTitle(player, 1*20, 3*20, 1*20, ChatColor.GOLD + "The King has arrived", ChatColor.GREEN + "Please greet his majesty " + ChatColor.GOLD + event.getPlayer().getName() + ChatColor.GREEN + "!");
 			}
 		}		
-		if (DramaCraft.instance().isKing(event.getPlayer()))
+		if (DramaCraft.instance().isKing(event.getPlayer().getUniqueId()))
 		{
 			for(Player player : DramaCraft.instance().getServer().getOnlinePlayers())
 			{

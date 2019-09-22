@@ -260,21 +260,8 @@ public class VotePlayerListener implements Listener
 	public void updatePrefix(CommandSender sender, String[] args)
 	{		
 		Player player = plugin.getServer().getPlayer(args[0]);
-		
-		if(plugin.isRebel(player.getUniqueId()))
-		{
-			plugin.setRebelPrefix(player);
-		}
-		
-		if(plugin.isImperial(player.getUniqueId()))
-		{
-			plugin.setImperialPrefix(player);
-		}
-		
-		if(plugin.isCitizen(player.getUniqueId()))
-		{
-			plugin.setNeutralPrefix(player);
-		}
+
+		DramaCraft.instance().updatePrefix(player.getUniqueId());
 
 		sender.sendMessage("Prefix updated.");
 	}
@@ -347,7 +334,7 @@ public class VotePlayerListener implements Listener
 					{
 						plugin.clearImperial(targetPlayer);
 						plugin.clearRebel(targetPlayer);
-						plugin.setPrefix(targetPlayer.getUniqueId());
+						plugin.updatePrefix(targetPlayer.getUniqueId());
 					}
 					else
 					{
@@ -446,6 +433,7 @@ public class VotePlayerListener implements Listener
 		if(command.getName().equalsIgnoreCase("terminator"))
 		{
 			//if(plugin.isNoble(player.getUniqueId()))
+			/*
 			{			
 				if(args.length == 1)
 				{
@@ -458,6 +446,7 @@ public class VotePlayerListener implements Listener
 					player.sendMessage("Usage: /terminator <playername>");
 				}
 			}
+			*/
 
 			return true;
 		}		
@@ -486,7 +475,7 @@ public class VotePlayerListener implements Listener
 							return true;							
 						}
 						
-						if(plugin.isRoyal(player))
+						if(plugin.isRoyal(player.getUniqueId()))
 						{
 							player.sendMessage(ChatColor.RED + "Target player cannot be an Imperial Noble or Royal");
 							return true;							
@@ -527,7 +516,7 @@ public class VotePlayerListener implements Listener
 							return true;
 						}
 						
-						if(plugin.isBoss(targetPlayer))
+						if(plugin.isBoss(targetPlayer.getUniqueId()))
 						{			
 							player.sendMessage(ChatColor.RED + "Target player cannot be in the Rebel inner circle or boss");																											
 							return true;
@@ -933,10 +922,10 @@ public class VotePlayerListener implements Listener
 		sender.sendMessage(ChatColor.YELLOW + " --------- How to build a Rebel Transmitter -------- ");
 		sender.sendMessage(ChatColor.WHITE + "  1) Place a STONE block");
 		sender.sendMessage(ChatColor.WHITE + "  2) Place a TORCH on top of the STONE block");
-		sender.sendMessage(ChatColor.WHITE + "  3) Place a sign on the STONE block");
-		sender.sendMessage(ChatColor.WHITE + "  4) Write your TRUTH message on the SIGN");
+		sender.sendMessage(ChatColor.WHITE + "  3) Place an OAK SIGN on the STONE block");
+		sender.sendMessage(ChatColor.WHITE + "  4) Write your TRUTH message on the sign");
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.WHITE + "Try to be creative in your messages ;-)");			
+		sender.sendMessage(ChatColor.WHITE + "Try to be creative and dramatic in your message ;-)");			
 	}
 
 	double roundTwoDecimals(double d)

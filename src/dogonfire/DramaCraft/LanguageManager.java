@@ -127,7 +127,8 @@ public class LanguageManager
 		INFO_IMPERIAL_VOTE_QUEEN,
 		INFO_IMPERIAL_VOTE_KICK_NOBLE,
 		INFO_IMPERIAL_ADDBOUNTY,
-		INFO_IMPERIAL_CLAIMBOUNTY
+		INFO_IMPERIAL_CLAIMBOUNTY,
+		INFO_REBEL_REVOLUTION
 	}
 	
 	private DramaCraft plugin;
@@ -382,8 +383,8 @@ public class LanguageManager
 	{
 		if (t == null)
 		{
-			this.plugin.logDebug("WARNING: Setting null type");
-			throw new Exception("WARNING: Setting null type");
+			this.plugin.logDebug("WARNING: Setting null string");
+			//throw new Exception("WARNING: Setting null type");
 		}
 		this.type = t;
 	}

@@ -196,26 +196,26 @@ public class RevolutionManager implements Listener
 
 		Player player = event.getPlayer();
 
-			if (plugin.isRoyal(player))
-			{
-				player.sendMessage(ChatColor.DARK_RED + "You must stay in your castle and avoid getting killed!");
-				event.setCancelled(true);
-				return;
-			}
+		if (plugin.isRoyal(player.getUniqueId()))
+		{
+			player.sendMessage(ChatColor.DARK_RED + "You must stay in your castle and avoid getting killed!");
+			event.setCancelled(true);
+			return;
+		}
 
-			if (plugin.isImperial(player.getUniqueId()))
-			{
-				player.sendMessage(ChatColor.DARK_RED + "You must stay and fight for your King & Queen!");
-				event.setCancelled(true);
-				return;
-			}
+		if (plugin.isImperial(player.getUniqueId()))
+		{
+			player.sendMessage(ChatColor.DARK_RED + "You must stay and fight for your King & Queen!");
+			event.setCancelled(true);
+			return;
+		}
 
-			if (plugin.isRebel(player.getUniqueId()))
-			{
-				player.sendMessage(ChatColor.DARK_RED + "You must stay and fight to overthrow the King & Queen!");
-				event.setCancelled(true);
-				return;
-			}
+		if (plugin.isRebel(player.getUniqueId()))
+		{
+			player.sendMessage(ChatColor.DARK_RED + "You must stay and fight to overthrow the King & Queen!");
+			event.setCancelled(true);
+			return;
+		}
 	}
 	
 	public void startRevolution()
@@ -349,7 +349,7 @@ public class RevolutionManager implements Listener
 			return;
 		}
 
-		if(plugin.isRoyal(player))
+		if(plugin.isRoyal(player.getUniqueId()))
 		{
 			enforceRevolutionForRoyal(player);			
 			return;

@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,12 +22,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Sign;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 
@@ -96,7 +95,7 @@ public class RebelDetectorManager implements Listener
 		
 		this.plugin.log("Saved configuration.");
 	}
-	
+		
 	public boolean isStatueSign(Block block)
 	{
 		if (block == null || block.getType() != Material.OAK_WALL_SIGN)
@@ -104,9 +103,11 @@ public class RebelDetectorManager implements Listener
 			return false;
 		}		
 		
-		Sign s = (Sign) block.getState().getData();
-        Block connected = block.getRelative(s.getAttachedFace());
+		WallSign signData  = (WallSign) block.getState().getBlockData();
+        BlockFace attached  = signData.getFacing().getOppositeFace();
         
+        Block connected = block.getRelative(attached);
+		        
 		if (connected.getType() != Material.DIAMOND_BLOCK)
 		{
 			return false;
@@ -188,7 +189,7 @@ public class RebelDetectorManager implements Listener
 		
 		if(set.size() > 0)
 		{
-			event.getPlayer().sendMessage(ChatColor.RED + "Statue cannot be inside an region");
+			event.getPlayer().sendMessage(ChatColor.RED + "Transmitter cannot be inside an region");
 			plugin.log("statue is inside an region");
 			return false;			
 		}		
@@ -308,9 +309,15 @@ public class RebelDetectorManager implements Listener
 			return null;
 		}
 
-		Sign s = (Sign) block.getState().getData();
+		if (block == null || block.getType() != Material.OAK_WALL_SIGN)
+		{
+			return null;
+		}		
 		
-        Block connected = block.getRelative(s.getAttachedFace());
+		WallSign signData  = (WallSign) block.getState().getBlockData();
+        BlockFace attached  = signData.getFacing().getOppositeFace();
+        
+        Block connected = block.getRelative(attached);
         
 		if (!connected.getRelative(BlockFace.UP).getType().equals(Material.GOLD_BLOCK))
 		{
