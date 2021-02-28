@@ -353,6 +353,7 @@ public class VoteManager
 
 					// broadcast = broadcast.replaceAll("%voteString%",
 					// ChatColor.WHITE + this.voteString + ChatColor.AQUA);
+					break;
 				case VOTE_REVOLUTION:
 					if (success)
 					{
@@ -363,6 +364,7 @@ public class VoteManager
 					{
 						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_REVOLUTION_FAILED, ChatColor.RED);
 					}
+					break;
 					
 				default: break;
 			}

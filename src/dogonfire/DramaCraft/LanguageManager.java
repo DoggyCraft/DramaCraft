@@ -156,32 +156,34 @@ public class LanguageManager
 		
 		BufferedOutputStream bout = null;
 		
-		try {
-			
-	
-		in = new BufferedInputStream(new URL("https://raw.githubusercontent.com/DoggyCraftDK/DramaCraft/master/lang/" + fileName).openStream());
-
-		FileOutputStream fos = new FileOutputStream(this.plugin.getDataFolder() + "/lang/" + fileName);
-
-		bout = new BufferedOutputStream(fos, 1024);
-
-		byte[] data = new byte[1024];
-
-		int x = 0;
-		while ((x = in.read(data, 0, 1024)) >= 0)
+		try
 		{
-			bout.write(data, 0, x);
+			in = new BufferedInputStream(new URL("https://raw.githubusercontent.com/DoggyCraftDK/DramaCraft/master/lang/" + fileName).openStream());
+
+			FileOutputStream fos = new FileOutputStream(this.plugin.getDataFolder() + "/lang/" + fileName);
+
+			bout = new BufferedOutputStream(fos, 1024);
+
+			byte[] data = new byte[1024];
+
+			int x = 0;
+			while ((x = in.read(data, 0, 1024)) >= 0)
+			{
+				bout.write(data, 0, x);
+			}
+
 		}
-		
-		} catch (Exception ex) {
+		catch (Exception ex)
+		{
 
 			this.plugin.logDebug(Arrays.toString(ex.getStackTrace()));
-			
-		}
-		finally {
-		bout.close();
 
-		in.close();
+		}
+		finally
+		{
+			bout.close();
+
+			in.close();
 		}
 	}
 
