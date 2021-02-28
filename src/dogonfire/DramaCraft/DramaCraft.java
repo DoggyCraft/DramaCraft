@@ -212,7 +212,7 @@ public class DramaCraft extends JavaPlugin
 		return this.permissionsManager.isInGroup(this.getServer().getOfflinePlayer(playerId), worldName, "innercircle");
 	}
 	
-	public boolean isBoss(UUID playerId)
+	public boolean isRingLeader(UUID playerId)
 	{
 		OfflinePlayer player = getServer().getOfflinePlayer(playerId);
 
@@ -221,10 +221,10 @@ public class DramaCraft extends JavaPlugin
 			return false;
 		}
 
-		if(isBoss1(playerId))
+		if(isRingLeader1(playerId))
 			return true;
 		
-		if(isBoss2(playerId))
+		if(isRingLeader2(playerId))
 			return true;
 
 		return false;
@@ -284,7 +284,7 @@ public class DramaCraft extends JavaPlugin
 		return false;
 	}
 	
-	public boolean isBoss1(UUID playerId)
+	public boolean isRingLeader1(UUID playerId)
 	{
 		OfflinePlayer player = getServer().getOfflinePlayer(playerId);
 		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
@@ -302,7 +302,7 @@ public class DramaCraft extends JavaPlugin
 		return false;
 	}
 
-	public boolean isBoss2(UUID playerId)
+	public boolean isRingLeader2(UUID playerId)
 	{
 		OfflinePlayer player = getServer().getOfflinePlayer(playerId);
 		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
@@ -729,16 +729,16 @@ public class DramaCraft extends JavaPlugin
 
 
 
-	public void clearBoss1()
+	public void clearRingLeader1()
 	{
-		config.set("Boss1", null);
+		config.set("RingLeader1", null);
 						
 		saveSettings();
 	}
 	
-	public void clearBoss2()
+	public void clearRingLeader2()
 	{
-		config.set("Boss2", null);
+		config.set("RingLeader2", null);
 						
 		saveSettings();
 	}
@@ -1072,11 +1072,12 @@ public class DramaCraft extends JavaPlugin
 	public void setRebelPrefix(UUID playerId)
 	{
 		String title = "";
-		
+
 		OfflinePlayer player = getServer().getOfflinePlayer(playerId);
+		/*
 		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
 
-		if(this.isBoss1(playerId))
+		if(this.isRingLeader1(playerId))
 		{
 			if(this.permissionsManager.isInGroup(player, worldName, "wizard"))
 			{
@@ -1096,7 +1097,7 @@ public class DramaCraft extends JavaPlugin
 			}			
 		}
 
-		else if(this.isBoss2(playerId))
+		else if(this.isRingLeader2(playerId))
 		{
 			if(this.permissionsManager.isInGroup(player, worldName, "wizard"))
 			{
@@ -1112,7 +1113,7 @@ public class DramaCraft extends JavaPlugin
 			}			
 			else
 			{
-				title = ChatColor.GRAY +  "Boss ";			
+				title = ChatColor.GRAY +  "RingLeader ";			
 			}			
 		}
 
@@ -1148,10 +1149,11 @@ public class DramaCraft extends JavaPlugin
 		{
 			title = ChatColor.GREEN +  "WeedFarmer ";			
 		}			
-		else
+		else*/
 		{
-			title = ChatColor.GRAY +  "Rebel ";						
+			title = ChatColor.RED +  "Rebel ";						
 		}
+		
 			
 		permissionsManager.setPrefix(player, title);		
 	}
@@ -1254,26 +1256,22 @@ public class DramaCraft extends JavaPlugin
 		String currentQueenPreviousRank = config.getString("Players." + currentQueenId + ".PreviousRank");
 		String currentQueenName = null;
 		String playerName = this.getServer().getOfflinePlayer(playerId).getName();
-		String worldName = this.getServer().getWorlds().get(0).getName();
-		
+
 		if(currentQueenId!=null)
 		{
 			currentQueenName = this.getServer().getOfflinePlayer(UUID.fromString(currentQueenId)).getName();
 		}
-
-		OfflinePlayer oldQueenPlayer = getServer().getOfflinePlayer(UUID.fromString(currentQueenId));
-		OfflinePlayer queenPlayer = getServer().getOfflinePlayer(playerId);
 
 		String queenHeadWorld = config.getString("Queen.Head.World");
 		if(queenHeadWorld!=null)
 		{
 			try
 			{
-				String queenHeadX = config.getString("Queen.Head.X");
-				String queenHeadY = config.getString("Queen.Head.Y");
-				String queenHeadZ = config.getString("Queen.Head.Z");
+				String headX = config.getString("Queen.Head.X");
+				String headY = config.getString("Queen.Head.Y");
+				String headZ = config.getString("Queen.Head.Z");
 				
-				Location location = new Location(this.getServer().getWorld(queenHeadWorld), Integer.parseInt(queenHeadX), Integer.parseInt(queenHeadY), Integer.parseInt(queenHeadZ));
+				Location location = new Location(this.getServer().getWorld(queenHeadWorld), Integer.parseInt(headX), Integer.parseInt(headY), Integer.parseInt(headZ));
 				
 				setHead(playerId, location);
 			}
@@ -1282,41 +1280,42 @@ public class DramaCraft extends JavaPlugin
 				
 			}
 		}
-	
+
 		if (currentQueenName != null)
 		{
 			languageManager.setPlayerName(currentQueenName);
-			String broadcast = languageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_QUEEN_OVERTURNED, ChatColor.AQUA);
+			String broadcast = languageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_OVERTURNED, ChatColor.AQUA);
 			broadcastMessage(broadcast);
 
+			OfflinePlayer currentKingPlayer = getServer().getOfflinePlayer(UUID.fromString(currentQueenId));
+			
 			try
 			{
-				log("Setting current queen '" + currentQueenName + "' to her previous rank '" + currentQueenPreviousRank + "'");
-				permissionsManager.setDramaCraftGroup(oldQueenPlayer, currentQueenPreviousRank);
+				log("Setting current queen '" + currentKingPlayer.getName() + "' to his previous rank '" + currentQueenPreviousRank + "'");
+				permissionsManager.setDramaCraftGroup(currentKingPlayer, currentQueenPreviousRank);
 			}
 			catch (Exception ex)
 			{
-				System.out.println("[DramaCraft] Error while setting current queen to her previous rank '" + currentQueenPreviousRank + "'");
+				log("Error while setting current king to his previous rank '" + currentQueenPreviousRank + "'");
 			}
 
 			getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removeowner castle " + currentQueenName + " -w " + this.getServer().getWorlds().get(0).getName());
 		}
-
-		this.permissionsManager.setDramaCraftGroup(getServer().getOfflinePlayer(playerId), "queen");
-
-		log("Setting new queen '" + playerName + "' previous rank to '" + permissionsManager.getDramaCraftGroup(queenPlayer) + "'");
-		config.set("Players." + playerId + ".PreviousRank", permissionsManager.getGroup(playerName));
-
-		Date thisDate = new Date();
 		
 		log("Setting new queen '" + playerName + "' previous rank to '" + currentQueenPreviousRank + "'");
+		config.set("Players." + playerId + ".PreviousRank", permissionsManager.getGroup(playerName));
+
+		log("Setting new queen '" + playerName + "' rank to 'queen'");
+		this.permissionsManager.setDramaCraftGroup(getServer().getOfflinePlayer(playerId), "queen");
+		
+		//updatePrefix(playerId);
+	
+		Date thisDate = new Date();
 		
 		config.set("Queen.Id", playerId.toString());
-		//config.set("Queen.JoinDate", formatter.format(thisDate));
+		//config.set("King.JoinDate", formatter.format(thisDate));
 		config.set("Queen.ElectionTime", formatter.format(thisDate));
-		
-		permissionsManager.setDramaCraftGroup(this.getServer().getOfflinePlayer(playerId), "king");
-		
+				
 		getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addowner castle " + playerName + " -w " + this.getServer().getWorlds().get(0).getName());
 		
 		saveSettings();
@@ -1505,10 +1504,10 @@ public class DramaCraft extends JavaPlugin
 		// Add tpa and home commands
 	}
 	
-	public void setBoss1(UUID playerId)
+	public void setRingLeader1(UUID playerId)
 	{
-		String oldQueenId = config.getString("Boss1.Id");
-		String oldQueenDayjob = config.getString("Boss1.DayJob");
+		String oldQueenId = config.getString("RingLeader1.Id");
+		String oldQueenDayjob = config.getString("RingLeader1.DayJob");
 		String oldQueenName = null;
 		String playerName = this.getServer().getOfflinePlayer(playerId).getName();
 		String worldName = this.getServer().getWorlds().get(0).getName();
@@ -1575,9 +1574,8 @@ public class DramaCraft extends JavaPlugin
 		saveSettings();
 	}
 	
-	public void setBoss2(UUID playerId)
+	public void setRingLeader2(UUID playerId)
 	{
-		setBoss1(playerId);
 	}
 	
 	public void sendToRebels(String message)
@@ -1600,10 +1598,7 @@ public class DramaCraft extends JavaPlugin
 		
 		updatePrefix(playerId);
 
-		config.set("Players." + playerId.toString() + ".PreviousRank", null);
-		
-		Date thisDate = new Date();
-		
+		config.set("Players." + playerId.toString() + ".PreviousRank", null);				
 	}
 	
 	public void sendInfo(UUID playerId, LanguageManager.LANGUAGESTRING message, ChatColor color, int amount, int delay)

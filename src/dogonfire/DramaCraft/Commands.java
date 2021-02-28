@@ -709,7 +709,7 @@ public class Commands implements Listener
 							return true;
 						}
 						
-						if(plugin.isBoss(targetPlayer.getUniqueId()))
+						if(plugin.isRingLeader(targetPlayer.getUniqueId()))
 						{			
 							player.sendMessage(ChatColor.RED + "Target player cannot be in the Rebel inner circle or boss");																											
 							return true;
@@ -1056,7 +1056,7 @@ public class Commands implements Listener
 		
 		else if(DramaCraft.instance().isRebel(player.getUniqueId()))
 		{
-			if(DramaCraft.instance().isBoss(player.getUniqueId()))
+			if(DramaCraft.instance().isRingLeader(player.getUniqueId()))
 			{
 				sender.sendMessage(ChatColor.GOLD + "Ringleader");			
 			}

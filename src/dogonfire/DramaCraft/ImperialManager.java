@@ -117,27 +117,21 @@ public class ImperialManager implements Listener
 		{
 			// Tell imperials about transmitters and how to smash them
 			{
-			List<Player> players = DramaCraft.instance().getOnlineImperialPlayers();
-			if(players.size() > 0 && DramaCraft.instance().getTransmitterManager().getTransmitters() > 0)
-			{
-				if(System.currentTimeMillis() > lastImperialHelpTime + (7*60*1000))
+				List<Player> players = DramaCraft.instance().getOnlineImperialPlayers();
+				if (players.size() > 0 && DramaCraft.instance().getTransmitterManager().getTransmitters() > 0)
 				{
-					DramaCraft.instance().getLanguageManager().setAmount1(DramaCraft.instance().getTransmitterManager().getTransmitters());
-					
-					for(Player imperialPlayer : DramaCraft.instance().getOnlineImperialPlayers())
+					if (System.currentTimeMillis() > lastImperialHelpTime + (10 * 60 * 1000))
 					{
-						DramaCraft.instance().sendInfo(
-								imperialPlayer.getUniqueId(), 
-							LANGUAGESTRING.INFO_IMPERIAL_ACTIVE_TRANSMITTERS, 
-							ChatColor.AQUA,
-							0,
-							120
-							);			
+						DramaCraft.instance().getLanguageManager().setAmount1(DramaCraft.instance().getTransmitterManager().getTransmitters());
+
+						for (Player imperialPlayer : DramaCraft.instance().getOnlineImperialPlayers())
+						{
+							DramaCraft.instance().sendInfo(imperialPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_ACTIVE_TRANSMITTERS, ChatColor.AQUA, 0, 120);
+						}
+
+						lastImperialHelpTime = System.currentTimeMillis();
 					}
-					
-					lastImperialHelpTime = System.currentTimeMillis();
 				}
-			}
 			}
 			
 			// Remove inactive nobles

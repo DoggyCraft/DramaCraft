@@ -61,10 +61,10 @@ public class PermissionsManager
 		dramaCraftGroups.add("imperial");
 		dramaCraftGroups.add("king");
 		dramaCraftGroups.add("queen");
-		dramaCraftGroups.add("boss");
+		dramaCraftGroups.add("ringleader");
 		dramaCraftGroups.add("noble");
 		dramaCraftGroups.add("innerCircle");
-		dramaCraftGroups.add("citizen");
+		dramaCraftGroups.add("neutral");
 	}
 
 	public void load()
