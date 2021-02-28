@@ -1,6 +1,6 @@
 language: java
 jdk:
-- openjdk8
+- openjdk11
 before_install:
   - echo "Setting project environment variable."
   - export TRAVIS_REPO_OWNER=${TRAVIS_REPO_SLUG%/*}

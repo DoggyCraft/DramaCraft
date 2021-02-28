@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import net.milkbowl.vault.economy.Economy;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -107,8 +108,8 @@ public class VoteManager
 		
 		if(DramaCraft.instance().isRevolution())
 		{
-			DramaCraft.broadcastMessage(ChatColor.AQUA + "Revolution!! Will the King and Queen survive the attack by the rebels?");
-			DramaCraft.broadcastMessage(ChatColor.AQUA + "The Revolution will end in " + ChatColor.GOLD + DramaCraft.instance().getRevolutionManager().getMinutesUntilRevolutionEnd() + " minutes.");
+			Bukkit.broadcastMessage(ChatColor.AQUA + "Revolution!! Will the King and Queen survive the attack by the rebels?");
+			Bukkit.broadcastMessage(ChatColor.AQUA + "The Revolution will end in " + ChatColor.GOLD + DramaCraft.instance().getRevolutionManager().getMinutesUntilRevolutionEnd() + " minutes.");
 			return;
 		}
 		
@@ -283,7 +284,7 @@ public class VoteManager
 						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(voteString));
 						DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
 						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS1_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().setBoss1(UUID.fromString(voteString));
+						DramaCraft.instance().setRingLeader1(UUID.fromString(voteString));
 					}
 					else
 					{
@@ -297,7 +298,7 @@ public class VoteManager
 						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(voteString));
 						DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
 						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS2_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().setBoss2(UUID.fromString(voteString));
+						DramaCraft.instance().setRingLeader2(UUID.fromString(voteString));
 					}
 					else
 					{
