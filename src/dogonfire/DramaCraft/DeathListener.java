@@ -95,12 +95,12 @@ public class DeathListener implements Listener
 	{
 		if(plugin.isImperial(event.getPlayer().getUniqueId()))
 		{	
-			plugin.setImperialLastLogin(event.getPlayer());
+			plugin.setImperialLastLogin(event.getPlayer().getUniqueId());
 		}
 
 		if(plugin.isRebel(event.getPlayer().getUniqueId()))
 		{	
-			plugin.setRebelLastLogin(event.getPlayer());
+			plugin.setRebelLastLogin(event.getPlayer().getUniqueId());
 		}
 	}
 }

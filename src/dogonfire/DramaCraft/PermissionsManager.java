@@ -57,18 +57,45 @@ public class PermissionsManager
 		
 		vaultChat = chatProvider.getProvider();
 
-		dramaCraftGroups.add("Rebel");
-		dramaCraftGroups.add("Imperial");
-		dramaCraftGroups.add("King");
-		dramaCraftGroups.add("Queen");
-		dramaCraftGroups.add("Noble");
-		dramaCraftGroups.add("InnerCircle");
-		dramaCraftGroups.add("Citizen");
+		dramaCraftGroups.add("rebel");
+		dramaCraftGroups.add("imperial");
+		dramaCraftGroups.add("king");
+		dramaCraftGroups.add("queen");
+		dramaCraftGroups.add("boss");
+		dramaCraftGroups.add("noble");
+		dramaCraftGroups.add("innerCircle");
+		dramaCraftGroups.add("citizen");
 	}
 
 	public void load()
 	{
-		// Nothing to see here
+		/*
+		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
+
+		for(String dramaGroup : dramaCraftGroups)
+		{
+			boolean hasGroup = false;
+			for(String group : vaultPermission.getGroups())
+			{
+				if(group.equals(dramaGroup))
+				{
+					hasGroup = true;					
+				}				
+			}
+			
+			if(!hasGroup) 
+			{
+				if(vaultPermission.(worldName, dramaGroup, "essentials.warps." + dramaGroup))
+				{
+					DramaCraft.instance().log("Added permission group '" + dramaGroup + "' for DramaCraft.");
+				}
+				else
+				{
+					DramaCraft.instance().log("Failed to add permission group '" + dramaGroup + "' for DramaCraft.");					
+				}
+			}
+		}
+		*/
 	}
 
 	public String getPermissionPluginName()
@@ -88,7 +115,9 @@ public class PermissionsManager
 	
 	public String getDramaCraftGroup(OfflinePlayer player)
 	{
-		for(String groupName : vaultPermission.getPlayerGroups("DoggyCraft", player))
+		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
+
+		for(String groupName : vaultPermission.getPlayerGroups(worldName, player))
 		{
 			if(dramaCraftGroups.contains(groupName))
 			{
@@ -101,30 +130,30 @@ public class PermissionsManager
 
 	public void setDramaCraftGroup(OfflinePlayer player, String newGroupName)
 	{
-		for(String groupName : vaultPermission.getPlayerGroups("DoggyCraft", player))
+		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
+		for(String groupName : dramaCraftGroups)
 		{
-			if(dramaCraftGroups.contains(groupName))
-			{
-				vaultPermission.playerRemoveGroup("DoggyCraft", player, groupName);
-			}			
+			vaultPermission.playerRemoveGroup(worldName, player, groupName);
 		}
 
-		vaultPermission.playerAddGroup("DoggyCraft", player, newGroupName);
+		vaultPermission.playerAddGroup(worldName, player, newGroupName);
 	}
 
 	public boolean isInGroup(OfflinePlayer player, String worldName, String groupName)
 	{
-		return vaultPermission.playerInGroup("DoggyCraft", player, groupName);		
+		return vaultPermission.playerInGroup(worldName, player, groupName);		
 	}
 
 	public void setRankGroup(OfflinePlayer player, String groupName)
 	{
-		vaultPermission.playerAddGroup("DoggyCraft", player, groupName);
+		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
+		vaultPermission.playerAddGroup(worldName, player, groupName);
 	}
 
 	public void setPrefix(OfflinePlayer player, String prefix)
 	{
-		vaultChat.setPlayerPrefix("DoggyCraft", player, prefix);
+		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
+		vaultChat.setPlayerPrefix(worldName, player, prefix);
 	}
 
 }

@@ -12,10 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
 
 import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
+
 
 
 // Because the hierachy and ranks of imperials and rebels can be hard to understand for players, automated advice is very important to guide the player to what they can do with their rank
@@ -83,6 +82,24 @@ public class AdviceManager implements Listener
 			lastRebelHelpTime = System.currentTimeMillis();
 		}
 				
+		if(transmitters.size()>0 && System.currentTimeMillis() > lastImperialHelpTime + (5*60*1000))
+		{
+			for(Player imperialPlayer : plugin.getOnlineImperialPlayers())
+			{
+				plugin.sendInfo(
+					imperialPlayer.getUniqueId(), 
+					LANGUAGESTRING.INFO_IMPERIAL_ACTIVE_TRANSMITTERS, 
+					ChatColor.AQUA,
+					0,
+					120
+					);			
+			}
+			
+			//plugin.log("transmitMessage rebel CHECK");
+
+			lastRebelHelpTime = System.currentTimeMillis();
+		}
+
 		if(transmitters.size()==0)
 		{
 			//plugin.log("transmitMessage NO MESSAGE");

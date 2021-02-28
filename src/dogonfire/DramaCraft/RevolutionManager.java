@@ -1,9 +1,12 @@
 package dogonfire.DramaCraft;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -14,6 +17,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -50,8 +54,18 @@ public class RevolutionManager implements Listener
 	{
 		this.plugin = plugin;
 		
-		imperialRevolutionSpawn = new Location(plugin.getServer().getWorlds().get(0), 1042501, 78, 21925);
-		rebelRevolutionSpawn = new Location(plugin.getServer().getWorlds().get(0), 1042500, 68, 21861);
+		imperialRevolutionSpawn = new Location(Bukkit.getServer().getWorlds().get(0), 1042501, 78, 21925);
+		rebelRevolutionSpawn = new Location(Bukkit.getServer().getWorlds().get(0), 1042500, 68, 21861);
+		
+		motd.add(ChatColor.GREEN + "Ren hygge!");
+		motd.add(ChatColor.GREEN + "Kufor de mest Hardcore typer!");
+		motd.add(ChatColor.GREEN + "Der kommer flere updates inden jul!");
+		motd.add(ChatColor.GREEN + "Mere awesome end din mor!");
+		motd.add(ChatColor.GREEN + "Kom ind og hyg!");
+		motd.add(ChatColor.GREEN + "Danmarks ældste server!");
+		motd.add(ChatColor.GREEN + "Vi er fucking mærkelige!");
+		motd.add(ChatColor.GREEN + "A wretched hive of scum and nerdery!");
+		motd.add(ChatColor.GREEN + "Vi laver vores egne plugins!");
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -142,6 +156,20 @@ public class RevolutionManager implements Listener
 			plugin.broadcastMessage("The Rebels are winning the revolution! ");
 			plugin.broadcastMessage(ChatColor.GOLD + "  " + this.getRebelPoints() + ChatColor.AQUA + " vs " + ChatColor.GOLD + this.getImperialPoints());
 		}		
+	}
+
+	private List<String> motd = new ArrayList<String>(); 
+	
+	@EventHandler
+	public void countDown(final ServerListPingEvent event)
+	{
+		if(isRevolution)
+		{
+			event.setMotd(ChatColor.DARK_RED + "We have a REVOLUTION in progress!!");
+			return;
+		}
+	
+		event.setMotd(motd.get(random.nextInt(motd.size())));		
 	}
 	
 	/*
@@ -278,9 +306,9 @@ public class RevolutionManager implements Listener
 				
 		if(rebelPoints > imperialPoints)
 		{
-			plugin.broadcastMessage(ChatColor.GREEN + "The Revolution SUCEEDED!");
-			plugin.broadcastMessage(ChatColor.GOLD + plugin.getKingName() + ChatColor.AQUA + " was removed from the throne!");
-			plugin.broadcastMessage(ChatColor.GOLD + plugin.getQueenName() + ChatColor.AQUA + " was removed from the throne!");
+			Bukkit.broadcastMessage(ChatColor.GREEN + "The Revolution SUCEEDED!");
+			Bukkit.broadcastMessage(ChatColor.GOLD + plugin.getKingName() + ChatColor.AQUA + " was removed from the throne!");
+			Bukkit.broadcastMessage(ChatColor.GOLD + plugin.getQueenName() + ChatColor.AQUA + " was removed from the throne!");
 			
 			plugin.downgradeRank(plugin.getKing());
 			plugin.downgradeRank(plugin.getQueen());
@@ -290,7 +318,7 @@ public class RevolutionManager implements Listener
 		}
 		else
 		{
-			plugin.broadcastMessage(ChatColor.RED + "The Revolution FAILED!");			
+			Bukkit.broadcastMessage(ChatColor.RED + "The Revolution FAILED!");			
 		}
 
 		imperialPoints = 0;
@@ -483,72 +511,4 @@ public class RevolutionManager implements Listener
 	    
 	    return false;
 	}
-		
-	
-
-	/*
-	public boolean isCitizen(Player player)
-	{
-		if(player.isOp())
-		{		
-			return false;
-		}
-		
-		return plugin.getPermissionsManager().hasPermission(player, "kingvote.citizen");
-	}
-
-	public boolean isNoble(Player player)
-	{
-		if(player.isOp())
-		{		
-			return false;
-		}
-
-		return plugin.getPermissionsManager().hasPermission(player, "kingvote.noble");
-	}
-	
-	/*
-	public boolean isRebel(String playerName)
-	{
-		OfflinePlayer player = plugin.getServer().getOfflinePlayer(playerName);
-		
-		if(player==null)
-		{
-			return false;
-		}
-		
-		return isPlayerRebel(player.getName());
-	}*/
-
-	/*
-	public boolean isImperial(Player player)
-	{
-		if(player.isOp())
-		{		
-			return false;
-		}
-
-		return plugin.getPermissionsManager().hasPermission(player, "kingvote.imperial");
-	}
-
-	public boolean isInnerCircle(Player player)
-	{
-		if(player.isOp())
-		{		
-			return false;
-		}
-
-		return plugin.getPermissionsManager().hasPermission(player, "kingvote.innercircle");
-	}
-
-	public boolean isRebel(Player player)
-	{
-		if(player.isOp())
-		{		
-			return false;
-		}
-
-		return plugin.getPermissionsManager().hasPermission(player, "kingvote.rebel");
-	}
-	*/
 }

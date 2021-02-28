@@ -1,62 +1,54 @@
 name: DramaCraft
 main: dogonfire.DramaCraft.DramaCraft
-version: 0.5.2
-api-version: 1.14
+version: ${project.version}
+api-version: 1.16
 authors: [DogOnFire]
 depend: 
   - WorldGuard
 loadbefore:
   - GAListener 
 commands:
+    dramacraft:
+        description: DramaCraft info
+        usage: /DramaCraft [stuff]
+        permissions: dramacraft.*
+    dc:
+        description: DramaCraft info
+        usage: /dc
+        permissions: dramacraft.*
     appoint:
         description: Appoint a rank
-        usage: /<command> [stuff]
-        permissions: imperials.*
+        usage: /appoint [stuff]
+        permissions: dramacraft.*
     track:
         description: Track rebel transmitters or imperial statues
-        usage: /<command> [stuff]
-        permissions: imperials.*
-    terminator:
-        description: Checks bounties on rebels
-        usage: /<command> [stuff]
-        permissions: imperials.*
+        usage: /track
+        permissions: dramacraft.*
     guard:
         description: Checks bounties on rebels
         usage: /<command> [stuff]
-        permissions: imperials.*
+        permissions: dramacraft.*
     bounty:
         description: Checks bounties on rebels
-        usage: /<command> [stuff]
-        permissions: imperials.*
+        usage: /bounty [stuff]
+        permissions: dramacraft.*
     updateprefix:
-        description: update Empire prefix for a player
+        description: Update Empire prefix for a player
         usage: /<command> [stuff]
-        permissions: vote.*
+        permissions: dramacraft.*
     addbounty:
-        description: set a bounty on a player
+        description: Set a bounty on a player
         usage: /<command> [stuff]
-        permissions: imperials.*
-    clearimperialrebel:
-        description: vote for king & stuff
-        usage: /<command> [stuff]
-        permissions: imperials.*
-    setimperial:
-        description: vote for king & stuff
-        usage: /<command> [stuff]
-        permissions: imperials.*
-    setrebel:
-        description: vote for king & stuff
-        usage: /<command> [stuff]
-        permissions: imperials.*
+        permissions: dramacraft.*
     imperials:
         description: vote for king & stuff
         usage: /<command> [stuff]
-        permissions: imperials.*
+        permissions: dramacraft.*
     rebels:
         description: vote for king & stuff
         usage: /<command> [stuff]
-        permissions: rebels.*
+        permissions: dramacraft.*
     vote:
         description: vote for king & stuff
         usage: /<command> [stuff]
-        permissions: vote.*
+        permissions: dramacraft.*

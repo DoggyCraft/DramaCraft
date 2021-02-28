@@ -2,10 +2,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>DramaCraft</groupId>
   <artifactId>DramaCraft</artifactId>
-  <version>0.0.1</version>
+  <version>0.5.3</version>
   <name>DramaCraft</name>
   <description>Drama in Minecraft!</description>
   <repositories>
+    <repository>
+      <id>citizens-repo</id>
+      <url>http://repo.citizensnpcs.co/</url>
+    </repository>
     <repository>
       <id>sk89q-repo</id>
       <url>http://maven.sk89q.com/repo/</url>
@@ -22,13 +26,16 @@
 		<id>elmakers-repo</id>
 		<url>http://maven.elmakers.com/repository/</url>
 	</repository>
-	<repository>
-	    <id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
-	</repository>
   </repositories>  
   <dependencies>  
-    <dependency>
+   	<dependency>
+	   <groupId>net.citizensnpcs</groupId>
+	   <artifactId>citizensapi</artifactId>
+	   <version>2.0.22-SNAPSHOT</version>
+	   <type>jar</type>
+	   <scope>compile</scope>
+	</dependency>
+	<dependency>
       <groupId>com.sk89q.worldguard</groupId>
       <artifactId>worldguard-bukkit</artifactId>
       <version>7.0.1-SNAPSHOT</version>                 

@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -111,9 +113,10 @@ public class ImperialManager implements Listener
 
 	public void update()
 	{
-		if(System.currentTimeMillis() > lastImperialHelpTime + 7*60*1000)
+		if(System.currentTimeMillis() > lastImperialHelpTime + 10*60*1000)
 		{
 			// Tell imperials about transmitters and how to smash them
+			{
 			List<Player> players = DramaCraft.instance().getOnlineImperialPlayers();
 			if(players.size() > 0 && DramaCraft.instance().getTransmitterManager().getTransmitters() > 0)
 			{
@@ -135,7 +138,22 @@ public class ImperialManager implements Listener
 					lastImperialHelpTime = System.currentTimeMillis();
 				}
 			}
-
+			}
+			
+			// Remove inactive nobles
+			{
+				Set<UUID> players = DramaCraft.instance().getImperials();
+				
+				for(UUID playerId : players)
+				{
+					if(DramaCraft.instance().getImperialLastOnlineDays(playerId) > 30)
+					{
+						DramaCraft.instance().setImperial(playerId);
+						break;
+					}
+				}
+			}			
+			
 			if (DramaCraft.instance().getActiveNobles() < 3)
 			{
 				for (Player rebelPlayer : DramaCraft.instance().getOnlineImperialPlayers())

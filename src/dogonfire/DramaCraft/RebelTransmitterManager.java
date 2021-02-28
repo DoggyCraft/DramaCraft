@@ -22,7 +22,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Attachable;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -31,7 +30,6 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 
 import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
-//import me.ryanhamshire.GriefPrevention.GriefPrevention;
 
 
 
@@ -111,7 +109,7 @@ public class RebelTransmitterManager implements Listener
 	{
 		if (block == null || block.getType() != Material.OAK_WALL_SIGN)
 		{
-			this.plugin.log("Not isTransmitterSign OAK_WALL_SIGN");
+			//this.plugin.log("Not isTransmitterSign OAK_WALL_SIGN");
 			return false;
 		}		
 		
@@ -287,19 +285,29 @@ public class RebelTransmitterManager implements Listener
 	@EventHandler
 	public void OnBlockBreak(BlockBreakEvent event)
 	{
-
-		if(isTransmitterBlock(event.getBlock().getLocation()))
+		if(isTransmitterSign(event.getBlock()))
 		{
-			removeTransmitter(event.getBlock().getLocation());
-			plugin.log(event.getPlayer().getName() + " removed a rebel transmitter at " + event.getBlock().getLocation());
+			Block block = getTransmitterBlockFromSign(event.getBlock());
 			
-			if(plugin.isImperial(event.getPlayer().getUniqueId()))
-			{
-				event.getPlayer().sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + "100 wanks" + ChatColor.AQUA + " for destroying that transmitter!");
-				plugin.getEconomyManager().depositPlayer(event.getPlayer().getName(), 100);
-				plugin.getServer().broadcastMessage(ChatColor.GOLD + event.getPlayer().getName() + ChatColor.AQUA + " destroyed a Rebel Transmitter!");
-			}
+			destroyTransmitter(event.getPlayer(), block.getLocation());
+		}				
+		else if(isTransmitterBlock(event.getBlock().getLocation()))
+		{
+			destroyTransmitter(event.getPlayer(), event.getBlock().getLocation());
 		}
+	}
+
+	private void destroyTransmitter(Player player, Location location)
+	{
+		removeTransmitter(location);
+		plugin.log(player.getName() + " removed a rebel transmitter at " + location);
+		
+		if(plugin.isImperial(player.getUniqueId()))
+		{
+			player.sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + "100 wanks" + ChatColor.AQUA + " for destroying that transmitter!");
+			plugin.getEconomyManager().depositPlayer(player.getName(), 100);
+			plugin.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " destroyed a Rebel Transmitter!");
+		}		
 	}
 	
 	public long hashLocation(Location location)
@@ -345,7 +353,7 @@ public class RebelTransmitterManager implements Listener
 	
 	public void transmitMessage()
 	{
-		if(System.currentTimeMillis() > lastRebelHelpTime + (10*60*1000 + 8*60*1000*transmitters.size()))
+		if(System.currentTimeMillis() > lastRebelHelpTime + (10*60*1000 + 10*60*1000*transmitters.size()))
 		{
 			for(Player rebelPlayer : plugin.getOnlineRebelPlayers())
 			{
@@ -403,6 +411,14 @@ public class RebelTransmitterManager implements Listener
 				plugin.log("Transmitter was located inside an region. Destroyed the transmitter.");
 				return;
 			}
+			
+			if (location.getBlock().getType()!=Material.OAK_SIGN)
+			{
+				removeTransmitter(location);
+				plugin.log("Transmitter was air. Destroyed the transmitter.");
+				return;
+			}
+
 		}
 	}
 }
