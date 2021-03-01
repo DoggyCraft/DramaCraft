@@ -338,7 +338,15 @@ public class Commands implements Listener
 			{
 				if(args.length == 0)
 				{
-					dramaCraftInfo(sender);
+					sender.sendMessage(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
+					sender.sendMessage(ChatColor.GRAY + "By DogOnFire");
+					sender.sendMessage("");
+					
+					sender.sendMessage("" + ChatColor.RED + RankManager.getNumberOfRebels() + " Rebels " + ChatColor.GRAY + "vs " + ChatColor.AQUA + RankManager.getNumberOfImperials() + " Imperials");
+					sender.sendMessage("" + ChatColor.GRAY);
+					sender.sendMessage("" + ChatColor.GRAY + "Imperials has " + ChatColor.GOLD + ResourceManager.getImperialResources() + ChatColor.GRAY + " resources.");
+					sender.sendMessage("" + ChatColor.GRAY + "Rebels has " + ChatColor.GOLD + ResourceManager.getRebelResources() + ChatColor.GRAY + " resources.");
+					sender.sendMessage("" + ChatColor.GRAY);
 					return true;
 				}
 				
