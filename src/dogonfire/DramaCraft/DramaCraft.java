@@ -180,6 +180,9 @@ public class DramaCraft extends JavaPlugin
 		permissionsManager = new PermissionsManager();
 		permissionsManager.load();
 
+		rankManager = new RankManager();
+		rankManager.load();
+
 		resourceManager = new ResourceManager();
 		resourceManager.load();
 

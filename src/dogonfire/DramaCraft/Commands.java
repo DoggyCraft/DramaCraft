@@ -336,6 +336,12 @@ public class Commands implements Listener
 					
 			if (command.getName().equalsIgnoreCase("dc"))
 			{
+				if(args.length == 0)
+				{
+					dramaCraftInfo(sender);
+					return true;
+				}
+				
 				if (args[0].equalsIgnoreCase("setimperial"))
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
@@ -348,7 +354,7 @@ public class Commands implements Listener
 						}
 						else
 						{
-							DramaCraft.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[1]);
 						}
 					}
 
@@ -367,7 +373,7 @@ public class Commands implements Listener
 						}
 						else
 						{
-							DramaCraft.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[1]);
 						}
 					}
 
@@ -386,7 +392,7 @@ public class Commands implements Listener
 						}
 						else
 						{
-							DramaCraft.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[1]);
 						}
 					}
 
@@ -405,7 +411,7 @@ public class Commands implements Listener
 						}
 						else
 						{
-							DramaCraft.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[1]);
 						}
 					}
 
@@ -424,7 +430,7 @@ public class Commands implements Listener
 						}
 						else
 						{
-							DramaCraft.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[1]);
 						}
 					}
 
@@ -443,7 +449,7 @@ public class Commands implements Listener
 						}
 						else
 						{
-							DramaCraft.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[1]);
 						}
 					}
 
@@ -462,7 +468,7 @@ public class Commands implements Listener
 						}
 						else
 						{
-							DramaCraft.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[1]);
 						}
 					}
 

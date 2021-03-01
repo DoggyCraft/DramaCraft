@@ -139,12 +139,15 @@ public class ImperialManager implements Listener
 			{
 				Set<UUID> players = RankManager.getImperials();
 				
-				for(UUID playerId : players)
+				if (players != null)
 				{
-					if(RankManager.getImperialLastOnlineDays(playerId) > 30)
+					for (UUID playerId : players)
 					{
-						RankManager.setImperial(playerId);
-						break;
+						if (RankManager.getImperialLastOnlineDays(playerId) > 30)
+						{
+							RankManager.setImperial(playerId);
+							break;
+						}
 					}
 				}
 			}			
