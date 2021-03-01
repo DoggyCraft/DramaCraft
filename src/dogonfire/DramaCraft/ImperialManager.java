@@ -119,11 +119,11 @@ public class ImperialManager implements Listener
 			// Tell imperials about transmitters and how to smash them
 			{
 				List<Player> players = RankManager.getOnlineImperialPlayers();
-				if (players.size() > 0 && DramaCraft.instance().getTransmitterManager().getTransmitters() > 0)
+				if (players.size() > 0 && RebelTransmitterManager.getTransmitters() > 0)
 				{
 					if (System.currentTimeMillis() > lastImperialHelpTime + (10 * 60 * 1000))
 					{
-						DramaCraft.instance().getLanguageManager().setAmount1(DramaCraft.instance().getTransmitterManager().getTransmitters());
+						LanguageManager.setAmount1(RebelTransmitterManager.getTransmitters());
 
 						for (Player imperialPlayer : RankManager.getOnlineImperialPlayers())
 						{

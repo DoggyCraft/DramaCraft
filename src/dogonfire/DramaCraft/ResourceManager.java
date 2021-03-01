@@ -51,11 +51,11 @@ public class ResourceManager implements Listener
 
 			this.config = YamlConfiguration.loadConfiguration(this.configFile);
 
-			DramaCraft.instance().log("Loaded resources.yml.");				
+			DramaCraft.log("Loaded resources.yml.");				
 		}
 		catch(Exception ex)
 		{
-			DramaCraft.instance().log("No resources.yml file found.");			
+			DramaCraft.log("No resources.yml file found.");			
 		}
 		
 	}
@@ -64,8 +64,8 @@ public class ResourceManager implements Listener
 	{
 		if (this.config == null || this.configFile == null)
 		{
-			DramaCraft.instance().log("Config: " + this.config);
-			DramaCraft.instance().log("Configfile: " + this.configFile);
+			DramaCraft.log("Config: " + this.config);
+			DramaCraft.log("Configfile: " + this.configFile);
 			return;
 		}
 		
@@ -75,18 +75,18 @@ public class ResourceManager implements Listener
 		}
 		catch (Exception ex)
 		{
-			DramaCraft.instance().log("Could not save config to " + this.configFile + ": " + ex.getMessage());
+			DramaCraft.log("Could not save config to " + this.configFile + ": " + ex.getMessage());
 		}
 		
-		DramaCraft.instance().log("Saved configuration.");
+		DramaCraft.log("Saved configuration.");
 	}
 	
-	public int getImperialResources()
+	static public int getImperialResources()
 	{
 		return 0;		
 	}
 	
-	public int getRebelResources()
+	static public int getRebelResources()
 	{
 		return 0;		
 	}
@@ -134,7 +134,7 @@ public class ResourceManager implements Listener
 			return false;
 		}		
 
-		DramaCraft.instance().logDebug("isFameSign(): FameSignBlock block is " + block.getType().name());
+		DramaCraft.logDebug("isFameSign(): FameSignBlock block is " + block.getType().name());
 		
 		//if (getFameTypeFromBlock(block) == null)
 		//{

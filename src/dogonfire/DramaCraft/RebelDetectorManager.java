@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,28 +33,27 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 
 public class RebelDetectorManager implements Listener
 {
-	private DramaCraft plugin;
-	private Random random = new Random();
-	private FileConfiguration			config		= null;
-	private File						configFile	= null;
-	private HashMap<Long, Location>  	detectors = new HashMap<Long, Location>(); 
-	private WorldGuardPlugin 			worldGuard;
+	static private RebelDetectorManager 	instance;
+	private Random 							random 		= new Random();
+	private FileConfiguration				config		= null;
+	private File							configFile	= null;
+	private HashMap<Long, Location>  		detectors 	= new HashMap<Long, Location>(); 
+	private WorldGuardPlugin 				worldGuard  = null;
 	
-	public RebelDetectorManager(DramaCraft plugin)
+	public RebelDetectorManager()
 	{
-		worldGuard = (WorldGuardPlugin) plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-		this.plugin = plugin;	
+		worldGuard = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 	}
 	
 	public void load()
 	{
 		try
 		{
-			this.configFile = new File(this.plugin.getDataFolder(), "detectors.yml");
+			this.configFile = new File(DramaCraft.instance().getDataFolder(), "detectors.yml");
 
 			this.config = YamlConfiguration.loadConfiguration(this.configFile);
 
-			this.plugin.log("Loaded " + this.config.getConfigurationSection("detectors").getKeys(false).size() + " detectors.");
+			DramaCraft.log("Loaded " + this.config.getConfigurationSection("detectors").getKeys(false).size() + " detectors.");
 
 			for (String hash : this.config.getConfigurationSection("detectors").getKeys(false))
 			{
@@ -63,14 +63,14 @@ public class RebelDetectorManager implements Listener
 				int z = config.getInt(key + ".Z");
 				String worldName = config.getString(key + ".World");
 
-				World world = plugin.getServer().getWorld(worldName);
+				World world = Bukkit.getServer().getWorld(worldName);
 
 				detectors.put(Long.parseLong(hash), new Location(world, x, y, z));
 			}
 		}
 		catch(Exception ex)
 		{
-			this.plugin.log("No detectors loaded.");			
+			DramaCraft.log("No detectors loaded.");			
 		}
 		
 	}
@@ -79,8 +79,8 @@ public class RebelDetectorManager implements Listener
 	{
 		if (this.config == null || this.configFile == null)
 		{
-			plugin.log("Config: " + this.config);
-			plugin.log("Configfile: " + this.configFile);
+			DramaCraft.log("Config: " + this.config);
+			DramaCraft.log("Configfile: " + this.configFile);
 			return;
 		}
 		
@@ -90,10 +90,10 @@ public class RebelDetectorManager implements Listener
 		}
 		catch (Exception ex)
 		{
-			this.plugin.log("Could not save config to " + this.configFile + ": " + ex.getMessage());
+			DramaCraft.log("Could not save config to " + this.configFile + ": " + ex.getMessage());
 		}
 		
-		this.plugin.log("Saved configuration.");
+		DramaCraft.log("Saved configuration.");
 	}
 		
 	public boolean isStatueSign(Block block)
@@ -158,7 +158,7 @@ public class RebelDetectorManager implements Listener
 		{
 			//this.plugin.sendInfo(player.getUniqueId(), LanguageManager.LANGUAGESTRING.InvalidGodName, ChatColor.DARK_RED, 0, "", 20);
 			event.getPlayer().sendMessage(ChatColor.RED + "That message is too short");
-			plugin.log("message is too short");
+			DramaCraft.log("message is too short");
 			return false;
 		}
 
@@ -168,7 +168,7 @@ public class RebelDetectorManager implements Listener
 
 		if (statueBlock == null)
 		{
-			plugin.log("transmitter is not valid");
+			DramaCraft.log("transmitter is not valid");
 			return false;
 		}
 		
@@ -178,7 +178,7 @@ public class RebelDetectorManager implements Listener
 		if(length < 100)
 		{
 			event.getPlayer().sendMessage(ChatColor.RED + "That is too close to another transmitter");
-			plugin.log("transmitter is too close to another transmitter");
+			DramaCraft.log("transmitter is too close to another transmitter");
 			return false;
 		}
 		
@@ -190,7 +190,7 @@ public class RebelDetectorManager implements Listener
 		if(set.size() > 0)
 		{
 			event.getPlayer().sendMessage(ChatColor.RED + "Transmitter cannot be inside an region");
-			plugin.log("statue is inside an region");
+			DramaCraft.log("statue is inside an region");
 			return false;			
 		}		
 		
@@ -210,9 +210,9 @@ public class RebelDetectorManager implements Listener
 		event.setLine(2, event.getLine(2).trim());
 		event.setLine(3, event.getLine(3).trim());
 
-		plugin.log(event.getPlayer().getName() + " placed an imperial detector at " + event.getBlock().getLocation());
+		DramaCraft.log(event.getPlayer().getName() + " placed an imperial detector at " + event.getBlock().getLocation());
 		event.getPlayer().sendMessage(ChatColor.GREEN + "Imperial rebel detector placed!");
-		plugin.getServer().broadcastMessage(ChatColor.AQUA + "The Imperials placed a new Rebel Detector!");
+		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "The Imperials placed a new Rebel Detector!");
 		event.getPlayer().sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/detector " + detectorId + ChatColor.AQUA + " to go here when a rebel is detected!");
 
 		return true;
@@ -278,11 +278,11 @@ public class RebelDetectorManager implements Listener
 		if(isStatueBlock(event.getBlock().getLocation()))
 		{
 			removeDetector(event.getBlock().getLocation());
-			plugin.log(event.getPlayer().getName() + " removed a rebel detector at " + event.getBlock().getLocation());
+			DramaCraft.log(event.getPlayer().getName() + " removed a rebel detector at " + event.getBlock().getLocation());
 			
 			if(RankManager.isRebel(event.getPlayer().getUniqueId()))
 			{
-				plugin.getServer().broadcastMessage(ChatColor.GOLD + event.getPlayer().getName() + ChatColor.AQUA + " destroyed a rebel detector!");
+				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + event.getPlayer().getName() + ChatColor.AQUA + " destroyed a rebel detector!");
 			}
 		}
 	}
@@ -364,7 +364,7 @@ public class RebelDetectorManager implements Listener
 			return;			
 		}
 		
-		plugin.getServer().broadcastMessage(ChatColor.AQUA + "The Imperials earned " + ChatColor.GOLD + getImperialIncome() + " wanks" + ChatColor.AQUA + " from statues last hour.");
+		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "The Imperials earned " + ChatColor.GOLD + getImperialIncome() + " wanks" + ChatColor.AQUA + " from statues last hour.");
 			
 		// Check for invalid placement	
 		Location location = (Location)(detectors.values().toArray()[random.nextInt(detectors.keySet().size())]);
@@ -377,7 +377,7 @@ public class RebelDetectorManager implements Listener
 		if(set.size() > 0)
 		{
 			removeDetector(location);
-			plugin.log("Statue was inside an region. Destroyed the statue.");
+			DramaCraft.log("Statue was inside an region. Destroyed the statue.");
 			return;			
 		}							
 	}

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,20 +37,20 @@ import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
 
 public class RebelTransmitterManager implements Listener
 {
-	private DramaCraft plugin;
-	private Random random = new Random();
-	private FileConfiguration			config		= null;
-	private File						configFile	= null;
-	private HashMap<Long, Location>  	transmitters = new HashMap<Long, Location>(); 
-	private WorldGuardPlugin 			worldGuard;
+	private Random 						random 			= new Random();
+	private FileConfiguration			config			= null;
+	private File						configFile		= null;
+	private HashMap<Long, Location>  	transmitters 	= new HashMap<Long, Location>(); 
+	private WorldGuardPlugin 			worldGuard	 	= null;
 	//private GriefPrevention 			griefPrevention;
 	private long 						lastRebelHelpTime;
 	private long 						lastImperialHelpTime;
+	static RebelTransmitterManager 		instance;
 	
-	public RebelTransmitterManager(DramaCraft plugin)
+	public RebelTransmitterManager()
 	{
-		worldGuard = (WorldGuardPlugin) plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-		this.plugin = plugin;	
+		instance = this;
+		worldGuard = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 		//this.griefPrevention = GriefPrevention.instance;
 	}
 	
@@ -57,39 +58,38 @@ public class RebelTransmitterManager implements Listener
 	{
 		try
 		{
-		this.configFile = new File(this.plugin.getDataFolder(), "transmitters.yml");
+			this.configFile = new File(DramaCraft.instance().getDataFolder(), "transmitters.yml");
 
-		this.config = YamlConfiguration.loadConfiguration(this.configFile);
+			this.config = YamlConfiguration.loadConfiguration(this.configFile);
 
-		this.plugin.log("Loaded " + this.config.getConfigurationSection("transmitters").getKeys(false).size() + " transmitters.");
-				
-		for(String hash : this.config.getConfigurationSection("transmitters").getKeys(false))
+			DramaCraft.log("Loaded " + this.config.getConfigurationSection("transmitters").getKeys(false).size() + " transmitters.");
+
+			for (String hash : this.config.getConfigurationSection("transmitters").getKeys(false))
+			{
+				String key = "transmitters." + hash;
+				int x = config.getInt(key + ".X");
+				int y = config.getInt(key + ".Y");
+				int z = config.getInt(key + ".Z");
+				int yaw = config.getInt(key + ".Yaw");
+				String worldName = config.getString(key + ".World");
+
+				World world = Bukkit.getServer().getWorld(worldName);
+
+				transmitters.put(Long.parseLong(hash), new Location(world, x, y, z, yaw, 0));
+			}
+		}
+		catch (Exception ex)
 		{
-			String key = "transmitters." + hash;
-			int x = config.getInt(key + ".X");
-			int y = config.getInt(key + ".Y");
-			int z = config.getInt(key + ".Z");
-			int yaw = config.getInt(key + ".Yaw");
-			String worldName = config.getString(key + ".World");
-					
-			World world = plugin.getServer().getWorld(worldName);
-			
-			transmitters.put(Long.parseLong(hash), new Location(world,x,y,z,yaw,0)); 			
-		}
-		}
-		catch(Exception ex)
-		{
-			this.plugin.log("No Transmitters loaded.");			
-		}
-		
+			DramaCraft.log("No Transmitters loaded.");
+		}		
 	}
 	
 	public void save()
 	{
 		if (this.config == null || this.configFile == null)
 		{
-			plugin.log("Config: " + this.config);
-			plugin.log("Configfile: " + this.configFile);
+			DramaCraft.log("Config: " + this.config);
+			DramaCraft.log("Configfile: " + this.configFile);
 			return;
 		}
 		
@@ -99,10 +99,10 @@ public class RebelTransmitterManager implements Listener
 		}
 		catch (Exception ex)
 		{
-			this.plugin.log("Could not save config to " + this.configFile + ": " + ex.getMessage());
+			DramaCraft.log("Could not save config to " + this.configFile + ": " + ex.getMessage());
 		}
 		
-		this.plugin.log("Saved configuration.");
+		DramaCraft.log("Saved configuration.");
 	}
 	
 	public boolean isTransmitterSign(Block block)
@@ -125,24 +125,24 @@ public class RebelTransmitterManager implements Listener
         
 		if (connected.getType() != Material.STONE)
 		{
-			this.plugin.log("Not isTransmitterSign STONE");
+			DramaCraft.log("Not isTransmitterSign STONE");
 			return false;
 		}
 
 		if (!connected.getRelative(BlockFace.UP).getType().equals(Material.TORCH))
 		{
-			this.plugin.log("Not isTransmitterSign TORCH");
+			DramaCraft.log("Not isTransmitterSign TORCH");
 			return false;
 		}
 		
 		return true;
 	}
 	
-	public double getClosestDistanceToTransmitter(Location location)
+	static public double getClosestDistanceToTransmitter(Location location)
 	{
 		double distance = 999999;
 		
-		for(Location tlocation : transmitters.values())
+		for(Location tlocation : instance.transmitters.values())
 		{
 			if(tlocation.distance(location) < distance)
 			{
@@ -175,7 +175,7 @@ public class RebelTransmitterManager implements Listener
 		{
 			//this.plugin.sendInfo(player.getUniqueId(), LanguageManager.LANGUAGESTRING.InvalidGodName, ChatColor.DARK_RED, 0, "", 20);
 			event.getPlayer().sendMessage(ChatColor.RED + "That message is too short");
-			plugin.log("message is too short");
+			DramaCraft.log("message is too short");
 			return false;
 		}
 
@@ -185,7 +185,7 @@ public class RebelTransmitterManager implements Listener
 
 		if (altarBlock == null)
 		{
-			plugin.log("transmitter is not valid");
+			DramaCraft.log("transmitter is not valid");
 			return false;
 		}
 		
@@ -195,7 +195,7 @@ public class RebelTransmitterManager implements Listener
 		if(length < 100)
 		{
 			event.getPlayer().sendMessage(ChatColor.RED + "That is too close to another transmitter");
-			plugin.log("transmitter is too close to another transmitter");
+			DramaCraft.log("transmitter is too close to another transmitter");
 			return false;
 		}
 		
@@ -207,7 +207,7 @@ public class RebelTransmitterManager implements Listener
 		if(set.size() > 0)
 		{
 			event.getPlayer().sendMessage(ChatColor.RED + "Transmitter cannot be inside an region");
-			plugin.log("transmitter is inside an region");
+			DramaCraft.log("transmitter is inside an region");
 			return false;			
 		}		
 		
@@ -218,9 +218,9 @@ public class RebelTransmitterManager implements Listener
 		event.setLine(2, event.getLine(2).trim());
 		event.setLine(3, event.getLine(3).trim());
 
-		plugin.log(event.getPlayer().getName() + " placed a rebel transmitter at " + event.getBlock().getLocation());
+		DramaCraft.log(event.getPlayer().getName() + " placed a rebel transmitter at " + event.getBlock().getLocation());
 		event.getPlayer().sendMessage(ChatColor.GREEN + "Rebel Transmitter placed!");
-		plugin.getServer().broadcastMessage(ChatColor.AQUA + "The Rebels placed a new Transmitter!");
+		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "The Rebels placed a new Transmitter!");
 
 		return true;
 	}
@@ -255,9 +255,9 @@ public class RebelTransmitterManager implements Listener
 		transmitters.remove(hash); 			
 	}
 	
-	public int getTransmitters()
+	static public int getTransmitters()
 	{
-		return transmitters.size();
+		return instance.transmitters.size();
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
@@ -300,13 +300,13 @@ public class RebelTransmitterManager implements Listener
 	private void destroyTransmitter(Player player, Location location)
 	{
 		removeTransmitter(location);
-		plugin.log(player.getName() + " removed a rebel transmitter at " + location);
+		DramaCraft.log(player.getName() + " removed a rebel transmitter at " + location);
 		
 		if(RankManager.isImperial(player.getUniqueId()))
 		{
 			player.sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + "100 wanks" + ChatColor.AQUA + " for destroying that transmitter!");
-			plugin.getEconomyManager().depositPlayer(player.getName(), 100);
-			plugin.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " destroyed a Rebel Transmitter!");
+			DramaCraft.instance().getEconomyManager().depositPlayer(player.getName(), 100);
+			Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " destroyed a Rebel Transmitter!");
 		}		
 	}
 	
@@ -357,7 +357,7 @@ public class RebelTransmitterManager implements Listener
 		{
 			for(Player rebelPlayer : RankManager.getOnlineRebelPlayers())
 			{
-				plugin.sendInfo(
+				DramaCraft.instance().sendInfo(
 					rebelPlayer.getUniqueId(), 
 					LANGUAGESTRING.INFO_REBEL_BUILD_TRANSMITTERS, 
 					ChatColor.AQUA,
@@ -365,7 +365,7 @@ public class RebelTransmitterManager implements Listener
 					120
 					);
 				
-				plugin.log("Send INFO_REBEL_BUILD_TRANSMITTERS to " + rebelPlayer.getName());
+				DramaCraft.log("Send INFO_REBEL_BUILD_TRANSMITTERS to " + rebelPlayer.getName());
 
 			}
 			
@@ -392,7 +392,7 @@ public class RebelTransmitterManager implements Listener
 
 			String message = config.getString(path + ".Message");
 
-			plugin.getServer().broadcastMessage(ChatColor.RED + "Rebel Message >> " + message);
+			Bukkit.getServer().broadcastMessage(ChatColor.RED + "Rebel Message >> " + message);
 
 			// Check for invalid placement
 			Location location = (Location) (transmitters.values().toArray()[random.nextInt(transmitters.keySet().size())]);
@@ -408,17 +408,16 @@ public class RebelTransmitterManager implements Listener
 			if (set.size() > 0)
 			{
 				removeTransmitter(location);
-				plugin.log("Transmitter was located inside an region. Destroyed the transmitter.");
+				DramaCraft.log("Transmitter was located inside an region. Destroyed the transmitter.");
 				return;
 			}
 			
 			if (location.getBlock().getType()!=Material.OAK_SIGN)
 			{
 				removeTransmitter(location);
-				plugin.log("Transmitter was air. Destroyed the transmitter.");
+				DramaCraft.log("Transmitter was air. Destroyed the transmitter.");
 				return;
 			}
-
 		}
 	}
 }

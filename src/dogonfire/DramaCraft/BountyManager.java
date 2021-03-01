@@ -31,15 +31,15 @@ import org.bukkit.scoreboard.ScoreboardManager;
 
 public class BountyManager implements Listener
 {
-	private DramaCraft plugin;
 	ScoreboardManager 					manager;
 	Scoreboard 							board;
-	private FileConfiguration			config		= null;
-	private File						configFile	= null;	
+	static private FileConfiguration	config		= null;
+	static private File					configFile	= null;	
+	static private BountyManager		instance;
 	
-	public BountyManager(DramaCraft plugin)
+	public BountyManager()
 	{
-		this.plugin = plugin;
+		instance = this;
 
 		manager = Bukkit.getScoreboardManager();
 		board = manager.getNewScoreboard();
@@ -50,38 +50,38 @@ public class BountyManager implements Listener
 	{
 		try
 		{
-			this.configFile = new File(this.plugin.getDataFolder(), "bounties.yml");
+			configFile = new File(DramaCraft.instance().getDataFolder(), "bounties.yml");
 
-			this.config = YamlConfiguration.loadConfiguration(this.configFile);
+			config = YamlConfiguration.loadConfiguration(configFile);
 
-			this.plugin.log("Loaded " + this.config.getConfigurationSection("transmitters").getKeys(false).size() + " transmitters.");				
+			DramaCraft.log("Loaded " + config.getConfigurationSection("transmitters").getKeys(false).size() + " transmitters.");				
 		}
 		catch(Exception ex)
 		{
-			this.plugin.log("No bounties loaded.");			
+			DramaCraft.log("No bounties loaded.");			
 		}
 		
 	}
 	
 	public void save()
 	{
-		if (this.config == null || this.configFile == null)
+		if (config == null || configFile == null)
 		{
-			plugin.log("Config: " + this.config);
-			plugin.log("Configfile: " + this.configFile);
+			DramaCraft.log("Config: " + config);
+			DramaCraft.log("Configfile: " + configFile);
 			return;
 		}
 		
 		try
 		{
-			this.config.save(this.configFile);
+			config.save(configFile);
 		}
 		catch (Exception ex)
 		{
-			this.plugin.log("Could not save config to " + this.configFile + ": " + ex.getMessage());
+			DramaCraft.log("Could not save config to " + configFile + ": " + ex.getMessage());
 		}
 		
-		this.plugin.log("Saved configuration.");
+		DramaCraft.log("Saved configuration.");
 	}
 	
 	@EventHandler
@@ -141,13 +141,13 @@ public class BountyManager implements Listener
 		//event.setLine(1, ChatColor.DARK_RED + "For being a Rebel");
 		//event.setLine(2, "Nr. " + rank);
 		
-		plugin.getBountyManager().setWantedSign(rank, event.getBlock().getLocation());
+		BountyManager.setWantedSign(rank, event.getBlock().getLocation());
 		
-		plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable()
+		Bukkit.getServer().getScheduler().runTaskLater(DramaCraft.instance(), new Runnable()
 		{
 			public void run()
 			{
-				plugin.getBountyManager().updateWantedSigns();
+				BountyManager.updateWantedSigns();
 			}
 		}, 2);
 
@@ -165,7 +165,7 @@ public class BountyManager implements Listener
 			return;
 		}
 
-		int bounty = plugin.getBountyManager().getBounty(player.getUniqueId());
+		int bounty = BountyManager.getBounty(player.getUniqueId());
 		
 		
 		//Objective objective = board.registerNewObjective("showhealth", "dummy");
@@ -188,7 +188,7 @@ public class BountyManager implements Listener
 		//player.setScoreboard(board);
 		
 		
-		for(Player onlinePlayer : plugin.getServer().getOnlinePlayers())
+		for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers())
 		{
 			if(onlinePlayer==player)
 			{
@@ -225,17 +225,17 @@ public class BountyManager implements Listener
 			return;			
 		}
 		
-		int bounty = plugin.getBountyManager().getBounty(victim.getUniqueId());
-		plugin.getEconomyManager().depositPlayer(DramaCraft.instance().getServer().getOfflinePlayer(killer.getUniqueId()), bounty);
+		int bounty = BountyManager.getBounty(victim.getUniqueId());
+		DramaCraft.instance().getEconomyManager().depositPlayer(DramaCraft.instance().getServer().getOfflinePlayer(killer.getUniqueId()), bounty);
 		
 		clearBounty(victim);
 	
-		plugin.getServer().broadcastMessage("" + ChatColor.GOLD + killer + ChatColor.AQUA + " claimed the bounty of " + ChatColor.GOLD + bounty + " wanks " + ChatColor.AQUA + " by killing " + ChatColor.GOLD + victim.getName() + ChatColor.AQUA + "!");
+		Bukkit.getServer().broadcastMessage("" + ChatColor.GOLD + killer + ChatColor.AQUA + " claimed the bounty of " + ChatColor.GOLD + bounty + " wanks " + ChatColor.AQUA + " by killing " + ChatColor.GOLD + victim.getName() + ChatColor.AQUA + "!");
 
 		updateWantedSigns();
 	}
 
-	private int hashVector(Location location)
+	static private int hashVector(Location location)
 	{
 		return location.getBlockX() * 73856093 ^ location.getBlockY() * 19349663 ^ location.getBlockZ() * 83492791;
 	}
@@ -247,7 +247,7 @@ public class BountyManager implements Listener
 		return config.getString("Signs." + hash + ".WorldName") != null;		
 	}
 
-	private void setWantedSign(int rank, Location location)
+	static private void setWantedSign(int rank, Location location)
 	{		
 		int hash = hashVector(location);
 		
@@ -257,10 +257,10 @@ public class BountyManager implements Listener
 		config.set("Signs." + hash + ".Z", location.getBlockZ());		
 		config.set("Signs." + hash + ".WorldName", location.getWorld().getName());		
 		
-		save();		
+		instance.save();		
 	}
 
-	public List<Bounty> getBounties()
+	static public List<Bounty> getBounties()
 	{
 		ConfigurationSection section = config.getConfigurationSection("Bounties");
 		List<Bounty> bounties = new ArrayList<Bounty>();
@@ -283,7 +283,7 @@ public class BountyManager implements Listener
 		return bounties;
 	}
 
-	private UUID getRankedPlayer(int rank)
+	static private UUID getRankedPlayer(int rank)
 	{
 		ConfigurationSection section = config.getConfigurationSection("Bounties");
 		List<Bounty> bounties = new ArrayList<Bounty>();
@@ -318,7 +318,7 @@ public class BountyManager implements Listener
 		save();
 	}
 
-	private void updateWantedSigns()
+	static private void updateWantedSigns()
 	{
 		ConfigurationSection section = config.getConfigurationSection("Signs");
 
@@ -336,7 +336,7 @@ public class BountyManager implements Listener
 			String worldName = config.getString("Signs." + locationHash + ".WorldName");
 			int rank = config.getInt("Signs." + locationHash + ".Rank");
 
-			World world = plugin.getServer().getWorld(worldName);
+			World world = Bukkit.getServer().getWorld(worldName);
 			Location location = new Location(world, x, y, z);
 			try
 			{
@@ -357,7 +357,7 @@ public class BountyManager implements Listener
 
 					sign.setLine(0, ChatColor.DARK_RED + "WANTED");
 					sign.setLine(1, ChatColor.DARK_RED + "For being a Rebel");
-					sign.setLine(2, plugin.getServer().getPlayer(playerId).getName());
+					sign.setLine(2, Bukkit.getServer().getPlayer(playerId).getName());
 					sign.setLine(3, bounty + " wanks");
 				}
 
@@ -365,25 +365,25 @@ public class BountyManager implements Listener
 			}
 			catch (Exception ex)
 			{
-				plugin.log("ERROR: Not a sign at " + location.hashCode() + ". Deleted from config.");
-				plugin.log("ERROR: " + ex.getMessage());
+				DramaCraft.log("ERROR: Not a sign at " + location.hashCode() + ". Deleted from config.");
+				DramaCraft.log("ERROR: " + ex.getMessage());
 				config.set("Signs." + locationHash, null);
-				save();
+				instance.save();
 			}
 		}
 	}
 	
-	private boolean isWanted(Player player)
+	static private boolean isWanted(Player player)
 	{
 		return config.getString("Bounties." + player.getUniqueId().toString() + ".Bounty") != null;		
 	}
 	
-	public int getBounty(UUID playerId)
+	static public int getBounty(UUID playerId)
 	{
 		return config.getInt("Bounties." + playerId.toString() + ".Bounty");	
 	}
 
-	public void addBounty(Player player, int bounty)
+	static public void addBounty(Player player, int bounty)
 	{
 		int currentBounty = config.getInt("Bounties." + player.getUniqueId().toString() + ".Bounty");
 		
@@ -391,9 +391,9 @@ public class BountyManager implements Listener
 		
 		config.set("Bounties." + player.getUniqueId().toString() + ".Bounty", currentBounty);
 
-		save();
+		instance.save();
 		
-		this.updateWantedSigns();
+		updateWantedSigns();
 	}
 
 	public void clearBounty(Player player)
@@ -402,6 +402,6 @@ public class BountyManager implements Listener
 
 		save();
 		
-		this.updateWantedSigns();
+		updateWantedSigns();
 	}
 }

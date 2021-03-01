@@ -66,7 +66,7 @@ public class BodyguardManager implements Listener
 		return guards.containsKey(player.getUniqueId());
 	}
 
-	public void spawnGuard(Player guarded)
+	static public void spawnGuard(Player guarded)
 	{
 		Location loc = guarded.getLocation();
 		IronGolem guard = guarded.getWorld().spawn(loc, IronGolem.class);

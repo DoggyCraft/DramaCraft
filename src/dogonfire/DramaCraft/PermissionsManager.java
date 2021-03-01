@@ -147,10 +147,10 @@ public class PermissionsManager
 		return instance.vaultPermission.playerInGroup(worldName, player, groupName);		
 	}
 
-	public void setRankGroup(OfflinePlayer player, String groupName)
+	static public void setRankGroup(OfflinePlayer player, String groupName)
 	{
 		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
-		vaultPermission.playerAddGroup(worldName, player, groupName);
+		instance.vaultPermission.playerAddGroup(worldName, player, groupName);
 	}
 
 	public void setPrefix(OfflinePlayer player, String prefix)

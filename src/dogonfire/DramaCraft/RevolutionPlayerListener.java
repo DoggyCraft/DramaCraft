@@ -12,21 +12,21 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 
-public class DeathListener implements Listener
+public class RevolutionPlayerListener implements Listener
 {
-	private DramaCraft								plugin;
 	private HashMap<String, ProtectedItemsSnapshot>	playerItemSnapshots;
-
-	public DeathListener(DramaCraft plugin)
+	static private RevolutionPlayerListener instance;
+	
+	public RevolutionPlayerListener()
 	{
-		this.plugin = plugin;
+		instance = this;
 		this.playerItemSnapshots = new HashMap<String, ProtectedItemsSnapshot>();
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityDeath(EntityDeathEvent event)
 	{
-		if(!plugin.getRevolutionManager().isRevolution)
+		if(!RevolutionManager.isRevolution())
 		{
 			return;
 		}
@@ -61,7 +61,7 @@ public class DeathListener implements Listener
 		Player player = event.getPlayer();
 		String playerName = player.getName();
 
-		if(!plugin.getRevolutionManager().isRevolution)
+		if(!RevolutionManager.isRevolution())
 		{
 			return;
 		}

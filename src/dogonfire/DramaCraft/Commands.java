@@ -24,12 +24,12 @@ import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
 
 public class Commands implements Listener
 {
-	private DramaCraft	plugin;
-	private World	currentWorld;
+	static private Commands	instance;
+	private World			currentWorld;
 
-	public Commands(DramaCraft plugin)
+	public Commands()
 	{
-		this.plugin = plugin;
+		instance = this;
 	}
 	
 	private void doVote(CommandSender sender, Player player, VoteManager.VOTE_TYPE voteType)
@@ -54,7 +54,7 @@ public class Commands implements Listener
 		VoteManager.checkVote(40);
 	}
 
-	private boolean newVote(CommandSender sender, Player player, VoteManager.VOTE_TYPE voteType, String text)
+	static private boolean newVote(CommandSender sender, Player player, VoteManager.VOTE_TYPE voteType, String text)
 	{
 		if (VoteManager.getCurrentVoteType() != VoteManager.VOTE_TYPE.VOTE_NONE)
 		{
@@ -71,7 +71,8 @@ public class Commands implements Listener
 				case VOTE_SUN: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_SUN, ChatColor.RED); break;
 				case VOTE_RAIN:			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_RAIN, ChatColor.RED); break;
 				case VOTE_GENERAL: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
-				case VOTE_HELP: 	voteHelp(sender); break;
+				case VOTE_HELP: 		voteHelp(sender); break;
+				default:				break;
 			}
 			
 			sender.sendMessage(ChatColor.RED + message);
@@ -79,10 +80,10 @@ public class Commands implements Listener
 			return false;
 		}
 
-		return DramaCraft.getVoteManager().newVote(this.currentWorld, player, text, true, voteType);
+		return VoteManager.newVote(instance.currentWorld, player, text, true, voteType);
 	}
 
-	private void voteHelp(CommandSender sender)
+	static private void voteHelp(CommandSender sender)
 	{
 		//sender.sendMessage("" + ChatColor.WHITE + plugin.getLanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_HEAD, ChatColor.AQUA));
 		sender.sendMessage("" + ChatColor.WHITE + "/vote " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_INFO, ChatColor.AQUA));
@@ -135,14 +136,14 @@ public class Commands implements Listener
 
 	private void dramaCraftInfo(CommandSender sender)
 	{
-		sender.sendMessage(ChatColor.YELLOW + "------------------ " + this.plugin.getDescription().getFullName() + " ------------------");
+		sender.sendMessage(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
 		sender.sendMessage(ChatColor.AQUA + "By DogOnFire");
 		sender.sendMessage("" + ChatColor.AQUA);
 		
 		sender.sendMessage("" + ChatColor.GOLD + RankManager.getNumberOfRebels() + ChatColor.RED + " Rebels vs " + ChatColor.GOLD + RankManager.getNumberOfImperials() + ChatColor.AQUA + " Imperials");
 		sender.sendMessage("" + ChatColor.AQUA);
-		sender.sendMessage("" + ChatColor.AQUA + "Imperials has " + ChatColor.GOLD + plugin.instance().getResourceManager().getImperialResources() + ChatColor.AQUA + " resources.");
-		sender.sendMessage("" + ChatColor.AQUA + "Rebels has " + ChatColor.GOLD + plugin.instance().getResourceManager().getRebelResources() + ChatColor.AQUA + " resources.");
+		sender.sendMessage("" + ChatColor.AQUA + "Imperials has " + ChatColor.GOLD + ResourceManager.getImperialResources() + ChatColor.AQUA + " resources.");
+		sender.sendMessage("" + ChatColor.AQUA + "Rebels has " + ChatColor.GOLD + ResourceManager.getRebelResources() + ChatColor.AQUA + " resources.");
 		sender.sendMessage("" + ChatColor.AQUA);
 
 		sendKingQueenWho(sender);
@@ -261,22 +262,22 @@ public class Commands implements Listener
 			return;			
 		}
 
-		if(!plugin.getEconomyManager().has(player.getName(), bounty))
+		if(!DramaCraft.instance().getEconomyManager().has(player.getName(), bounty))
 		{
 			player.sendMessage(ChatColor.RED + "You do not have " + bounty + " wanks");
 			return;
 		}
 		
-		plugin.getEconomyManager().withdrawPlayer(player.getName(), bounty);
-		plugin.getBountyManager().addBounty(targetPlayer, bounty);
+		DramaCraft.instance().getEconomyManager().withdrawPlayer(player.getName(), bounty);
+		BountyManager.addBounty(targetPlayer, bounty);
 		
-		plugin.getServer().broadcastMessage(ChatColor.AQUA + "A bounty of " + ChatColor.GOLD + bounty + " wanks " + ChatColor.AQUA + " was put on " + ChatColor.GOLD + targetPlayer.getName());
-		plugin.getServer().broadcastMessage(ChatColor.AQUA + "The total bounty on " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.AQUA + " is now " + ChatColor.GOLD + plugin.getBountyManager().getBounty(targetPlayer.getUniqueId()) + " wanks");
+		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "A bounty of " + ChatColor.GOLD + bounty + " wanks " + ChatColor.AQUA + " was put on " + ChatColor.GOLD + targetPlayer.getName());
+		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "The total bounty on " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.AQUA + " is now " + ChatColor.GOLD + BountyManager.getBounty(targetPlayer.getUniqueId()) + " wanks");
 	}
 
 	public void listBounties(Player player)
 	{		
-		List<Bounty> bounties = plugin.getBountyManager().getBounties();
+		List<Bounty> bounties = BountyManager.getBounties();
 		
 		if(bounties==null)
 		{
@@ -294,7 +295,7 @@ public class Commands implements Listener
 		{
 			if(n<10)
 			{
-				player.sendMessage(ChatColor.WHITE + "  " + n + ". " + plugin.getServer().getOfflinePlayer(bounty.PlayerId).getName() + " - " + bounty.Bounty + " wanks");
+				player.sendMessage(ChatColor.WHITE + "  " + n + ". " + Bukkit.getServer().getOfflinePlayer(bounty.PlayerId).getName() + " - " + bounty.Bounty + " wanks");
 			}
 			
 			n++;
@@ -306,7 +307,7 @@ public class Commands implements Listener
 
 	public void updatePrefix(CommandSender sender, String[] args)
 	{		
-		Player player = plugin.getServer().getPlayer(args[0]);
+		Player player = Bukkit.getServer().getPlayer(args[0]);
 
 		RankManager.updatePrefix(player.getUniqueId());
 
@@ -326,7 +327,7 @@ public class Commands implements Listener
 		}
 		else
 		{
-			DramaCraft.log(ChatColor.YELLOW + "------------------ " + this.plugin.getDescription().getFullName() + " ------------------");
+			DramaCraft.log(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
 			DramaCraft.log("" + ChatColor.RED + RankManager.getNumberOfRebels() + " Rebels" + ChatColor.GOLD + " vs " + ChatColor.AQUA + RankManager.getNumberOfImperials() + " Imperials");
 			DramaCraft.log("");
 
@@ -339,7 +340,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = plugin.getServer().getPlayer(args[1]);
+						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -358,7 +359,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = plugin.getServer().getPlayer(args[1]);
+						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -377,7 +378,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = plugin.getServer().getPlayer(args[1]);
+						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -396,7 +397,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = plugin.getServer().getPlayer(args[1]);
+						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -415,7 +416,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = plugin.getServer().getPlayer(args[1]);
+						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -434,7 +435,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = plugin.getServer().getPlayer(args[1]);
+						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -453,7 +454,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = plugin.getServer().getPlayer(args[1]);
+						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -461,7 +462,7 @@ public class Commands implements Listener
 						}
 						else
 						{
-							plugin.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[0]);
 						}
 					}
 
@@ -580,7 +581,7 @@ public class Commands implements Listener
 		{
 			if(args.length == 2)
 			{
-				Player targetPlayer = plugin.getServer().getPlayer(args[0]);
+				Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
 				int bounty = Integer.parseInt(args[1]);
 
 				if(targetPlayer!=null)
@@ -589,7 +590,7 @@ public class Commands implements Listener
 				}
 				else
 				{
-					plugin.log("No such online player " + args[0]);
+					DramaCraft.log("No such online player " + args[0]);
 				}
 			}								
 			else
@@ -616,7 +617,7 @@ public class Commands implements Listener
 			{			
 				if(args.length == 0)
 				{
-					plugin.getBodyguardManager().spawnGuard(player);
+					BodyguardManager.spawnGuard(player);
 				}	
 			}
 
@@ -658,7 +659,7 @@ public class Commands implements Listener
 			{			
 				if(rankname.equals("wizard") || rankname.equals("knight") || rankname.equals("farmer") || rankname.equals("shopkeeper"))
 				{
-					Player targetPlayer = plugin.getServer().getPlayer(args[0]);
+					Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
 
 					if(targetPlayer!=null)
 					{					
@@ -679,9 +680,9 @@ public class Commands implements Listener
 							rankname = "police";
 						}
 						
-						plugin.getPermissionsManager().setRankGroup(targetPlayer, rankname);
+						PermissionsManager.setRankGroup(targetPlayer, rankname);
 						RankManager.setNobleClientRank(player, targetPlayer.getUniqueId(), rankname);
-						plugin.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.AQUA + " to imperial " + rankname);
+						Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.AQUA + " to imperial " + rankname);
 						targetPlayer.sendMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed you to " + rankname);
 					}
 					else
@@ -699,7 +700,7 @@ public class Commands implements Listener
 			{			
 				if(rankname.equals("wizard") || rankname.equals("rogue") || rankname.equals("farmer") || rankname.equals("shopkeeper"))
 				{
-					Player targetPlayer = plugin.getServer().getPlayer(args[0]);
+					Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
 
 					if(targetPlayer!=null)
 					{					
@@ -720,9 +721,9 @@ public class Commands implements Listener
 							rankname = "police";
 						}
 
-						plugin.getPermissionsManager().setRankGroup(targetPlayer, rankname);
+						PermissionsManager.setRankGroup(targetPlayer, rankname);
 						RankManager.setInnerCircleClientRank(player, targetPlayer.getUniqueId(), rankname);
-						plugin.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.AQUA + " to rebel " + rankname);
+						Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.AQUA + " to rebel " + rankname);
 						targetPlayer.sendMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed you to " + rankname);
 					}
 					else
@@ -783,7 +784,7 @@ public class Commands implements Listener
 		{
 			if(RankManager.isImperial(player.getUniqueId()))
 			{
-				double distance = plugin.getTransmitterManager().getClosestDistanceToTransmitter(player.getLocation());
+				double distance = RebelTransmitterManager.getClosestDistanceToTransmitter(player.getLocation());
 				
 				if(distance < 999999)
 				{
@@ -878,14 +879,14 @@ public class Commands implements Listener
 				else if (args[0].equalsIgnoreCase("yes"))
 				{
 					doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					this.plugin.printlog(player.getName() + " voted yes");
+					DramaCraft.log(player.getName() + " voted yes");
 
 					return true;
 				}
 				else if (args[0].equalsIgnoreCase("no"))
 				{
 					doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_NO);
-					this.plugin.printlog(player.getName() + " voted no");
+					DramaCraft.log(player.getName() + " voted no");
 
 					return true;
 				}
@@ -895,7 +896,7 @@ public class Commands implements Listener
 			{
 				if (args[0].equalsIgnoreCase("king"))
 				{
-					Player targetPlayer = plugin.getServer().getPlayer(args[1]);
+					Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 					if (targetPlayer == null)
 					{
@@ -918,7 +919,7 @@ public class Commands implements Listener
 				}
 				else if (args[0].equalsIgnoreCase("queen"))
 				{
-					Player targetPlayer = plugin.getServer().getPlayer(args[1]);
+					Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 					if (targetPlayer == null)
 					{
@@ -941,7 +942,7 @@ public class Commands implements Listener
 				}
 				if (args[0].equalsIgnoreCase("noble"))
 				{
-					Player targetPlayer = plugin.getServer().getPlayer(args[1]);
+					Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 					if (targetPlayer == null)
 					{
@@ -964,7 +965,7 @@ public class Commands implements Listener
 				}
 				if (args[0].equalsIgnoreCase("innercircle"))
 				{
-					Player targetPlayer = plugin.getServer().getPlayer(args[1]);
+					Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 					if (targetPlayer == null)
 					{
@@ -1140,7 +1141,7 @@ public class Commands implements Listener
 
 		for(Member m : members)
 		{
-			OfflinePlayer player = plugin.getServer().getOfflinePlayer(m.PlayerId);
+			OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(m.PlayerId);
 			
 			if(m.Days<=7)
 			{
@@ -1197,7 +1198,7 @@ public class Commands implements Listener
 
 		for(Member m : members)
 		{
-			Player player = plugin.getServer().getPlayer(m.PlayerId);
+			Player player = Bukkit.getServer().getPlayer(m.PlayerId);
 			if(m.Days<=7)
 			{
 				sender.sendMessage(" " + player.getName() + "   Last login: " + ChatColor.GREEN + m.Days + ChatColor.WHITE + " days ago");

@@ -1,13 +1,7 @@
 package dogonfire.DramaCraft;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -15,18 +9,12 @@ import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.block.Skull;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -38,7 +26,7 @@ public class DramaCraft extends JavaPlugin
 {
 	private Logger						log;
 	private	Commands					command;
-	private static VoteManager			voteManager;
+	private VoteManager					voteManager;
 	private RankManager					rankManager;
 	private ResourceManager				resourceManager;
 	private BodyguardManager			bodyGuardManager;
@@ -47,26 +35,26 @@ public class DramaCraft extends JavaPlugin
 	private RebelTransmitterManager		rebelTransmitterManager;
 	private RebelDetectorManager		rebelDetectorManager;
 	private ImperialManager				imperialManager;
-	private PermissionsManager			permissionsManager		= null;
-	private DeathListener				deathListener;
+	private PermissionsManager			permissionsManager			= null;
+	private RevolutionPlayerListener	revolutionPlayerListener	= null;
 	private static Server				server;
-	private PluginManager				pluginmanager			= null;
-	public static Economy				economy					= null;
+	private PluginManager				pluginmanager				= null;
+	public static Economy				economy						= null;
 
-	public long							voteTimeLength			= 800000000000L;
-	public long							voteTimeLengthBetween	= 600000000L; // 60000000000L
-	public double						requiredYesPercentage	= 66;
-	public int							requiredVotes			= 20;
-	public int							votePayment				= 10;
-	public int							startVoteCost			= 10;
+	public long							voteTimeLength				= 800000000000L;
+	public long							voteTimeLengthBetween		= 600000000L; // 60000000000L
+	public double						requiredYesPercentage		= 66;
+	public int							requiredVotes				= 20;
+	public int							votePayment					= 10;
+	public int							startVoteCost				= 10;
 	
-	private String 						pattern 				= "HH:mm:ss dd-MM-yyyy";
-	DateFormat 							formatter 				= new SimpleDateFormat(this.pattern);
+	private String 						pattern 					= "HH:mm:ss dd-MM-yyyy";
+	DateFormat 							formatter 					= new SimpleDateFormat(this.pattern);
 
-	private boolean						debug					= true;
+	private boolean						debug						= true;
 	String								serverName;
 	private LanguageManager				languageManager;
-	private FileConfiguration			config					= null;
+	private FileConfiguration			config						= null;
 	static private DramaCraft			instance;
 	
 	static public DramaCraft instance()
@@ -121,11 +109,6 @@ public class DramaCraft extends JavaPlugin
 		}
 	}
 
-	public RankManager getRankManager()
-	{
-		return rankManager;
-	}
-
 	public ResourceManager getResourceManager()
 	{
 		return resourceManager;
@@ -134,36 +117,6 @@ public class DramaCraft extends JavaPlugin
 	public LanguageManager getLanguageManager()
 	{
 		return languageManager;
-	}
-
-	public PermissionsManager getPermissionsManager()
-	{
-		return permissionsManager;
-	}
-	
-	public RebelTransmitterManager getTransmitterManager()
-	{
-		return rebelTransmitterManager;
-	}
-
-	public RebelDetectorManager getRebelDetectorManager()
-	{
-		return rebelDetectorManager;
-	}
-
-	public ImperialManager getImperialManager()
-	{
-		return imperialManager;
-	}
-
-	public BodyguardManager getBodyguardManager()
-	{
-		return bodyGuardManager;
-	}
-
-	public BountyManager getBountyManager()
-	{
-		return bountyManager;
 	}
 
 	public Economy getEconomyManager()
@@ -175,19 +128,6 @@ public class DramaCraft extends JavaPlugin
 	{
 		server.broadcastMessage(ChatColor.AQUA + message);
 	}
-
-	
-	public static VoteManager getVoteManager()
-	{
-		return voteManager;
-	}
-
-	public RevolutionManager getRevolutionManager()
-	{
-		return revolutionManager;
-	}
-
-	
 	
 	public void sendInfo(UUID playerId, LanguageManager.LANGUAGESTRING message, ChatColor color, int amount, int delay)
 	{
@@ -233,7 +173,7 @@ public class DramaCraft extends JavaPlugin
 			log("Vault not found.  No money will used.");
 		}
 		
-		this.command = new Commands(this);
+		this.command = new Commands();
 
 		this.pluginmanager = getServer().getPluginManager();
 
@@ -248,23 +188,23 @@ public class DramaCraft extends JavaPlugin
 		revolutionManager = new RevolutionManager();
 		server.getPluginManager().registerEvents(revolutionManager, this);
 
-		deathListener = new DeathListener(this);
-		server.getPluginManager().registerEvents(deathListener, this);
+		revolutionPlayerListener = new RevolutionPlayerListener();
+		server.getPluginManager().registerEvents(revolutionPlayerListener, this);
 
 		languageManager = new LanguageManager();
 		languageManager.load();
 
-		rebelTransmitterManager = new RebelTransmitterManager(this);
+		rebelTransmitterManager = new RebelTransmitterManager();
 		getServer().getPluginManager().registerEvents(rebelTransmitterManager, this);
 		rebelTransmitterManager.load();
 
-		rebelDetectorManager = new RebelDetectorManager(this);
+		rebelDetectorManager = new RebelDetectorManager();
 		getServer().getPluginManager().registerEvents(rebelDetectorManager, this);
 		rebelDetectorManager.load();
 
 		imperialManager = new ImperialManager();
 
-		bountyManager = new BountyManager(this);
+		bountyManager = new BountyManager();
 		bountyManager.load();
 		getServer().getPluginManager().registerEvents(bountyManager, this);
 		
@@ -285,7 +225,7 @@ public class DramaCraft extends JavaPlugin
 			{
 				if(!revolutionManager.enforceRevolution())
 				{
-					DramaCraft.voteManager.checkVote(20);
+					VoteManager.checkVote(20);
 				}
 			}
 		}, 20L, 100*20L);

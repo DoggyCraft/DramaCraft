@@ -470,7 +470,7 @@ public class VoteManager
 		return instance.currentVoteType;
 	}
 
-	public boolean newVote(World world, Player voter, String voteText, boolean vote, VOTE_TYPE voteType)
+	static public boolean newVote(World world, Player voter, String voteText, boolean vote, VOTE_TYPE voteType)
 	{
 		String broadcast = "";
 
@@ -478,16 +478,16 @@ public class VoteManager
 		int voteCost = 0;//DramaCraft.instance().startVoteCost;
 		long voteInterval = DramaCraft.instance().voteTimeLengthBetween;
 
-		if (System.nanoTime() - this.startVoteTime < voteInterval)
+		if (System.nanoTime() - instance.startVoteTime < voteInterval)
 		{
-			int time = (int) ((this.startVoteTime + voteInterval - System.nanoTime()) / 60000000L);
+			int time = (int) ((instance.startVoteTime + voteInterval - System.nanoTime()) / 60000000L);
 			LanguageManager.setAmount1(time);
 			voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOSOON, ChatColor.RED));
 			DramaCraft.logDebug(voter.getName() + " tried to start a vote too soon");
 			return false;
 		}
 
-		if (voter.getUniqueId() == lastVoterId)
+		if (voter.getUniqueId() == instance.lastVoterId)
 		{
 			voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_NOTAGAIN, ChatColor.RED));
 			DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but now allowed to start another one");
@@ -637,9 +637,9 @@ public class VoteManager
 			}
 		}
 
-		this.currentVoteType = voteType;
-		this.startVoteTime = System.nanoTime();
-		this.lastVoterId = voter.getUniqueId();
+		instance.currentVoteType = voteType;
+		instance.startVoteTime = System.nanoTime();
+		instance.lastVoterId = voter.getUniqueId();
 
 		//TODO: Encapsulate votes logic into its own class and replace entire content with this:
 		//if(currentVote.newVote(world, voter, voteText, vote, voteType))
@@ -659,47 +659,47 @@ public class VoteManager
 		{
 			case VOTE_REVOLUTION:
 				broadcast = "A new vote for REVOLUTION was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
-				this.voteString = voteText;
+				instance.voteString = voteText;
 				break;
 			case VOTE_KING:
 				broadcast = "A new vote for king was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
-				this.voteString = voteText;
+				instance.voteString = voteText;
 				break;
 			case VOTE_QUEEN:
 				broadcast = "A new vote for queen was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
-				this.voteString = voteText;
+				instance.voteString = voteText;
 				break;
 			case VOTE_DAY:
 				broadcast = "A new vote for day was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
-				this.voteString = voter.getWorld().getName();
+				instance.voteString = voter.getWorld().getName();
 				break;
 			case VOTE_NIGHT:
 				broadcast = "A new vote for night was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
-				this.voteString = voter.getWorld().getName();
+				instance.voteString = voter.getWorld().getName();
 				break;
 			case VOTE_SUN:
 				broadcast = "A new vote for sun was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
-				this.voteString = voter.getWorld().getName();
+				instance.voteString = voter.getWorld().getName();
 				break;
 			case VOTE_RAIN:
 				broadcast = "A new vote for rain was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
-				this.voteString = voter.getWorld().getName();
+				instance.voteString = voter.getWorld().getName();
 				break;
 			case VOTE_GENERAL:
 				broadcast = "A new vote for a question was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
-				this.voteString = voteText;
+				instance.voteString = voteText;
 				break;
 			case VOTE_NOBLE:
 				broadcast = "A new vote for a noble was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
-				this.voteString = voteText;
+				instance.voteString = voteText;
 				break;
 			case VOTE_NOBLE_KICK:
 				broadcast = "A new vote for a removing a noble was started!";
-				this.voteString = voteText;
+				instance.voteString = voteText;
 				break;
 			case VOTE_INNERCIRCLE:
 				broadcast = "A new vote for the rebel inner circle was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
-				this.voteString = voteText;
+				instance.voteString = voteText;
 				break;
 			default:
 				broadcast = "Not a valid new Vote!";
