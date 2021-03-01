@@ -354,7 +354,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
+						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -373,7 +373,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
+						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -392,7 +392,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
+						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -411,7 +411,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
+						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -430,7 +430,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
+						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -449,7 +449,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
+						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
@@ -468,7 +468,7 @@ public class Commands implements Listener
 				{
 					// if(args[1].equalsIgnoreCase("13370x"))
 					{
-						Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
+						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
 						if (targetPlayer != null)
 						{
