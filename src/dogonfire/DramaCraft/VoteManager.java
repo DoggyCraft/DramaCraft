@@ -31,7 +31,8 @@ public class VoteManager
 	public String	name;
 	public String	voteString;
 	public UUID		lastVoterId = UUID.randomUUID();
-
+	static private VoteManager instance;
+	
 	public static enum VOTE_TYPE
 	{
 		VOTE_NONE,
@@ -91,42 +92,47 @@ public class VoteManager
 	private long		lastVoteTime	= 0;
 	private VOTE_TYPE	currentVoteType;
 	private Random		random			= new Random();
-	private Vote currentVote;
+	private Vote 		currentVote;
 	
 		
-	private void resetVotes()
+	VoteManager()
 	{
-		this.currentVoteType = VOTE_TYPE.VOTE_NONE;
-		this.yes.clear();
-		this.no.clear();
+		instance = this;		
+	}
+
+	private static void resetVotes()
+	{
+		instance.currentVoteType = VOTE_TYPE.VOTE_NONE;
+		instance.yes.clear();
+		instance.no.clear();
 	}
 		
-	public void checkVote(int timeFactor)
+	static public void checkVote(int timeFactor)
 	{
 		String broadcast = "";
 		boolean success = false;
 		
-		if(DramaCraft.instance().isRevolution())
+		if(RevolutionManager.isRevolution())
 		{
 			Bukkit.broadcastMessage(ChatColor.AQUA + "Revolution!! Will the King and Queen survive the attack by the rebels?");
-			Bukkit.broadcastMessage(ChatColor.AQUA + "The Revolution will end in " + ChatColor.GOLD + DramaCraft.instance().getRevolutionManager().getMinutesUntilRevolutionEnd() + " minutes.");
+			Bukkit.broadcastMessage(ChatColor.AQUA + "The Revolution will end in " + ChatColor.GOLD + RevolutionManager.getMinutesUntilRevolutionEnd() + " minutes.");
 			return;
 		}
 		
-		if (this.currentVoteType == VOTE_TYPE.VOTE_NONE)
+		if (instance.currentVoteType == VOTE_TYPE.VOTE_NONE)
 		{
-			switch (this.random.nextInt(20))
+			switch (instance.random.nextInt(20))
 			{
 				case 0:
-					if(DramaCraft.instance().getKingName()!=null)
+					if(RankManager.getKingName()!=null)
 					{
-						broadcast = "Hil vores konge, hans majestæt " + ChatColor.GOLD + DramaCraft.instance().getKingName() + " kongen af DoggyCraft!";
+						broadcast = "Hil vores konge, hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + " kongen af DoggyCraft!";
 					}
 					break;
 				case 1:
-					if(DramaCraft.instance().getQueenName()!=null)
+					if(RankManager.getQueenName()!=null)
 					{
-						broadcast = "Hil vores dronning, hendes majestæt " + ChatColor.GOLD + DramaCraft.instance().getQueenName() + " dronningen af DoggyCraft!";
+						broadcast = "Hil vores dronning, hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + " dronningen af DoggyCraft!";
 					}
 					break;
 			}
@@ -141,7 +147,7 @@ public class VoteManager
 
 		long checkVotePeriod = DramaCraft.instance().voteTimeLength / timeFactor;
 
-		if (System.nanoTime() < this.lastVoteTime + checkVotePeriod)
+		if (System.nanoTime() < instance.lastVoteTime + checkVotePeriod)
 		{
 			return;
 		}
@@ -149,160 +155,160 @@ public class VoteManager
 		double reqYesPercentage = DramaCraft.instance().requiredYesPercentage / 100.0D;
 		int reqVotes = DramaCraft.instance().requiredVotes;
 
-		if ((this.currentVoteType == VOTE_TYPE.VOTE_DAY) || this.currentVoteType == VOTE_TYPE.VOTE_NIGHT || this.currentVoteType == VOTE_TYPE.VOTE_RAIN || this.currentVoteType == VOTE_TYPE.VOTE_SUN)
+		if ((instance.currentVoteType == VOTE_TYPE.VOTE_DAY) || instance.currentVoteType == VOTE_TYPE.VOTE_NIGHT || instance.currentVoteType == VOTE_TYPE.VOTE_RAIN || instance.currentVoteType == VOTE_TYPE.VOTE_SUN)
 		{
 			reqVotes = 5;
 		}
 
-		if (this.currentVoteType == VOTE_TYPE.VOTE_REVOLUTION)
+		if (instance.currentVoteType == VOTE_TYPE.VOTE_REVOLUTION)
 		{
 			reqVotes = 5; // 7
 		}
 		
-		if (this.currentVoteType == VOTE_TYPE.VOTE_KING || this.currentVoteType == VOTE_TYPE.VOTE_QUEEN)
+		if (instance.currentVoteType == VOTE_TYPE.VOTE_KING || instance.currentVoteType == VOTE_TYPE.VOTE_QUEEN)
 		{
 			reqVotes = 7;//7
 		}
 
-		if (this.currentVoteType == VOTE_TYPE.VOTE_NOBLE || this.currentVoteType == VOTE_TYPE.VOTE_INNERCIRCLE)
+		if (instance.currentVoteType == VOTE_TYPE.VOTE_NOBLE || instance.currentVoteType == VOTE_TYPE.VOTE_INNERCIRCLE)
 		{
 			reqVotes = 5;
 		}
 
-		if (this.currentVoteType == VOTE_TYPE.VOTE_BOSS1 || this.currentVoteType == VOTE_TYPE.VOTE_BOSS2)
+		if (instance.currentVoteType == VOTE_TYPE.VOTE_BOSS1 || instance.currentVoteType == VOTE_TYPE.VOTE_BOSS2)
 		{
 			reqVotes = 7;//7
 		}
 
-		if ((this.yes.size() + this.no.size() >= reqVotes) || (System.nanoTime() - this.startVoteTime > DramaCraft.instance().voteTimeLength))
+		if ((instance.yes.size() + instance.no.size() >= reqVotes) || (System.nanoTime() - instance.startVoteTime > DramaCraft.instance().voteTimeLength))
 		{
-			broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_FINISHED, ChatColor.AQUA);
+			broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_FINISHED, ChatColor.AQUA);
 
 			DramaCraft.broadcastMessage(broadcast);
 
-			if (this.yes.size() + this.no.size() < reqVotes)
+			if (instance.yes.size() + instance.no.size() < reqVotes)
 			{
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOT_ENOUGH_VOTES, ChatColor.RED);
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOT_ENOUGH_VOTES, ChatColor.RED);
 				DramaCraft.broadcastMessage(broadcast);
 				resetVotes();
 				return;
 			}
 
-			success = ((float)this.yes.size()) / ((float)(this.no.size() + this.yes.size())) >= reqYesPercentage;
+			success = ((float)instance.yes.size()) / ((float)(instance.no.size() + instance.yes.size())) >= reqYesPercentage;
 			
-			DramaCraft.instance().logDebug("success " + ((float)this.yes.size()) / ((float)(this.no.size() + this.yes.size())));
-			DramaCraft.instance().logDebug("reqYesPercentage/100 " + reqYesPercentage / 100.0);
+			DramaCraft.logDebug("success " + ((float)instance.yes.size()) / ((float)(instance.no.size() + instance.yes.size())));
+			DramaCraft.logDebug("reqYesPercentage/100 " + reqYesPercentage / 100.0);
 
 			broadcast = "MISSING_SUCCESS";
 
-			switch (this.currentVoteType)
+			switch (instance.currentVoteType)
 			{
 				case VOTE_RAIN:
 					if (success)
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RAIN_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().setStorm(this.voteString);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RAIN_SUCCESS, ChatColor.GREEN);
+						DramaCraft.setStorm(instance.voteString);
 						// DramaCraft.instance().setN00b(this.voteString);
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RAIN_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RAIN_FAILED, ChatColor.RED);
 					}
 					break;
 					
 				case VOTE_SUN:
 					if (success)
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_SUN_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().setSun(this.voteString);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_SUN_SUCCESS, ChatColor.GREEN);
+						DramaCraft.setSun(instance.voteString);
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_SUN_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_SUN_FAILED, ChatColor.RED);
 					}
 					break;
 					
 				case VOTE_KING:
 					if (success)
 					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(voteString));
-						DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().setKing(UUID.fromString(voteString));
+						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						LanguageManager.setPlayerName(player.getName());
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_SUCCESS, ChatColor.GREEN);
+						RankManager.setKing(UUID.fromString(instance.voteString));
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_FAILED, ChatColor.RED);
 					}
 					break;
 					
 				case VOTE_NOBLE:
 					if (success)
 					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(voteString));
-						DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().setNoble(UUID.fromString(voteString));
+						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						LanguageManager.setPlayerName(player.getName());
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_SUCCESS, ChatColor.GREEN);
+						RankManager.setNoble(UUID.fromString(instance.voteString));
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_FAILED, ChatColor.RED);
 					}
 					break;
 
 				case VOTE_NOBLE_KICK:
 					if (success)
 					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(voteString));
-						DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_KICK_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().downgradeRank(player.getUniqueId());
+						OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						LanguageManager.setPlayerName(player.getName());
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_KICK_SUCCESS, ChatColor.GREEN);
+						RankManager.downgradeRank(player.getUniqueId());
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_KICK_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_KICK_FAILED, ChatColor.RED);
 					}
 					break;
 
 				case VOTE_QUEEN:
 					if (success)
 					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(voteString));
-						DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_QUEEN_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().setQueen(UUID.fromString(voteString));
+						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						LanguageManager.setPlayerName(player.getName());
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_QUEEN_SUCCESS, ChatColor.GREEN);
+						RankManager.setQueen(UUID.fromString(instance.voteString));
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_QUEEN_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_QUEEN_FAILED, ChatColor.RED);
 					}
 					break;
 					
 				case VOTE_BOSS1:
 					if (success)
 					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(voteString));
-						DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS1_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().setRingLeader1(UUID.fromString(voteString));
+						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						LanguageManager.setPlayerName(player.getName());
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS1_SUCCESS, ChatColor.GREEN);
+						RankManager.setRingLeader1(UUID.fromString(instance.voteString));
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS1_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS1_FAILED, ChatColor.RED);
 					}
 					break;
 					
 				case VOTE_BOSS2:
 					if (success)
 					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(voteString));
-						DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS2_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().setRingLeader2(UUID.fromString(voteString));
+						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						LanguageManager.setPlayerName(player.getName());
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS2_SUCCESS, ChatColor.GREEN);
+						RankManager.setRingLeader2(UUID.fromString(instance.voteString));
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS2_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS2_FAILED, ChatColor.RED);
 					}
 					break;
 
@@ -322,33 +328,33 @@ public class VoteManager
 				case VOTE_DAY:
 					if (success)
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_DAY_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().setDay(this.voteString);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_DAY_SUCCESS, ChatColor.GREEN);
+						DramaCraft.setDay(instance.voteString);
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_DAY_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_DAY_FAILED, ChatColor.RED);
 					}
 					break;
 				case VOTE_NIGHT:
 					if (success)
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NIGHT_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().setNight(this.voteString);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NIGHT_SUCCESS, ChatColor.GREEN);
+						DramaCraft.setNight(instance.voteString);
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NIGHT_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NIGHT_FAILED, ChatColor.RED);
 					}
 					break;
 				case VOTE_GENERAL:
 					if (success)
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_GENERAL_SUCCESS, ChatColor.GREEN);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_GENERAL_SUCCESS, ChatColor.GREEN);
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_GENERAL_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_GENERAL_FAILED, ChatColor.RED);
 					}
 
 					// broadcast = broadcast.replaceAll("%voteString%",
@@ -357,12 +363,12 @@ public class VoteManager
 				case VOTE_REVOLUTION:
 					if (success)
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_REVOLUTION_SUCCESS, ChatColor.GREEN);
-						DramaCraft.instance().getRevolutionManager().startRevolution();
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_REVOLUTION_SUCCESS, ChatColor.GREEN);
+						RevolutionManager.startRevolution();
 					}
 					else
 					{
-						broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_REVOLUTION_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_REVOLUTION_FAILED, ChatColor.RED);
 					}
 					break;
 					
@@ -376,66 +382,66 @@ public class VoteManager
 			return;
 		}
 
-		switch (this.currentVoteType)
+		switch (instance.currentVoteType)
 		{
 			case VOTE_RAIN:
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RAIN, ChatColor.AQUA);
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RAIN, ChatColor.AQUA);
 				break;
 				
 			case VOTE_SUN:
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_SUN, ChatColor.AQUA);
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_SUN, ChatColor.AQUA);
 				break;
 			
 			case VOTE_NOBLE:
 			{
-				OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(this.voteString));
-				DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE, ChatColor.AQUA);
+				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+				LanguageManager.setPlayerName(player.getName());
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE, ChatColor.AQUA);
 			} break;
 
 			case VOTE_NOBLE_KICK:
 			{
-				OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(this.voteString));
-				DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_KICK, ChatColor.AQUA);
+				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+				LanguageManager.setPlayerName(player.getName());
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_KICK, ChatColor.AQUA);
 			} break;
 
 			case VOTE_INNERCIRCLE:
 			{
-				OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(this.voteString));
-				DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE, ChatColor.AQUA);
+				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+				LanguageManager.setPlayerName(player.getName());
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE, ChatColor.AQUA);
 			} break;
 
 			case VOTE_KING:
 			{
-				OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(this.voteString));
-				DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING, ChatColor.AQUA);
+				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+				LanguageManager.setPlayerName(player.getName());
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING, ChatColor.AQUA);
 			} break;
 
 			case VOTE_QUEEN:
 			{
-				OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(this.voteString));
-				DramaCraft.instance().getLanguageManager().setPlayerName(player.getName());
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_QUEEN, ChatColor.AQUA);
+				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+				LanguageManager.setPlayerName(player.getName());
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_QUEEN, ChatColor.AQUA);
 			} break;
 
 			case VOTE_DAY:
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_DAY, ChatColor.AQUA);
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_DAY, ChatColor.AQUA);
 				break;
 				
 			case VOTE_NIGHT:
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NIGHT, ChatColor.AQUA);
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NIGHT, ChatColor.AQUA);
 				break;
 				
 			case VOTE_REVOLUTION:
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_REVOLUTION, ChatColor.AQUA);
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_REVOLUTION, ChatColor.AQUA);
 				break;
 
 			case VOTE_GENERAL:				
-				DramaCraft.instance().getLanguageManager().setPlayerName(this.voteString);
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_GENERAL, ChatColor.AQUA);
+				LanguageManager.setPlayerName(instance.voteString);
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_GENERAL, ChatColor.AQUA);
 				break;
 				
 			default: break;	
@@ -444,24 +450,24 @@ public class VoteManager
 		DramaCraft.broadcastMessage(broadcast);
 
 		int percent = 100;
-		percent = (int) (100.0F * this.yes.size() / (this.yes.size() + this.no.size()));
+		percent = (int) (100.0F * instance.yes.size() / (instance.yes.size() + instance.no.size()));
 
-		DramaCraft.instance().getLanguageManager().setAmount1(percent);
-		DramaCraft.instance().getLanguageManager().setAmount2(yes.size() + no.size());
-		DramaCraft.instance().getLanguageManager().setAmount3(reqVotes);
+		LanguageManager.setAmount1(percent);
+		LanguageManager.setAmount2(instance.yes.size() + instance.no.size());
+		LanguageManager.setAmount3(reqVotes);
 
-		broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_PROGRESS, ChatColor.AQUA);
+		broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_PROGRESS, ChatColor.AQUA);
 		DramaCraft.broadcastMessage(broadcast);
 
-		broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_HELP, ChatColor.AQUA);
+		broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_HELP, ChatColor.AQUA);
 		DramaCraft.broadcastMessage(broadcast);
 
-		this.lastVoteTime = System.nanoTime();
+		instance.lastVoteTime = System.nanoTime();
 	}
 
-	public VOTE_TYPE getCurrentVoteType()
+	static public VOTE_TYPE getCurrentVoteType()
 	{
-		return this.currentVoteType;
+		return instance.currentVoteType;
 	}
 
 	public boolean newVote(World world, Player voter, String voteText, boolean vote, VOTE_TYPE voteType)
@@ -475,44 +481,44 @@ public class VoteManager
 		if (System.nanoTime() - this.startVoteTime < voteInterval)
 		{
 			int time = (int) ((this.startVoteTime + voteInterval - System.nanoTime()) / 60000000L);
-			DramaCraft.instance().getLanguageManager().setAmount1(time);
-			voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_TOOSOON, ChatColor.RED));
-			DramaCraft.instance().logDebug(voter.getName() + " tried to start a vote too soon");
+			LanguageManager.setAmount1(time);
+			voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOSOON, ChatColor.RED));
+			DramaCraft.logDebug(voter.getName() + " tried to start a vote too soon");
 			return false;
 		}
 
 		if (voter.getUniqueId() == lastVoterId)
 		{
-			voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_NOTAGAIN, ChatColor.RED));
-			DramaCraft.instance().logDebug(voter.getName() + " tried to start a vote again, but now allowed to start another one");
+			voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_NOTAGAIN, ChatColor.RED));
+			DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but now allowed to start another one");
 			return false;
 		}
 
 		if (DramaCraft.economy.getBalance(voter.getName()) < voteCost)
 		{
-			DramaCraft.instance().getLanguageManager().setAmount1(DramaCraft.instance().startVoteCost);
-			String message = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_NOTENOUGHMONEY, ChatColor.RED);
+			LanguageManager.setAmount1(DramaCraft.instance().startVoteCost);
+			String message = LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_NOTENOUGHMONEY, ChatColor.RED);
 			voter.sendMessage(message);
-			DramaCraft.instance().logDebug(voter.getName() + " tried to start a vote again, but did not have money for it");
+			DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but did not have money for it");
 			return false;
 		}
 
 		if (voteType == VOTE_TYPE.VOTE_REVOLUTION)
 		{
-			if(DramaCraft.instance().getOnlineRebels() < 5)
+			if(RankManager.getOnlineRebels() < 5)
 			{
-				DramaCraft.instance().getLanguageManager().setAmount1(5);
-				voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_TOOFEWREBELS_ONLINE, ChatColor.RED));
-				DramaCraft.instance().logDebug(voter.getName() + " tried to start a vote again, but there are too few rebel players online");
+				LanguageManager.setAmount1(5);
+				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWREBELS_ONLINE, ChatColor.RED));
+				DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few rebel players online");
 				return false;
 				//voter.sendMessage(ChatColor.RED + "Not yet ;-)");
 				//return false;
 			}
 			
-			if(!DramaCraft.instance().isRebel(voter.getUniqueId()))
+			if(!RankManager.isRebel(voter.getUniqueId()))
 			{
-				voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_ONLYREBELSCANREVOLUTION, ChatColor.RED));
-				DramaCraft.instance().log(voter.getName() + " tried to vote but player was not rebel");
+				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_ONLYREBELSCANREVOLUTION, ChatColor.RED));
+				DramaCraft.log(voter.getName() + " tried to vote but player was not rebel");
 				return false;
 			}			
 		}
@@ -521,18 +527,18 @@ public class VoteManager
 		{
 			reqVotes = 5;
 			
-			if(DramaCraft.getOnlinePlayers() < reqVotes)
+			if(Bukkit.getServer().getOnlinePlayers().size() < reqVotes)
 			{
-				DramaCraft.instance().getLanguageManager().setAmount1(reqVotes);
-				voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
-				DramaCraft.instance().logDebug(voter.getName() + " tried to start a vote again, but there are too few players online");
+				LanguageManager.setAmount1(reqVotes);
+				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
+				DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few players online");
 				return false;
 			}
 
-			if(!DramaCraft.instance().isNoble(voter.getUniqueId()))
+			if(!RankManager.isNoble(voter.getUniqueId()))
 			{
-				voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_ONLYNOBLESCANBEKING, ChatColor.RED));
-				DramaCraft.instance().log(voter.getName() + " tried to vote but player was not a noble");
+				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_ONLYNOBLESCANBEKING, ChatColor.RED));
+				DramaCraft.log(voter.getName() + " tried to vote but player was not a noble");
 				return false;
 			}			
 		}
@@ -541,37 +547,37 @@ public class VoteManager
 		{
 			reqVotes = 5;
 			
-			if(DramaCraft.instance().getActiveNobles() < 3)
+			if(RankManager.getActiveNobles() < 3)
 			{
-				if(!DramaCraft.instance().isImperial(voter.getUniqueId()))
+				if(!RankManager.isImperial(voter.getUniqueId()))
 				{
-					voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_ONLYIMPERIALSCANVOTEFORNOBLE, ChatColor.RED));
-					DramaCraft.instance().log(voter.getName() + " tried to vote but player was not an imperial");
+					voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_ONLYIMPERIALSCANVOTEFORNOBLE, ChatColor.RED));
+					DramaCraft.log(voter.getName() + " tried to vote but player was not an imperial");
 					return false;
 				}
 
-				if(DramaCraft.instance().getOnlineImperials() < reqVotes)
+				if(RankManager.getOnlineImperials() < reqVotes)
 				{
-					DramaCraft.instance().getLanguageManager().setAmount1(reqVotes);
-					voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_TOOFEWIMPERIALS_ONLINE, ChatColor.RED));
-					DramaCraft.instance().logDebug(voter.getName() + " tried to start a vote again, but there are too few imperials online");
+					LanguageManager.setAmount1(reqVotes);
+					voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWIMPERIALS_ONLINE, ChatColor.RED));
+					DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few imperials online");
 					return false;
 				}
 			}		
 			else
 			{
-				if(!DramaCraft.instance().isNoble(voter.getUniqueId()))
+				if(!RankManager.isNoble(voter.getUniqueId()))
 				{
-					voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_ONLYNOBLESCANVOTEFORNOBLE, ChatColor.RED));
-					DramaCraft.instance().log(voter.getName() + " tried to vote but player was not a noble");
+					voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_ONLYNOBLESCANVOTEFORNOBLE, ChatColor.RED));
+					DramaCraft.log(voter.getName() + " tried to vote but player was not a noble");
 					return false;
 				}
 				
-				if(DramaCraft.instance().getOnlineNobles() < reqVotes)
+				if(RankManager.getOnlineNobles() < reqVotes)
 				{
-					DramaCraft.instance().getLanguageManager().setAmount1(reqVotes);
-					voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
-					DramaCraft.instance().logDebug(voter.getName() + " tried to start a vote again, but there are too few imperial nobles online");
+					LanguageManager.setAmount1(reqVotes);
+					voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
+					DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few imperial nobles online");
 					return false;
 				}
 
@@ -582,11 +588,11 @@ public class VoteManager
 		{
 			reqVotes = 3;
 			
-			if(DramaCraft.instance().getOnlineNobles() < 3)
+			if(RankManager.getOnlineNobles() < 3)
 			{
-				DramaCraft.instance().getLanguageManager().setAmount1(reqVotes);
-				voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
-				DramaCraft.instance().logDebug(voter.getName() + " tried to start a vote again, but there are too few nobels online");
+				LanguageManager.setAmount1(reqVotes);
+				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
+				DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few nobels online");
 				return false;
 			}		
 		}
@@ -595,37 +601,37 @@ public class VoteManager
 		{
 			reqVotes = 5;
 			
-			if(DramaCraft.instance().getActiveInnerCircle() < 3)
+			if(RankManager.getActiveInnerCircle() < 3)
 			{
-				if(!DramaCraft.instance().isRebel(voter.getUniqueId()))
+				if(!RankManager.isRebel(voter.getUniqueId()))
 				{
-					voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_ONLYREBELSCANVOTEFORINNERCIRCLE, ChatColor.RED));
-					DramaCraft.instance().log(voter.getName() + " tried to vote but player was not a rebel");
+					voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_ONLYREBELSCANVOTEFORINNERCIRCLE, ChatColor.RED));
+					DramaCraft.log(voter.getName() + " tried to vote but player was not a rebel");
 					return false;
 				}
 
-				if(DramaCraft.instance().getOnlineRebels() < reqVotes)
+				if(RankManager.getOnlineRebels() < reqVotes)
 				{
-					DramaCraft.instance().getLanguageManager().setAmount1(reqVotes);
-					voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_TOOFEWREBELS_ONLINE, ChatColor.RED));
-					DramaCraft.instance().logDebug(voter.getName() + " tried to start a vote again, but there are too few rebels online");
+					LanguageManager.setAmount1(reqVotes);
+					voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWREBELS_ONLINE, ChatColor.RED));
+					DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few rebels online");
 					return false;
 				}
 			}		
 			else
 			{
-				if(!DramaCraft.instance().isInnerCircle(voter.getUniqueId()))
+				if(!RankManager.isInnerCircle(voter.getUniqueId()))
 				{
-					voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_ONLYINNERCIRCLECANVOTEFORINNERCIRCLE, ChatColor.RED));
-					DramaCraft.instance().log(voter.getName() + " tried to vote but player was not inner circle");
+					voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_ONLYINNERCIRCLECANVOTEFORINNERCIRCLE, ChatColor.RED));
+					DramaCraft.log(voter.getName() + " tried to vote but player was not inner circle");
 					return false;
 				}
 				
-				if(DramaCraft.instance().getOnlineInnerCircle() < reqVotes)
+				if(RankManager.getOnlineInnerCircle() < reqVotes)
 				{
-					DramaCraft.instance().getLanguageManager().setAmount1(reqVotes);
-					voter.sendMessage(DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
-					DramaCraft.instance().logDebug(voter.getName() + " tried to start a vote again, but there are too few inner circle online");
+					LanguageManager.setAmount1(reqVotes);
+					voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
+					DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few inner circle online");
 					return false;
 				}
 			}
@@ -702,8 +708,8 @@ public class VoteManager
 
 		DramaCraft.broadcastMessage(broadcast);
 
-		DramaCraft.instance().getLanguageManager().setAmount1(voteCost);
-		String message = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_COST, ChatColor.AQUA);
+		LanguageManager.setAmount1(voteCost);
+		String message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_COST, ChatColor.AQUA);
 		voter.sendMessage(message);
 
 		DramaCraft.economy.withdrawPlayer(voter, voteCost);
@@ -711,7 +717,7 @@ public class VoteManager
 		return true;
 	}
 
-	public void doVote(World world, Player voter, boolean vote, VOTE_TYPE voteType)
+	static public void doVote(World world, Player voter, boolean vote, VOTE_TYPE voteType)
 	{
 		boolean firstVote = true;
 
@@ -734,30 +740,30 @@ public class VoteManager
 		switch (voteType)
 		{
 			case VOTE_REVOLUTION:
-				if(DramaCraft.instance().isImperial(voter.getUniqueId()))
+				if(RankManager.isImperial(voter.getUniqueId()))
 				{
 					voter.sendMessage(ChatColor.RED + "You are an imperial! You can't vote for a revolution!");
 					return;
 				} break;
 				
 			case VOTE_KING:
-				if(!DramaCraft.instance().isNoble(voter.getUniqueId()))
+				if(!RankManager.isNoble(voter.getUniqueId()))
 				{
 					voter.sendMessage(ChatColor.RED + "You are not a noble! Only imperial nobles can vote for the king!");
 					return;
 				} break;
 				
 			case VOTE_QUEEN:
-				if(!DramaCraft.instance().isNoble(voter.getUniqueId()))
+				if(!RankManager.isNoble(voter.getUniqueId()))
 				{
 					voter.sendMessage(ChatColor.RED + "You are not a noble! Only imperial nobles can vote for the queen!");
 					return;
 				} break;
 				
 			case VOTE_NOBLE:
-				if(DramaCraft.instance().getActiveNobles() < 3)
+				if(RankManager.getActiveNobles() < 3)
 				{
-					if(!DramaCraft.instance().isImperial(voter.getUniqueId()))
+					if(!RankManager.isImperial(voter.getUniqueId()))
 					{				
 						voter.sendMessage(ChatColor.RED + "You are not an imperial! Only imperials can vote for nobles when there are less than 3 active nobles!");
 						return;
@@ -765,7 +771,7 @@ public class VoteManager
 				}
 				else 
 				{
-					if(!DramaCraft.instance().isNoble(voter.getUniqueId()))
+					if(!RankManager.isNoble(voter.getUniqueId()))
 					{				
 						voter.sendMessage(ChatColor.RED + "You are not an imperial noble!");
 						return;
@@ -774,7 +780,7 @@ public class VoteManager
 
 			case VOTE_NOBLE_KICK:
 				{
-					if(!DramaCraft.instance().isNoble(voter.getUniqueId()))
+					if(!RankManager.isNoble(voter.getUniqueId()))
 					{				
 						voter.sendMessage(ChatColor.RED + "You are not an imperial noble!");
 						return;
@@ -782,9 +788,9 @@ public class VoteManager
 				} break;
 
 			case VOTE_INNERCIRCLE:
-				if(DramaCraft.instance().getNumberOfInnerCircle() < 3)
+				if(RankManager.getNumberOfInnerCircle() < 3)
 				{
-					if(!DramaCraft.instance().isRebel(voter.getUniqueId()))
+					if(!RankManager.isRebel(voter.getUniqueId()))
 					{				
 						voter.sendMessage(ChatColor.RED + "You are not a citizen! Only citizens can vote for inner circle when there are less than 3 in the inner circle!");
 						return;
@@ -792,7 +798,7 @@ public class VoteManager
 				}
 				else 
 				{
-					if(!DramaCraft.instance().isInnerCircle(voter.getUniqueId()))
+					if(!RankManager.isInnerCircle(voter.getUniqueId()))
 					{				
 						voter.sendMessage(ChatColor.RED + "You are not in the rebel inner circle!");
 						return;
@@ -805,18 +811,18 @@ public class VoteManager
 		if (vote)
 		{
 			voter.sendMessage("You voted yes");
-			if (!this.yes.contains(voter.getName()))
+			if (!instance.yes.contains(voter.getName()))
 			{
-				this.yes.add(voter.getName());
+				instance.yes.add(voter.getName());
 			}
 			else
 			{
 				firstVote = false;
 			}
 			
-			if (this.no.contains(voter.getName()))
+			if (instance.no.contains(voter.getName()))
 			{
-				this.no.remove(voter.getName());
+				instance.no.remove(voter.getName());
 				firstVote = false;
 			}
 		}
@@ -824,15 +830,15 @@ public class VoteManager
 		{
 			voter.sendMessage("You voted no");
 			
-			if (this.yes.contains(voter.getName()))
+			if (instance.yes.contains(voter.getName()))
 			{
-				this.yes.remove(voter.getName());
+				instance.yes.remove(voter.getName());
 				firstVote = false;
 			}
 			
-			if (!this.no.contains(voter.getName()))
+			if (!instance.no.contains(voter.getName()))
 			{
-				this.no.add(voter.getName());
+				instance.no.add(voter.getName());
 			}
 			
 			else
@@ -843,8 +849,8 @@ public class VoteManager
 
 		if (firstVote)
 		{
-			DramaCraft.instance().getLanguageManager().setAmount1(DramaCraft.instance().votePayment);
-			String message = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_PAYMENT, ChatColor.AQUA);
+			LanguageManager.setAmount1(DramaCraft.instance().votePayment);
+			String message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_PAYMENT, ChatColor.AQUA);
 
 			voter.sendMessage(message);
 

@@ -84,7 +84,7 @@ public class ImperialManager implements Listener
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
-		if (DramaCraft.instance().isKing(event.getPlayer().getUniqueId()))
+		if (RankManager.isKing(event.getPlayer().getUniqueId()))
 		{
 			for(Player player : DramaCraft.instance().getServer().getOnlinePlayers())
 			{
@@ -96,7 +96,8 @@ public class ImperialManager implements Listener
 				TitleManager.sendTitle(player, 1*20, 3*20, 1*20, ChatColor.GOLD + "The King has arrived", ChatColor.GREEN + "Please greet his majesty " + ChatColor.GOLD + event.getPlayer().getName() + ChatColor.GREEN + "!");
 			}
 		}		
-		if (DramaCraft.instance().isKing(event.getPlayer().getUniqueId()))
+		
+		if (RankManager.isKing(event.getPlayer().getUniqueId()))
 		{
 			for(Player player : DramaCraft.instance().getServer().getOnlinePlayers())
 			{
@@ -117,14 +118,14 @@ public class ImperialManager implements Listener
 		{
 			// Tell imperials about transmitters and how to smash them
 			{
-				List<Player> players = DramaCraft.instance().getOnlineImperialPlayers();
+				List<Player> players = RankManager.getOnlineImperialPlayers();
 				if (players.size() > 0 && DramaCraft.instance().getTransmitterManager().getTransmitters() > 0)
 				{
 					if (System.currentTimeMillis() > lastImperialHelpTime + (10 * 60 * 1000))
 					{
 						DramaCraft.instance().getLanguageManager().setAmount1(DramaCraft.instance().getTransmitterManager().getTransmitters());
 
-						for (Player imperialPlayer : DramaCraft.instance().getOnlineImperialPlayers())
+						for (Player imperialPlayer : RankManager.getOnlineImperialPlayers())
 						{
 							DramaCraft.instance().sendInfo(imperialPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_ACTIVE_TRANSMITTERS, ChatColor.AQUA, 0, 120);
 						}
@@ -136,35 +137,35 @@ public class ImperialManager implements Listener
 			
 			// Remove inactive nobles
 			{
-				Set<UUID> players = DramaCraft.instance().getImperials();
+				Set<UUID> players = RankManager.getImperials();
 				
 				for(UUID playerId : players)
 				{
-					if(DramaCraft.instance().getImperialLastOnlineDays(playerId) > 30)
+					if(RankManager.getImperialLastOnlineDays(playerId) > 30)
 					{
-						DramaCraft.instance().setImperial(playerId);
+						RankManager.setImperial(playerId);
 						break;
 					}
 				}
 			}			
 			
-			if (DramaCraft.instance().getActiveNobles() < 3)
+			if (RankManager.getActiveNobles() < 3)
 			{
-				for (Player rebelPlayer : DramaCraft.instance().getOnlineImperialPlayers())
+				for (Player rebelPlayer : RankManager.getOnlineImperialPlayers())
 				{
 					DramaCraft.instance().sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_NOBLES, ChatColor.AQUA, 0, 120);
 				}
 			}
-			else if (DramaCraft.instance().getKing() == null)
+			else if (RankManager.getKing() == null)
 			{
-				for (Player rebelPlayer : DramaCraft.instance().getOnlineNoblePlayers())
+				for (Player rebelPlayer : RankManager.getOnlineNoblePlayers())
 				{
 					DramaCraft.instance().sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_KING, ChatColor.AQUA, 0, 120);
 				}
 			}
-			else if (DramaCraft.instance().getQueen() == null)
+			else if (RankManager.getQueen() == null)
 			{
-				for (Player rebelPlayer : DramaCraft.instance().getOnlineNoblePlayers())
+				for (Player rebelPlayer : RankManager.getOnlineNoblePlayers())
 				{
 					DramaCraft.instance().sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_QUEEN, ChatColor.AQUA, 0, 120);
 				}
@@ -174,21 +175,21 @@ public class ImperialManager implements Listener
 				switch(random.nextInt(2))
 				{
 					case 0: 
-					for (Player rebelPlayer : DramaCraft.instance().getOnlineNoblePlayers())
+					for (Player noblePlayer : RankManager.getOnlineNoblePlayers())
 					{
-						DramaCraft.instance().sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_KICK_NOBLE, ChatColor.AQUA, 0, 120);
+						DramaCraft.instance().sendInfo(noblePlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_KICK_NOBLE, ChatColor.AQUA, 0, 120);
 					} break;
 					
 					case 1: 
-					for (Player rebelPlayer : DramaCraft.instance().getOnlineNoblePlayers())
+					for (Player noblePlayer : RankManager.getOnlineNoblePlayers())
 					{
-						DramaCraft.instance().sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_ADDBOUNTY, ChatColor.AQUA, 0, 120);
+						DramaCraft.instance().sendInfo(noblePlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_ADDBOUNTY, ChatColor.AQUA, 0, 120);
 					} break;
 					
 					case 2: 
-					for (Player rebelPlayer : DramaCraft.instance().getOnlineNoblePlayers())
+					for (Player noblePlayer : RankManager.getOnlineNoblePlayers())
 					{
-						DramaCraft.instance().sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_CLAIMBOUNTY, ChatColor.AQUA, 0, 120);
+						DramaCraft.instance().sendInfo(noblePlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_CLAIMBOUNTY, ChatColor.AQUA, 0, 120);
 					} break;
 				}
 			}

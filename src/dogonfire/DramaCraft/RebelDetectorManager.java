@@ -140,7 +140,7 @@ public class RebelDetectorManager implements Listener
 	{
 		Player player = event.getPlayer();
 
-		if(!plugin.isImperial(player.getUniqueId()))
+		if(!RankManager.isImperial(player.getUniqueId()))
 		{
 			event.getPlayer().sendMessage(ChatColor.RED + "Only imperials can build an Imperial rebel detectors!");
 			return false;					
@@ -196,11 +196,11 @@ public class RebelDetectorManager implements Listener
 		
 		if(random.nextInt(2)==0)
 		{
-			plugin.setKingHead(statueBlock.getRelative(BlockFace.UP).getLocation());
+			RankManager.setKingHead(statueBlock.getRelative(BlockFace.UP).getLocation());
 		}
 		else
 		{
-			plugin.setQueenHead(statueBlock.getRelative(BlockFace.UP).getLocation());
+			RankManager.setQueenHead(statueBlock.getRelative(BlockFace.UP).getLocation());
 		}
 
 		int detectorId = this.addDetector(event.getPlayer(), message, event.getBlock().getLocation());
@@ -255,7 +255,7 @@ public class RebelDetectorManager implements Listener
 	{
 		Player player = event.getPlayer();
 		
-		if(!plugin.isImperial(player.getUniqueId()) && !player.isOp())
+		if(!RankManager.isImperial(player.getUniqueId()) && !player.isOp())
 		{
 			return;
 		}
@@ -280,7 +280,7 @@ public class RebelDetectorManager implements Listener
 			removeDetector(event.getBlock().getLocation());
 			plugin.log(event.getPlayer().getName() + " removed a rebel detector at " + event.getBlock().getLocation());
 			
-			if(plugin.isRebel(event.getPlayer().getUniqueId()))
+			if(RankManager.isRebel(event.getPlayer().getUniqueId()))
 			{
 				plugin.getServer().broadcastMessage(ChatColor.GOLD + event.getPlayer().getName() + ChatColor.AQUA + " destroyed a rebel detector!");
 			}
@@ -345,7 +345,7 @@ public class RebelDetectorManager implements Listener
 		Set<String> keys = section.getKeys(false);
 		int income = keys.size() * 10;		
 		
-		int n = plugin.getActiveImperials();
+		int n = RankManager.getActiveImperials();
 		
 		if(n==0)
 		{
@@ -359,7 +359,7 @@ public class RebelDetectorManager implements Listener
 	
 	public void updateDetectors()
 	{
-		if(plugin.getOnlineImperials()==0 || detectors.size()==0)
+		if(RankManager.getOnlineImperials()==0 || detectors.size()==0)
 		{
 			return;			
 		}

@@ -115,7 +115,7 @@ public class BountyManager implements Listener
 	{
 		Player player = event.getPlayer();
 		
-		if(!plugin.isImperial(player.getUniqueId()))
+		if(!RankManager.isImperial(player.getUniqueId()))
 		{
 			return;
 		}
@@ -195,7 +195,7 @@ public class BountyManager implements Listener
 				continue;
 			}
 			
-			if(plugin.isRebel(onlinePlayer.getUniqueId()))
+			if(RankManager.isRebel(onlinePlayer.getUniqueId()))
 			{
 				continue;
 			}
@@ -220,7 +220,7 @@ public class BountyManager implements Listener
 			return;
 		}
 	
-		if(plugin.isRebel(killer.getUniqueId()))
+		if(RankManager.isRebel(killer.getUniqueId()))
 		{
 			return;			
 		}

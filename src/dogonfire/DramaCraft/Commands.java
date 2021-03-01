@@ -34,9 +34,9 @@ public class Commands implements Listener
 	
 	private void doVote(CommandSender sender, Player player, VoteManager.VOTE_TYPE voteType)
 	{
-		if (DramaCraft.getVoteManager().getCurrentVoteType() == VoteManager.VOTE_TYPE.VOTE_NONE)
+		if (VoteManager.getCurrentVoteType() == VoteManager.VOTE_TYPE.VOTE_NONE)
 		{
-			sender.sendMessage(ChatColor.RED + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_NOTHING_TO_VOTE, ChatColor.RED));
+			sender.sendMessage(ChatColor.RED + LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_NOTHING_TO_VOTE, ChatColor.RED));
 			return;
 		}
 
@@ -50,27 +50,27 @@ public class Commands implements Listener
 			}
 		}*/
 
-		DramaCraft.getVoteManager().doVote(this.currentWorld, player, true, voteType);
-		DramaCraft.getVoteManager().checkVote(40);
+		VoteManager.doVote(this.currentWorld, player, true, voteType);
+		VoteManager.checkVote(40);
 	}
 
 	private boolean newVote(CommandSender sender, Player player, VoteManager.VOTE_TYPE voteType, String text)
 	{
-		if (DramaCraft.getVoteManager().getCurrentVoteType() != VoteManager.VOTE_TYPE.VOTE_NONE)
+		if (VoteManager.getCurrentVoteType() != VoteManager.VOTE_TYPE.VOTE_NONE)
 		{
 			String message = "NO_ALREADY";
 
-			switch (DramaCraft.getVoteManager().getCurrentVoteType())
+			switch (VoteManager.getCurrentVoteType())
 			{
-				case VOTE_INNERCIRCLE: 	message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
-				case VOTE_NOBLE: 	message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
-				case VOTE_KING: 	message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
-				case VOTE_QUEEN: 	message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_ALREADY_QUEEN, ChatColor.RED); break;
-				case VOTE_NIGHT: 	message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_ALREADY_NIGHT, ChatColor.RED); break;
-				case VOTE_DAY: 		message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_ALREADY_DAY, ChatColor.RED); break;
-				case VOTE_SUN: 		message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_ALREADY_SUN, ChatColor.RED); break;
-				case VOTE_RAIN:		message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_ALREADY_RAIN, ChatColor.RED); break;
-				case VOTE_GENERAL: 	message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
+				case VOTE_INNERCIRCLE: 	message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
+				case VOTE_NOBLE: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
+				case VOTE_KING: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
+				case VOTE_QUEEN: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_QUEEN, ChatColor.RED); break;
+				case VOTE_NIGHT: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_NIGHT, ChatColor.RED); break;
+				case VOTE_DAY: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_DAY, ChatColor.RED); break;
+				case VOTE_SUN: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_SUN, ChatColor.RED); break;
+				case VOTE_RAIN:			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_RAIN, ChatColor.RED); break;
+				case VOTE_GENERAL: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
 				case VOTE_HELP: 	voteHelp(sender); break;
 			}
 			
@@ -84,51 +84,51 @@ public class Commands implements Listener
 
 	private void voteHelp(CommandSender sender)
 	{
-		//sender.sendMessage("" + ChatColor.WHITE + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_HEAD, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_INFO, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote day " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_DAY, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote night " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NIGHT, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote sun " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_SUN, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote rain " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_RAIN, ChatColor.AQUA));
+		//sender.sendMessage("" + ChatColor.WHITE + plugin.getLanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_HEAD, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_INFO, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote day " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_DAY, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote night " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NIGHT, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote sun " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_SUN, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote rain " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_RAIN, ChatColor.AQUA));
 		
 		Player player = (Player)sender;
 		
-		if(plugin.isNoble(player.getUniqueId()))
+		if(RankManager.isNoble(player.getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote king <playername> " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_KING, ChatColor.AQUA));
-			sender.sendMessage("" + ChatColor.WHITE + "/vote queen <playername> " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_QUEEN, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote king <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_KING, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote queen <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_QUEEN, ChatColor.AQUA));
 		}
 
-		if(plugin.isNoble(player.getUniqueId()) || plugin.getActiveNobles() < 3)
+		if(RankManager.isNoble(player.getUniqueId()) || RankManager.getActiveNobles() < 3)
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote noble <playername> " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote noble <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE, ChatColor.AQUA));
 		}
 
-		if(plugin.isNoble(player.getUniqueId()))
+		if(RankManager.isNoble(player.getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote kicknoble <playername> " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE_KICK, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote kicknoble <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE_KICK, ChatColor.AQUA));
 		}
 
-		if(plugin.isInnerCircle(player.getUniqueId()))
+		if(RankManager.isInnerCircle(player.getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote ringleader <playername> " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_KING, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote ringleader <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_KING, ChatColor.AQUA));
 		}
 
-		if(plugin.isInnerCircle(player.getUniqueId()) || plugin.getActiveInnerCircle() < 3)
+		if(RankManager.isInnerCircle(player.getUniqueId()) || RankManager.getActiveInnerCircle() < 3)
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote innercircle <playername> " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote innercircle <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE, ChatColor.AQUA));
 		}
 
-		if(plugin.isInnerCircle(player.getUniqueId()))
+		if(RankManager.isInnerCircle(player.getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote kickinnercircle <playername> " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE_KICK, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote kickinnercircle <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE_KICK, ChatColor.AQUA));
 		}
 
-		sender.sendMessage("" + ChatColor.WHITE + "/vote question " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_QUESTION, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote question " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_QUESTION, ChatColor.AQUA));
 
-		if(plugin.isRebel(player.getUniqueId()))
+		if(RankManager.isRebel(player.getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote revolution " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REVOLUTION, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote revolution " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REVOLUTION, ChatColor.AQUA));
 		}
 		
 	}
@@ -139,7 +139,7 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.AQUA + "By DogOnFire");
 		sender.sendMessage("" + ChatColor.AQUA);
 		
-		sender.sendMessage("" + ChatColor.GOLD + plugin.getNumberOfRebels() + ChatColor.RED + " Rebels vs " + ChatColor.GOLD + plugin.getNumberOfImperials() + ChatColor.AQUA + " Imperials");
+		sender.sendMessage("" + ChatColor.GOLD + RankManager.getNumberOfRebels() + ChatColor.RED + " Rebels vs " + ChatColor.GOLD + RankManager.getNumberOfImperials() + ChatColor.AQUA + " Imperials");
 		sender.sendMessage("" + ChatColor.AQUA);
 		sender.sendMessage("" + ChatColor.AQUA + "Imperials has " + ChatColor.GOLD + plugin.instance().getResourceManager().getImperialResources() + ChatColor.AQUA + " resources.");
 		sender.sendMessage("" + ChatColor.AQUA + "Rebels has " + ChatColor.GOLD + plugin.instance().getResourceManager().getRebelResources() + ChatColor.AQUA + " resources.");
@@ -151,39 +151,39 @@ public class Commands implements Listener
 
 		Player player = (Player)sender;
 
-		if(plugin.isNoble(player.getUniqueId()))
+		if(RankManager.isNoble(player.getUniqueId()))
 		{	
 			sender.sendMessage(ChatColor.WHITE + "You are an Imperial Noble");
 		}
 
-		if(plugin.isInnerCircle(player.getUniqueId()))
+		if(RankManager.isInnerCircle(player.getUniqueId()))
 		{	
 			sender.sendMessage(ChatColor.WHITE + "You are part of the Rebel Inner Circle");
 		}
 
-		if(plugin.isNeutral(player.getUniqueId()))
+		if(RankManager.isNeutral(player.getUniqueId()))
 		{	
 			sender.sendMessage(ChatColor.WHITE + "You are Neutral");
 		}
 		
-		if(plugin.isImperial(player.getUniqueId()))
+		if(RankManager.isImperial(player.getUniqueId()))
 		{	
 			sender.sendMessage(ChatColor.WHITE + "You are an " + ChatColor.AQUA + " Imperial");
 		}
 
-		if(plugin.isRebel(player.getUniqueId()))
+		if(RankManager.isRebel(player.getUniqueId()))
 		{	
 			sender.sendMessage(ChatColor.WHITE + "You are a " + ChatColor.RED + " Rebel");
 		}
 
 		sender.sendMessage("" + ChatColor.AQUA);
 
-		if(plugin.isImperial(player.getUniqueId()))
+		if(RankManager.isImperial(player.getUniqueId()))
 		{			
 			sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/imperials" + ChatColor.AQUA + " to see info about the Imperials");
 		}
 		
-		if(plugin.isRebel(player.getUniqueId()))
+		if(RankManager.isRebel(player.getUniqueId()))
 		{			
 			sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/rebels" + ChatColor.AQUA + " to see info about the Rebels");
 		}
@@ -191,14 +191,14 @@ public class Commands implements Listener
 		sender.sendMessage("" + ChatColor.AQUA);
 		sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/vote help" + ChatColor.AQUA + " to see how to vote");
 
-		if(plugin.isImperial(((Player)sender).getUniqueId()))
+		if(RankManager.isImperial(((Player)sender).getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/dc imperials " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_IMPERIALS, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/dc imperials " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_IMPERIALS, ChatColor.AQUA));
 		}
 		
-		if(plugin.isRebel(((Player)sender).getUniqueId()))
+		if(RankManager.isRebel(((Player)sender).getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/dc rebels " + plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REBELS, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/dc rebels " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REBELS, ChatColor.AQUA));
 		}
 
 		sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/dc <player>" + ChatColor.AQUA + " to view info about a player");
@@ -207,8 +207,8 @@ public class Commands implements Listener
 
 	private void sendKingQueenWho(CommandSender sender)
 	{
-		String kingName = plugin.getKingName();
-		String queenName = plugin.getQueenName();
+		String kingName = RankManager.getKingName();
+		String queenName = RankManager.getQueenName();
 		
 		if (kingName == null)
 		{
@@ -216,7 +216,7 @@ public class Commands implements Listener
 		}
 		else
 		{
-			long kingDays = plugin.getKingElectionDays();
+			long kingDays = RankManager.getKingElectionDays();
 			
 			if(kingDays == 0)
 			{
@@ -234,7 +234,7 @@ public class Commands implements Listener
 		}
 		else
 		{
-			long queenDays = plugin.getQueenElectionDays();
+			long queenDays = RankManager.getQueenElectionDays();
 
 			if(queenDays == 0)
 			{
@@ -249,13 +249,13 @@ public class Commands implements Listener
 
 	public void addBounty(Player player, Player targetPlayer, int bounty)
 	{
-		if(!plugin.isImperial(player.getUniqueId()))
+		if(!RankManager.isImperial(player.getUniqueId()))
 		{
 			player.sendMessage(ChatColor.RED + "Only an imperial can set a bounty a rebel");
 			return;			
 		}
 
-		if(!plugin.isRebel(targetPlayer.getUniqueId()))
+		if(!RankManager.isRebel(targetPlayer.getUniqueId()))
 		{
 			player.sendMessage(ChatColor.RED + "You can only set a bounty on a rebel");
 			return;			
@@ -308,7 +308,7 @@ public class Commands implements Listener
 	{		
 		Player player = plugin.getServer().getPlayer(args[0]);
 
-		DramaCraft.instance().updatePrefix(player.getUniqueId());
+		RankManager.updatePrefix(player.getUniqueId());
 
 		sender.sendMessage("Prefix updated.");
 	}
@@ -326,12 +326,12 @@ public class Commands implements Listener
 		}
 		else
 		{
-			this.plugin.log(ChatColor.YELLOW + "------------------ " + this.plugin.getDescription().getFullName() + " ------------------");
-			this.plugin.log("" + ChatColor.GOLD + plugin.getNumberOfRebels() + ChatColor.AQUA + " Rebels vs " + ChatColor.GOLD + plugin.getNumberOfImperials() + ChatColor.AQUA + " Imperials");
-			this.plugin.log("");
+			DramaCraft.log(ChatColor.YELLOW + "------------------ " + this.plugin.getDescription().getFullName() + " ------------------");
+			DramaCraft.log("" + ChatColor.RED + RankManager.getNumberOfRebels() + " Rebels" + ChatColor.GOLD + " vs " + ChatColor.AQUA + RankManager.getNumberOfImperials() + " Imperials");
+			DramaCraft.log("");
 
 			sendKingQueenWho(sender);
-			this.plugin.log("");
+			DramaCraft.log("");
 					
 			if (command.getName().equalsIgnoreCase("dc"))
 			{
@@ -343,11 +343,11 @@ public class Commands implements Listener
 
 						if (targetPlayer != null)
 						{
-							plugin.setImperial(targetPlayer.getUniqueId());
+							RankManager.setImperial(targetPlayer.getUniqueId());
 						}
 						else
 						{
-							plugin.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[0]);
 						}
 					}
 
@@ -362,11 +362,11 @@ public class Commands implements Listener
 
 						if (targetPlayer != null)
 						{
-							plugin.setRebel(targetPlayer.getUniqueId());
+							RankManager.setRebel(targetPlayer.getUniqueId());
 						}
 						else
 						{
-							plugin.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[0]);
 						}
 					}
 
@@ -381,11 +381,11 @@ public class Commands implements Listener
 
 						if (targetPlayer != null)
 						{
-							plugin.setNoble(targetPlayer.getUniqueId());
+							RankManager.setNoble(targetPlayer.getUniqueId());
 						}
 						else
 						{
-							plugin.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[0]);
 						}
 					}
 
@@ -400,11 +400,11 @@ public class Commands implements Listener
 
 						if (targetPlayer != null)
 						{
-							plugin.setInnerCircle(targetPlayer.getUniqueId());
+							RankManager.setInnerCircle(targetPlayer.getUniqueId());
 						}
 						else
 						{
-							plugin.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[0]);
 						}
 					}
 
@@ -419,11 +419,11 @@ public class Commands implements Listener
 
 						if (targetPlayer != null)
 						{
-							plugin.setNeutral(targetPlayer.getUniqueId());
+							RankManager.setNeutral(targetPlayer.getUniqueId());
 						}
 						else
 						{
-							plugin.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[0]);
 						}
 					}
 
@@ -438,11 +438,11 @@ public class Commands implements Listener
 
 						if (targetPlayer != null)
 						{
-							plugin.setKing(targetPlayer.getUniqueId());
+							RankManager.setKing(targetPlayer.getUniqueId());
 						}
 						else
 						{
-							plugin.log("No such player " + args[0]);
+							DramaCraft.log("No such player " + args[0]);
 						}
 					}
 
@@ -457,7 +457,7 @@ public class Commands implements Listener
 
 						if (targetPlayer != null)
 						{
-							plugin.setQueen(targetPlayer.getUniqueId());
+							RankManager.setQueen(targetPlayer.getUniqueId());
 						}
 						else
 						{
@@ -489,7 +489,7 @@ public class Commands implements Listener
 			{
 				if(args[0].equals("help"))
 				{
-					if(plugin.isRebel(player.getUniqueId()))
+					if(RankManager.isRebel(player.getUniqueId()))
 					{			
 						imperialsHelp(sender);
 						return true;
@@ -498,7 +498,7 @@ public class Commands implements Listener
 
 				if(args[0].equals("nobles"))
 				{
-					if(plugin.isImperial(player.getUniqueId()))
+					if(RankManager.isImperial(player.getUniqueId()))
 					{			
 						noblesHelp(sender);
 						return true;
@@ -515,7 +515,7 @@ public class Commands implements Listener
 			{
 				if(args[0].equals("help"))
 				{
-					if(plugin.isRebel(player.getUniqueId()))
+					if(RankManager.isRebel(player.getUniqueId()))
 					{			
 						imperialsHelp(sender);
 						return true;
@@ -533,7 +533,7 @@ public class Commands implements Listener
 			{
 				if(args[0].equals("help"))
 				{
-					if(plugin.isRebel(player.getUniqueId()))
+					if(RankManager.isRebel(player.getUniqueId()))
 					{			
 						rebelsHelp(sender);
 						return true;
@@ -542,7 +542,7 @@ public class Commands implements Listener
 				
 				if(args[0].equals("innercircle"))
 				{
-					if(plugin.isRebel(player.getUniqueId()))
+					if(RankManager.isRebel(player.getUniqueId()))
 					{			
 						innerCircleHelp(sender);
 						return true;
@@ -557,7 +557,7 @@ public class Commands implements Listener
 
 				if(args[0].equals("transmitter"))
 				{
-					if(plugin.isRebel(player.getUniqueId()))
+					if(RankManager.isRebel(player.getUniqueId()))
 					{			
 						rebelsTransmitterHelp(sender);
 						return true;
@@ -612,7 +612,7 @@ public class Commands implements Listener
 
 		if(command.getName().equalsIgnoreCase("guard"))
 		{
-			if(plugin.isNoble(player.getUniqueId()))
+			if(RankManager.isNoble(player.getUniqueId()))
 			{			
 				if(args.length == 0)
 				{
@@ -654,7 +654,7 @@ public class Commands implements Listener
 		
 			String rankname = args[1]; 
 			
-			if(plugin.isNoble(player.getUniqueId()))
+			if(RankManager.isNoble(player.getUniqueId()))
 			{			
 				if(rankname.equals("wizard") || rankname.equals("knight") || rankname.equals("farmer") || rankname.equals("shopkeeper"))
 				{
@@ -662,13 +662,13 @@ public class Commands implements Listener
 
 					if(targetPlayer!=null)
 					{					
-						if(!plugin.isImperial(player.getUniqueId()))
+						if(!RankManager.isImperial(player.getUniqueId()))
 						{
 							player.sendMessage(ChatColor.RED + "Target player must be an Imperial");
 							return true;							
 						}
 						
-						if(plugin.isRoyal(player.getUniqueId()))
+						if(RankManager.isRoyal(player.getUniqueId()))
 						{
 							player.sendMessage(ChatColor.RED + "Target player cannot be an Imperial Noble or Royal");
 							return true;							
@@ -680,7 +680,7 @@ public class Commands implements Listener
 						}
 						
 						plugin.getPermissionsManager().setRankGroup(targetPlayer, rankname);
-						plugin.setNobleClientRank(player, targetPlayer.getUniqueId(), rankname);
+						RankManager.setNobleClientRank(player, targetPlayer.getUniqueId(), rankname);
 						plugin.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.AQUA + " to imperial " + rankname);
 						targetPlayer.sendMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed you to " + rankname);
 					}
@@ -695,7 +695,7 @@ public class Commands implements Listener
 				}
 			}
 			else
-			if(plugin.isInnerCircle(player.getUniqueId()))
+			if(RankManager.isInnerCircle(player.getUniqueId()))
 			{			
 				if(rankname.equals("wizard") || rankname.equals("rogue") || rankname.equals("farmer") || rankname.equals("shopkeeper"))
 				{
@@ -703,13 +703,13 @@ public class Commands implements Listener
 
 					if(targetPlayer!=null)
 					{					
-						if(!plugin.isRebel(player.getUniqueId()))
+						if(!RankManager.isRebel(player.getUniqueId()))
 						{			
 							player.sendMessage(ChatColor.RED + "Target player must be a Rebel");																											
 							return true;
 						}
 						
-						if(plugin.isRingLeader(targetPlayer.getUniqueId()))
+						if(RankManager.isRingLeader(targetPlayer.getUniqueId()))
 						{			
 							player.sendMessage(ChatColor.RED + "Target player cannot be in the Rebel inner circle or boss");																											
 							return true;
@@ -721,7 +721,7 @@ public class Commands implements Listener
 						}
 
 						plugin.getPermissionsManager().setRankGroup(targetPlayer, rankname);
-						plugin.setInnerCircleClientRank(player, targetPlayer.getUniqueId(), rankname);
+						RankManager.setInnerCircleClientRank(player, targetPlayer.getUniqueId(), rankname);
 						plugin.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.AQUA + " to rebel " + rankname);
 						targetPlayer.sendMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed you to " + rankname);
 					}
@@ -781,7 +781,7 @@ public class Commands implements Listener
 
 		if(command.getName().equalsIgnoreCase("track"))
 		{
-			if(plugin.isImperial(player.getUniqueId()))
+			if(RankManager.isImperial(player.getUniqueId()))
 			{
 				double distance = plugin.getTransmitterManager().getClosestDistanceToTransmitter(player.getLocation());
 				
@@ -899,7 +899,7 @@ public class Commands implements Listener
 
 					if (targetPlayer == null)
 					{
-						sender.sendMessage(plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
+						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
 						return true;
 					}
 
@@ -922,7 +922,7 @@ public class Commands implements Listener
 
 					if (targetPlayer == null)
 					{
-						sender.sendMessage(plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
+						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
 						return true;
 					}
 
@@ -945,7 +945,7 @@ public class Commands implements Listener
 
 					if (targetPlayer == null)
 					{
-						sender.sendMessage(plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
+						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
 						return true;
 					}
 
@@ -968,7 +968,7 @@ public class Commands implements Listener
 
 					if (targetPlayer == null)
 					{
-						sender.sendMessage(plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
+						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
 						return true;
 					}
 
@@ -1026,17 +1026,17 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.YELLOW + title);		
 		sender.sendMessage("");
 		
-		if(DramaCraft.instance().isImperial(player.getUniqueId()))
+		if(RankManager.isImperial(player.getUniqueId()))
 		{
-			if(DramaCraft.instance().isKing(player.getUniqueId()))
+			if(RankManager.isKing(player.getUniqueId()))
 			{
 				sender.sendMessage(ChatColor.GOLD + "King");			
 			}
-			if(DramaCraft.instance().isQueen(player.getUniqueId()))
+			if(RankManager.isQueen(player.getUniqueId()))
 			{
 				sender.sendMessage(ChatColor.GOLD + "Queen");			
 			}
-			if(DramaCraft.instance().isNoble(player.getUniqueId()))
+			if(RankManager.isNoble(player.getUniqueId()))
 			{
 				sender.sendMessage(ChatColor.DARK_BLUE + "Imperial Noble");			
 			}
@@ -1045,7 +1045,7 @@ public class Commands implements Listener
 				sender.sendMessage(ChatColor.AQUA + "Imperial");							
 			}
 			
-			Date joinDate = DramaCraft.instance().getJoinDate(player.getUniqueId());
+			Date joinDate = RankManager.getJoinDate(player.getUniqueId());
 			
 			if(joinDate != null)
 			{
@@ -1054,13 +1054,13 @@ public class Commands implements Listener
 			}
 		}
 		
-		else if(DramaCraft.instance().isRebel(player.getUniqueId()))
+		else if(RankManager.isRebel(player.getUniqueId()))
 		{
-			if(DramaCraft.instance().isRingLeader(player.getUniqueId()))
+			if(RankManager.isRingLeader(player.getUniqueId()))
 			{
 				sender.sendMessage(ChatColor.GOLD + "Ringleader");			
 			}
-			if(DramaCraft.instance().isInnerCircle(player.getUniqueId()))
+			if(RankManager.isInnerCircle(player.getUniqueId()))
 			{
 				sender.sendMessage(ChatColor.DARK_BLUE + "Inner Circle");			
 			}
@@ -1069,7 +1069,7 @@ public class Commands implements Listener
 				sender.sendMessage(ChatColor.RED + "Rebel ");							
 			}			
 	
-			Date joinDate = DramaCraft.instance().getJoinDate(player.getUniqueId());
+			Date joinDate = RankManager.getJoinDate(player.getUniqueId());
 			
 			if(joinDate != null)
 			{
@@ -1093,11 +1093,11 @@ public class Commands implements Listener
 			return;
 		}
 		
-		String kingName = plugin.getKingName();	
+		String kingName = RankManager.getKingName();	
 		
 		if(kingName!=null)
 		{
-			plugin.setKingHead(player.getUniqueId(), player.getLocation());
+			RankManager.setKingHead(player.getUniqueId(), player.getLocation());
 		}
 	}
 
@@ -1108,39 +1108,25 @@ public class Commands implements Listener
 			return;
 		}
 		
-		String queenName = plugin.getQueenName();		
+		String queenName = RankManager.getQueenName();		
 		
 		if(queenName!=null)
 		{
-			plugin.setQueenHead(player.getUniqueId(), player.getLocation());
+			RankManager.setQueenHead(player.getUniqueId(), player.getLocation());
 		}
 	}
-	
-	private boolean isDay(long currenttime, int offset)
-	{
-		return (currenttime < 12000 + offset) && (currenttime > offset);
-	}
-
-	private boolean isSun(World world)
-	{
-		if ((world.hasStorm()) || (world.isThundering()))
-		{
-			return false;
-		}
-		return true;
-	}
-	
+		
 	private void noblesHelp(CommandSender sender)
 	{
 		//sender.sendMessage(ChatColor.WHITE + "The Empire has " + ChatColor.GOLD + plugin.getStatueManager().getStatues() + ChatColor.WHITE + " statues placed across these lands");
 		
-		Set<String> nobles = plugin.getNobles();
+		Set<String> nobles = RankManager.getNobles();
 		List<Member> members = new ArrayList<Member>();
 		
 		for(String member : nobles)
 		{
 			UUID playerId = UUID.fromString(member);
-			long days = plugin.getNobleElectionDays(playerId);
+			long days = RankManager.getNobleElectionDays(playerId);
 			
 			members.add(new Member(playerId, days));
 		}
@@ -1191,13 +1177,13 @@ public class Commands implements Listener
 
 	private void innerCircleHelp(CommandSender sender)
 	{	
-		Set<String> innerCircle = plugin.getInnerCircle();
+		Set<String> innerCircle = RankManager.getInnerCircle();
 		List<Member> members = new ArrayList<Member>();
 		
 		for(String member : innerCircle)
 		{
 			UUID playerId = UUID.fromString(member);
-			long days = plugin.getNobleElectionDays(playerId);
+			long days = RankManager.getNobleElectionDays(playerId);
 			
 			members.add(new Member(playerId, days));
 		}

@@ -24,12 +24,13 @@ public class PermissionsManager
 	private static PermissionsManager instance;
 	private List<String> dramaCraftGroups = new ArrayList<String>();
 
+	/*
 	public static PermissionsManager instance()
 	{
 		if (instance == null)
 			instance = new PermissionsManager();
 		return instance;
-	}
+	}*/
 
 	private String				pluginName			= "null";
 	private Permission 			vaultPermission;
@@ -37,6 +38,8 @@ public class PermissionsManager
 	
 	public PermissionsManager()
 	{
+		instance = this;
+		
 		RegisteredServiceProvider<Permission> permissionProvider = DramaCraft.instance().getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
 		
 		if(permissionProvider==null)
@@ -108,18 +111,18 @@ public class PermissionsManager
 		return vaultPermission.has(player, node);
 	}
 
-	public String getGroup(String playerName)
+	static public String getGroup(String playerName)
 	{
-		return vaultPermission.getPrimaryGroup(DramaCraft.instance().getServer().getPlayer(playerName));
+		return instance.vaultPermission.getPrimaryGroup(DramaCraft.instance().getServer().getPlayer(playerName));
 	}
 	
-	public String getDramaCraftGroup(OfflinePlayer player)
+	static public String getDramaCraftGroup(OfflinePlayer player)
 	{
 		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
 
-		for(String groupName : vaultPermission.getPlayerGroups(worldName, player))
+		for(String groupName : instance.vaultPermission.getPlayerGroups(worldName, player))
 		{
-			if(dramaCraftGroups.contains(groupName))
+			if(instance.dramaCraftGroups.contains(groupName))
 			{
 				return groupName;
 			}			
@@ -128,20 +131,20 @@ public class PermissionsManager
 		return null;	
 	}
 
-	public void setDramaCraftGroup(OfflinePlayer player, String newGroupName)
+	static public void setDramaCraftGroup(OfflinePlayer player, String newGroupName)
 	{
 		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
-		for(String groupName : dramaCraftGroups)
+		for(String groupName : instance.dramaCraftGroups)
 		{
-			vaultPermission.playerRemoveGroup(worldName, player, groupName);
+			instance.vaultPermission.playerRemoveGroup(worldName, player, groupName);
 		}
 
-		vaultPermission.playerAddGroup(worldName, player, newGroupName);
+		instance.vaultPermission.playerAddGroup(worldName, player, newGroupName);
 	}
 
-	public boolean isInGroup(OfflinePlayer player, String worldName, String groupName)
+	static public boolean isInGroup(OfflinePlayer player, String worldName, String groupName)
 	{
-		return vaultPermission.playerInGroup(worldName, player, groupName);		
+		return instance.vaultPermission.playerInGroup(worldName, player, groupName);		
 	}
 
 	public void setRankGroup(OfflinePlayer player, String groupName)

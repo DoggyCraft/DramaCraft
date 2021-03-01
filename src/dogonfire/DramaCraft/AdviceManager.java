@@ -45,9 +45,9 @@ public class AdviceManager implements Listener
 	{
 		if(System.currentTimeMillis() > lastRebelHelpTime + 5*60*1000)
 		{
-			if(DramaCraft.instance().getOnlineRebels() >= 5)
+			if(RankManager.getOnlineRebels() >= 5)
 			{
-				for(Player rebelPlayer : plugin.getOnlineRebelPlayers())
+				for(Player rebelPlayer : RankManager.getOnlineRebelPlayers())
 				{
 					plugin.sendInfo(
 						rebelPlayer.getUniqueId(), 
@@ -66,7 +66,7 @@ public class AdviceManager implements Listener
 		
 		if(System.currentTimeMillis() > lastRebelHelpTime + (5*60*1000 + 7*60*1000*transmitters.size()))
 		{
-			for(Player rebelPlayer : plugin.getOnlineRebelPlayers())
+			for(Player rebelPlayer : RankManager.getOnlineRebelPlayers())
 			{
 				plugin.sendInfo(
 					rebelPlayer.getUniqueId(), 
@@ -84,7 +84,7 @@ public class AdviceManager implements Listener
 				
 		if(transmitters.size()>0 && System.currentTimeMillis() > lastImperialHelpTime + (5*60*1000))
 		{
-			for(Player imperialPlayer : plugin.getOnlineImperialPlayers())
+			for(Player imperialPlayer : RankManager.getOnlineImperialPlayers())
 			{
 				plugin.sendInfo(
 					imperialPlayer.getUniqueId(), 

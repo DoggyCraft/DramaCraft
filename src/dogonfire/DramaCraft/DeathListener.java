@@ -35,7 +35,7 @@ public class DeathListener implements Listener
 		{
 			Player player = (Player) event.getEntity();
 
-			if(!plugin.isImperial(player.getUniqueId()) && !plugin.isRebel(player.getUniqueId()))
+			if(!RankManager.isImperial(player.getUniqueId()) && !RankManager.isRebel(player.getUniqueId()))
 			{
 				return;
 			}			
@@ -66,7 +66,7 @@ public class DeathListener implements Listener
 			return;
 		}
 				
-		if(!plugin.isImperial(player.getUniqueId()) && !plugin.isRebel(player.getUniqueId()))
+		if(!RankManager.isImperial(player.getUniqueId()) && !RankManager.isRebel(player.getUniqueId()))
 		{
 			return;
 		}
@@ -93,14 +93,14 @@ public class DeathListener implements Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
-		if(plugin.isImperial(event.getPlayer().getUniqueId()))
+		if(RankManager.isImperial(event.getPlayer().getUniqueId()))
 		{	
-			plugin.setImperialLastLogin(event.getPlayer().getUniqueId());
+			RankManager.setImperialLastLogin(event.getPlayer().getUniqueId());
 		}
 
-		if(plugin.isRebel(event.getPlayer().getUniqueId()))
+		if(RankManager.isRebel(event.getPlayer().getUniqueId()))
 		{	
-			plugin.setRebelLastLogin(event.getPlayer().getUniqueId());
+			RankManager.setRebelLastLogin(event.getPlayer().getUniqueId());
 		}
 	}
 }

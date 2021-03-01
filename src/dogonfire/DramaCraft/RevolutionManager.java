@@ -41,18 +41,18 @@ public class RevolutionManager implements Listener
 	private String rebelRegionName = "dannevirke4";
 	private Location imperialRevolutionSpawn;
 	private Location rebelRevolutionSpawn;
-	private DramaCraft plugin;
 	private long timeRevolutionStarted;
 	private long timeRevolutionVoteInfo;
 	private Random random = new Random();
 	private int rebelPoints;
 	private int imperialPoints;
+	static private RevolutionManager instance;
 	
 	private HashMap<UUID, ItemStack[]> savedInventories;
 
-	public RevolutionManager(DramaCraft plugin)
-	{
-		this.plugin = plugin;
+	public RevolutionManager()
+	{		
+		instance = this;
 		
 		imperialRevolutionSpawn = new Location(Bukkit.getServer().getWorlds().get(0), 1042501, 78, 21925);
 		rebelRevolutionSpawn = new Location(Bukkit.getServer().getWorlds().get(0), 1042500, 68, 21861);
@@ -66,6 +66,11 @@ public class RevolutionManager implements Listener
 		motd.add(ChatColor.GREEN + "Vi er fucking mærkelige!");
 		motd.add(ChatColor.GREEN + "A wretched hive of scum and nerdery!");
 		motd.add(ChatColor.GREEN + "Vi laver vores egne plugins!");
+	}
+	
+	static public boolean isRevolution()
+	{		
+		return instance.isRevolution;
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -90,11 +95,11 @@ public class RevolutionManager implements Listener
 		
 		final Player player = event.getPlayer();
 
-		if(plugin.isImperial(player.getUniqueId()))
+		if(RankManager.isImperial(player.getUniqueId()))
 		{
 			player.sendMessage(ChatColor.AQUA + "You must kill the rebels to protect the king and queen during this revolution!");
 			
-			plugin.getServer().getScheduler().runTaskLater(this.plugin, new Runnable()
+			Bukkit.getServer().getScheduler().runTaskLater(DramaCraft.instance(), new Runnable()
 			{
 				public void run()
 				{
@@ -103,11 +108,11 @@ public class RevolutionManager implements Listener
 			}, 40L);						
 		}
 		
-		if(plugin.isRebel(player.getUniqueId()))
+		if(RankManager.isRebel(player.getUniqueId()))
 		{
 			player.sendMessage(ChatColor.AQUA + "You must kill imperials to overthrow the king and queen during this revolution!");			
 
-			plugin.getServer().getScheduler().runTaskLater(this.plugin, new Runnable()
+			Bukkit.getServer().getScheduler().runTaskLater(DramaCraft.instance(), new Runnable()
 			{
 				public void run()
 				{
@@ -128,14 +133,14 @@ public class RevolutionManager implements Listener
 		
 		Player player = event.getEntity();
 		
-		if(plugin.isImperial(player.getUniqueId()))
+		if(RankManager.isImperial(player.getUniqueId()))
 		{
-			plugin.broadcastMessage("An imperial was killed!");			
+			DramaCraft.broadcastMessage("An imperial was killed!");			
 			this.addPointToRebels();			
 		}
-		else if(plugin.isRebel(player.getUniqueId()))
+		else if(RankManager.isRebel(player.getUniqueId()))
 		{			
-			plugin.broadcastMessage("A rebel was killed!");
+			DramaCraft.broadcastMessage("A rebel was killed!");
 			this.addPointToImperials();
 		}
 		else
@@ -148,20 +153,20 @@ public class RevolutionManager implements Listener
 
 		if(this.getImperialPoints() > this.getRebelPoints())
 		{
-			plugin.broadcastMessage("The Imperials are winning the revolution! ");
-			plugin.broadcastMessage(ChatColor.GOLD + "  " + this.getImperialPoints() + ChatColor.AQUA + " vs " + ChatColor.GOLD + this.getRebelPoints());
+			DramaCraft.broadcastMessage("The Imperials are winning the revolution! ");
+			DramaCraft.broadcastMessage(ChatColor.GOLD + "  " + this.getImperialPoints() + ChatColor.AQUA + " vs " + ChatColor.GOLD + this.getRebelPoints());
 		}
 		else if(this.getImperialPoints() < this.getRebelPoints())
 		{
-			plugin.broadcastMessage("The Rebels are winning the revolution! ");
-			plugin.broadcastMessage(ChatColor.GOLD + "  " + this.getRebelPoints() + ChatColor.AQUA + " vs " + ChatColor.GOLD + this.getImperialPoints());
+			DramaCraft.broadcastMessage("The Rebels are winning the revolution! ");
+			DramaCraft.broadcastMessage(ChatColor.GOLD + "  " + this.getRebelPoints() + ChatColor.AQUA + " vs " + ChatColor.GOLD + this.getImperialPoints());
 		}		
 	}
 
 	private List<String> motd = new ArrayList<String>(); 
 	
 	@EventHandler
-	public void countDown(final ServerListPingEvent event)
+	public void onServerListPing(final ServerListPingEvent event)
 	{
 		if(isRevolution)
 		{
@@ -224,21 +229,21 @@ public class RevolutionManager implements Listener
 
 		Player player = event.getPlayer();
 
-		if (plugin.isRoyal(player.getUniqueId()))
+		if (RankManager.isRoyal(player.getUniqueId()))
 		{
 			player.sendMessage(ChatColor.DARK_RED + "You must stay in your castle and avoid getting killed!");
 			event.setCancelled(true);
 			return;
 		}
 
-		if (plugin.isImperial(player.getUniqueId()))
+		if (RankManager.isImperial(player.getUniqueId()))
 		{
 			player.sendMessage(ChatColor.DARK_RED + "You must stay and fight for your King & Queen!");
 			event.setCancelled(true);
 			return;
 		}
 
-		if (plugin.isRebel(player.getUniqueId()))
+		if (RankManager.isRebel(player.getUniqueId()))
 		{
 			player.sendMessage(ChatColor.DARK_RED + "You must stay and fight to overthrow the King & Queen!");
 			event.setCancelled(true);
@@ -246,17 +251,17 @@ public class RevolutionManager implements Listener
 		}
 	}
 	
-	public void startRevolution()
+	static public void startRevolution()
 	{
-		isRevolution = true;
-		timeRevolutionStarted = System.currentTimeMillis();
+		instance.isRevolution = true;
+		instance.timeRevolutionStarted = System.currentTimeMillis();
 		
-		enforceRevolution();		
+		instance.enforceRevolution();		
 		
-		World world = BukkitAdapter.adapt(plugin.getServer().getWorlds().get(0));	
+		World world = BukkitAdapter.adapt(Bukkit.getServer().getWorlds().get(0));	
 		RegionContainer container = com.sk89q.worldguard.WorldGuard.getInstance().getPlatform().getRegionContainer();	
 		RegionManager regionManager = container.get(world);
-		ProtectedRegion region = regionManager.getRegion(battleRegionName);
+		ProtectedRegion region = regionManager.getRegion(instance.battleRegionName);
 						
 		region.setFlag(Flags.PVP, State.ALLOW);
 		region.setFlag(Flags.ENTRY, State.ALLOW);
@@ -276,16 +281,16 @@ public class RevolutionManager implements Listener
 		// DoThis for OnJoin
 		
 		//List<String> imperialPlayers = this.permissionsManager.getOnlinePlayersInGroup("Imperial");
-		for(Player player : plugin.getServer().getOnlinePlayers())
+		for(Player player : Bukkit.getServer().getOnlinePlayers())
 		{
-			if(plugin.isImperial(player.getUniqueId()))
+			if(RankManager.isImperial(player.getUniqueId()))
 			{
-				player.teleport(imperialRevolutionSpawn);
+				player.teleport(instance.imperialRevolutionSpawn);
 			}
 			
-			if(plugin.isRebel(player.getUniqueId()))
+			if(RankManager.isRebel(player.getUniqueId()))
 			{
-				player.teleport(rebelRevolutionSpawn);
+				player.teleport(instance.rebelRevolutionSpawn);
 			}
 		}
 	}
@@ -294,7 +299,7 @@ public class RevolutionManager implements Listener
 	{
 		isRevolution = false;
 
-		World world = BukkitAdapter.adapt(plugin.getServer().getWorlds().get(0));	
+		World world = BukkitAdapter.adapt(Bukkit.getServer().getWorlds().get(0));	
 		RegionContainer container = com.sk89q.worldguard.WorldGuard.getInstance().getPlatform().getRegionContainer();	
 		RegionManager regionManager = container.get(world);
 		ProtectedRegion region = regionManager.getRegion(battleRegionName);
@@ -307,14 +312,14 @@ public class RevolutionManager implements Listener
 		if(rebelPoints > imperialPoints)
 		{
 			Bukkit.broadcastMessage(ChatColor.GREEN + "The Revolution SUCEEDED!");
-			Bukkit.broadcastMessage(ChatColor.GOLD + plugin.getKingName() + ChatColor.AQUA + " was removed from the throne!");
-			Bukkit.broadcastMessage(ChatColor.GOLD + plugin.getQueenName() + ChatColor.AQUA + " was removed from the throne!");
+			Bukkit.broadcastMessage(ChatColor.GOLD + RankManager.getKingName() + ChatColor.AQUA + " was removed from the throne!");
+			Bukkit.broadcastMessage(ChatColor.GOLD + RankManager.getQueenName() + ChatColor.AQUA + " was removed from the throne!");
 			
-			plugin.downgradeRank(plugin.getKing());
-			plugin.downgradeRank(plugin.getQueen());
+			RankManager.downgradeRank(RankManager.getKing());
+			RankManager.downgradeRank(RankManager.getQueen());
 			
-			plugin.clearKing();
-			plugin.clearQueen();						
+			RankManager.clearKing();
+			RankManager.clearQueen();						
 		}
 		else
 		{
@@ -333,18 +338,18 @@ public class RevolutionManager implements Listener
 			{
 				timeRevolutionVoteInfo = System.currentTimeMillis();
 				
-				if(plugin.getOnlineRebels() >= 5)
+				if(RankManager.getOnlineRebels() >= 5)
 				{
-					String message = plugin.getLanguageManager().getLanguageString(LANGUAGESTRING.INFO_REBEL_VOTE_REVOLUTION, ChatColor.AQUA);
+					String message = LanguageManager.getLanguageString(LANGUAGESTRING.INFO_REBEL_VOTE_REVOLUTION, ChatColor.AQUA);
 
-					for(Player player : plugin.getOnlineRebelPlayers())
+					for(Player player : RankManager.getOnlineRebelPlayers())
 					{
 						player.sendMessage(message);
 					}			
 				}	
 			}
 			
-			for(Player player : plugin.getServer().getOnlinePlayers())
+			for(Player player : Bukkit.getServer().getOnlinePlayers())
 			{
 				enforceNotRevolution(player);
 			}
@@ -352,14 +357,14 @@ public class RevolutionManager implements Listener
 			return false;			
 		}
 		
-		for(Player player : plugin.getServer().getOnlinePlayers())
+		for(Player player : Bukkit.getServer().getOnlinePlayers())
 		{
 			enforceRevolution(player);
 		}
 		
 		if(System.currentTimeMillis() - timeRevolutionStarted > 10*60*1000)
 		{
-			plugin.getServer().broadcastMessage(ChatColor.AQUA + "The REVOLUTION is over!");
+			Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "The REVOLUTION is over!");
 			
 			endRevolution();
 			
@@ -371,19 +376,19 @@ public class RevolutionManager implements Listener
 	
 	public void enforceRevolution(Player player)
 	{
-		if(plugin.isRebel(player.getUniqueId()))
+		if(RankManager.isRebel(player.getUniqueId()))
 		{
 			enforceRevolutionForRebel(player);
 			return;
 		}
 
-		if(plugin.isRoyal(player.getUniqueId()))
+		if(RankManager.isRoyal(player.getUniqueId()))
 		{
 			enforceRevolutionForRoyal(player);			
 			return;
 		}
 
-		if(plugin.isImperial(player.getUniqueId()))
+		if(RankManager.isImperial(player.getUniqueId()))
 		{
 			enforceRevolutionForImperial(player);			
 			return;
@@ -392,7 +397,7 @@ public class RevolutionManager implements Listener
 	
 	public void enforceNotRevolution(Player player)
 	{
-		if(plugin.isRebel(player.getUniqueId()))
+		if(RankManager.isRebel(player.getUniqueId()))
 		{
 			enforceNotRevolutionForRebel(player);
 			return;
@@ -489,9 +494,9 @@ public class RevolutionManager implements Listener
 		}
 	}		
 	
-	public long getMinutesUntilRevolutionEnd()
+	static public long getMinutesUntilRevolutionEnd()
 	{
-		return (15 * 60 * 1000 + timeRevolutionStarted - System.currentTimeMillis()) / (60 * 1000);
+		return (15 * 60 * 1000 + instance.timeRevolutionStarted - System.currentTimeMillis()) / (60 * 1000);
 	}
 
 	public boolean isWithinRegion(Player player, String regionName)

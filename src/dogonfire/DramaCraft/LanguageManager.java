@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -131,9 +132,10 @@ public class LanguageManager
 		INFO_REBEL_REVOLUTION
 	}
 	
-	private DramaCraft plugin;
-	private String generalLanguageFileName = null;
+	private String generalLanguageFileName 		= null;
 	private FileConfiguration languageConfig;
+	private String languageIdentifier			= "english";
+	private boolean	downloadLanguageFile		= true;
 	
 	private int amount;
 	private int amount2;
@@ -142,25 +144,25 @@ public class LanguageManager
 	private String playerName;
 	private String type;
 	private Random random;
+	
+	static private LanguageManager instance;
 
-	public LanguageManager(DramaCraft plugin)
+	public LanguageManager()
 	{
-		this.plugin = plugin;
+		instance = this;
 		this.random = new Random();
 	}
 	
 	private void downloadLanguageFile(String fileName) throws IOException
-	{
-		
-		BufferedInputStream in = null;
-		
+	{		
+		BufferedInputStream in = null;		
 		BufferedOutputStream bout = null;
 		
 		try
 		{
 			in = new BufferedInputStream(new URL("https://raw.githubusercontent.com/DoggyCraftDK/DramaCraft/master/lang/" + fileName).openStream());
 
-			FileOutputStream fos = new FileOutputStream(this.plugin.getDataFolder() + "/lang/" + fileName);
+			FileOutputStream fos = new FileOutputStream(DramaCraft.instance().getDataFolder() + "/lang/" + fileName);
 
 			bout = new BufferedOutputStream(fos, 1024);
 
@@ -175,9 +177,7 @@ public class LanguageManager
 		}
 		catch (Exception ex)
 		{
-
-			this.plugin.logDebug(Arrays.toString(ex.getStackTrace()));
-
+			DramaCraft.logDebug(Arrays.toString(ex.getStackTrace()));
 		}
 		finally
 		{
@@ -189,7 +189,7 @@ public class LanguageManager
 
 	private boolean loadLanguageFile(String fileName)
 	{
-		File languageConfigFile = new File(this.plugin.getDataFolder() + "/lang/" + fileName);
+		File languageConfigFile = new File(DramaCraft.instance().getDataFolder() + "/lang/" + fileName);
 		
 		if (!languageConfigFile.exists())
 		{
@@ -198,19 +198,19 @@ public class LanguageManager
 		
 		languageConfig = YamlConfiguration.loadConfiguration(languageConfigFile);
 
-		this.plugin.logDebug("Loaded " + languageConfig.getString("Version.Name") + " by " + languageConfig.getString("Version.Author") + " version " + languageConfig.getString("Version.Version"));
+		DramaCraft.logDebug("Loaded " + languageConfig.getString("Version.Name") + " by " + languageConfig.getString("Version.Author") + " version " + languageConfig.getString("Version.Version"));
 
 		return true;
 	}
 
 	public void load()
 	{
-		this.generalLanguageFileName = (this.plugin.languageIdentifier + ".yml");
+		this.generalLanguageFileName = (instance.languageIdentifier + ".yml");
 
-		this.plugin.logDebug("generalFileName is " + this.generalLanguageFileName);
-		this.plugin.logDebug("plugin.language is " + this.plugin.languageIdentifier);
+		DramaCraft.logDebug("generalFileName is " + this.generalLanguageFileName);
+		DramaCraft.logDebug("plugin.language is " + instance.languageIdentifier);
 
-		File directory = new File(this.plugin.getDataFolder() + "/lang");
+		File directory = new File(DramaCraft.instance().getDataFolder() + "/lang");
 		
 		if (!directory.exists())
 		{
@@ -219,41 +219,41 @@ public class LanguageManager
 			boolean result = directory.mkdir();
 			if (result)
 			{
-				this.plugin.logDebug("Directory created");
+				DramaCraft.logDebug("Directory created");
 			}
 			else
 			{
-				this.plugin.logDebug(ChatColor.DARK_RED + "Directory creation FAILED!");
+				DramaCraft.logDebug(ChatColor.DARK_RED + "Directory creation FAILED!");
 				return;
 			}
 		}
 		
 		if (!loadLanguageFile(this.generalLanguageFileName))
 		{
-			this.plugin.log(ChatColor.DARK_RED + "Could not load " + this.generalLanguageFileName + " from the /lang folder!");
+			DramaCraft.log(ChatColor.DARK_RED + "Could not load " + this.generalLanguageFileName + " from the /lang folder!");
 			
-			if (this.plugin.downloadLanguageFile)
+			if (instance.downloadLanguageFile)
 			{
-				this.plugin.log("Downloading " + this.generalLanguageFileName + " from DogOnFire...");
+				DramaCraft.log("Downloading " + this.generalLanguageFileName + " from DogOnFire...");
 				try
 				{
 					downloadLanguageFile(this.generalLanguageFileName);
-					this.plugin.log(this.generalLanguageFileName + " downloaded.");
+					DramaCraft.log(this.generalLanguageFileName + " downloaded.");
 				}
 				catch (Exception ex)
 				{
-					this.plugin.log(ChatColor.DARK_RED + "Could not download " + this.generalLanguageFileName + " language file from DogOnFire: " + ex.getMessage());
+					DramaCraft.log(ChatColor.DARK_RED + "Could not download " + this.generalLanguageFileName + " language file from DogOnFire: " + ex.getMessage());
 					return;
 				}
 				
 				if (loadLanguageFile(this.generalLanguageFileName))
 				{
-					this.plugin.log(this.generalLanguageFileName + " loaded.");
+					DramaCraft.log(this.generalLanguageFileName + " loaded.");
 				}
 			}
 			else
 			{
-				this.plugin.log(ChatColor.DARK_RED + "Will NOT download from DogOnFire. Please place a valid language file in your /lang folder!");
+				DramaCraft.log(ChatColor.DARK_RED + "Will NOT download from DogOnFire. Please place a valid language file in your /lang folder!");
 			}
 		}
 	}
@@ -278,7 +278,7 @@ public class LanguageManager
 		String string = id;
 		if (string.contains("$ServerName"))
 		{
-			string = string.replace("$ServerName", ChatColor.GOLD + this.plugin.serverName + ChatColor.WHITE);
+			string = string.replace("$ServerName", ChatColor.GOLD + Bukkit.getServer().getName() + ChatColor.WHITE);
 		}
 		if (string.contains("$PlayerName"))
 		{
@@ -311,7 +311,7 @@ public class LanguageManager
 		
 		if (string.contains("$ServerName"))
 		{
-			string = string.replace("$ServerName", ChatColor.GOLD + this.plugin.serverName + defaultColor);
+			string = string.replace("$ServerName", ChatColor.GOLD + Bukkit.getServer().getName() + defaultColor);
 		}
 		
 		if (string.contains("$PlayerName"))
@@ -342,67 +342,68 @@ public class LanguageManager
 		return string;
 	}
 
-	public String getPlayerName()
+	static public String getPlayerName()
 	{
-		return this.playerName;
+		return instance.playerName;
 	}
 
-	public void setPlayerName(String name)
+	static public void setPlayerName(String name)
 	{
 		if (name == null)
 		{
-			this.plugin.logDebug("WARNING: Setting null playername");
+			DramaCraft.logDebug("WARNING: Setting null playername");
 		}
-		this.playerName = name;
+		
+		instance.playerName = name;
 	}
 	
-	public void setAmount1(int a)
+	static public void setAmount1(int a)
 	{
-		this.amount = a;
+		instance.amount = a;
 	}
 
-	public int getAmount2()
+	static public int getAmount2()
 	{
-		return this.amount2;
+		return instance.amount2;
 	}
 
-	public void setAmount2(int a)
+	static public void setAmount2(int a)
 	{
-		this.amount2 = a;
+		instance.amount2 = a;
 	}
 
-	public void setAmount3(int a)
+	static public void setAmount3(int a)
 	{
-		this.amount3 = a;
+		instance.amount3 = a;
 	}
 
-	public String getType()
+	static public String getType()
 	{
-		return this.type;
+		return instance.type;
 	}
 
 	public void setType(String t) throws Exception
 	{
 		if (t == null)
 		{
-			this.plugin.logDebug("WARNING: Setting null string");
+			DramaCraft.logDebug("WARNING: Setting null string");
 			//throw new Exception("WARNING: Setting null type");
 		}
 		this.type = t;
 	}
 
-	public String getLanguageString(LANGUAGESTRING languageString, ChatColor defaultColor)
+	static public String getLanguageString(LANGUAGESTRING languageString, ChatColor defaultColor)
 	{	
-		List<String> strings = languageConfig.getStringList("Info." + languageString.name());
+		List<String> strings = instance.languageConfig.getStringList("Info." + languageString.name());
 
 		if (strings == null || strings.size() == 0)
 		{
-			this.plugin.logDebug("WARNING: No language string in " + this.generalLanguageFileName + " for the info type '" + languageString.name() + "'");
-			return languageString.name() + " MISSING in " + this.generalLanguageFileName;
+			DramaCraft.logDebug("WARNING: No language string in " + instance.generalLanguageFileName + " for the info type '" + languageString.name() + "'");
+			return languageString.name() + " MISSING in " + instance.generalLanguageFileName;
 		}
 
-		String text = (String) strings.toArray()[this.random.nextInt(strings.size())];
+		String text = (String) strings.toArray()[instance.random.nextInt(strings.size())];
 			
-		return parseString(text, defaultColor);	
+		return instance.parseString(text, defaultColor);	
 	}
 }

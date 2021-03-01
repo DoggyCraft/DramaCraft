@@ -157,7 +157,7 @@ public class RebelTransmitterManager implements Listener
 	{
 		Player player = event.getPlayer();
 
-		if(!plugin.isRebel(player.getUniqueId()))
+		if(!RankManager.isRebel(player.getUniqueId()))
 		{
 			event.getPlayer().sendMessage(ChatColor.RED + "Only rebels can build a Rebel Transmitter!");
 			return false;					
@@ -265,7 +265,7 @@ public class RebelTransmitterManager implements Listener
 	{
 		Player player = event.getPlayer();
 		
-		if(!plugin.isRebel(player.getUniqueId()) && !player.isOp())
+		if(!RankManager.isRebel(player.getUniqueId()) && !player.isOp())
 		{
 			return;
 		}
@@ -302,7 +302,7 @@ public class RebelTransmitterManager implements Listener
 		removeTransmitter(location);
 		plugin.log(player.getName() + " removed a rebel transmitter at " + location);
 		
-		if(plugin.isImperial(player.getUniqueId()))
+		if(RankManager.isImperial(player.getUniqueId()))
 		{
 			player.sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + "100 wanks" + ChatColor.AQUA + " for destroying that transmitter!");
 			plugin.getEconomyManager().depositPlayer(player.getName(), 100);
@@ -355,7 +355,7 @@ public class RebelTransmitterManager implements Listener
 	{
 		if(System.currentTimeMillis() > lastRebelHelpTime + (10*60*1000 + 10*60*1000*transmitters.size()))
 		{
-			for(Player rebelPlayer : plugin.getOnlineRebelPlayers())
+			for(Player rebelPlayer : RankManager.getOnlineRebelPlayers())
 			{
 				plugin.sendInfo(
 					rebelPlayer.getUniqueId(), 
