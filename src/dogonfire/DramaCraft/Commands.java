@@ -152,31 +152,41 @@ public class Commands implements Listener
 
 		Player player = (Player)sender;
 
-		if(RankManager.isNoble(player.getUniqueId()))
+		if(RankManager.isKing(player.getUniqueId()))
+		{	
+			sender.sendMessage(ChatColor.WHITE + "You are the " + ChatColor.GOLD + "King");
+		}
+		else if(RankManager.isQueen(player.getUniqueId()))
+		{	
+			sender.sendMessage(ChatColor.WHITE + "You are the " + ChatColor.GOLD + "Queen");
+		}
+		else if(RankManager.isNoble(player.getUniqueId()))
 		{	
 			sender.sendMessage(ChatColor.WHITE + "You are an Imperial Noble");
 		}
-
-		if(RankManager.isInnerCircle(player.getUniqueId()))
+		else if(RankManager.isImperial(player.getUniqueId()))
 		{	
-			sender.sendMessage(ChatColor.WHITE + "You are part of the Rebel Inner Circle");
+			sender.sendMessage(ChatColor.WHITE + "You are an " + ChatColor.AQUA + "Imperial");
 		}
 
-		if(RankManager.isNeutral(player.getUniqueId()))
+		else if(RankManager.isRingLeader(player.getUniqueId()))
+		{	
+			sender.sendMessage(ChatColor.WHITE + "You are the " + ChatColor.RED + "Rebel Ringleader");
+		}
+		else if(RankManager.isInnerCircle(player.getUniqueId()))
+		{	
+			sender.sendMessage(ChatColor.WHITE + "You are part of the " + ChatColor.RED + "Rebel Inner Circle");
+		}
+		else if(RankManager.isRebel(player.getUniqueId()))
+		{	
+			sender.sendMessage(ChatColor.WHITE + "You are a " + ChatColor.RED + "Rebel");
+		}
+
+		else if(RankManager.isNeutral(player.getUniqueId()))
 		{	
 			sender.sendMessage(ChatColor.WHITE + "You are Neutral");
 		}
 		
-		if(RankManager.isImperial(player.getUniqueId()))
-		{	
-			sender.sendMessage(ChatColor.WHITE + "You are an " + ChatColor.AQUA + " Imperial");
-		}
-
-		if(RankManager.isRebel(player.getUniqueId()))
-		{	
-			sender.sendMessage(ChatColor.WHITE + "You are a " + ChatColor.RED + " Rebel");
-		}
-
 		sender.sendMessage("");
 
 		if(RankManager.isImperial(player.getUniqueId()))
@@ -189,20 +199,21 @@ public class Commands implements Listener
 			sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels" + ChatColor.GRAY + " to see info about the Rebels");
 		}
 		
-		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/dc <player>" + ChatColor.GRAY + " to view info about a player");
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/vote help" + ChatColor.GRAY + " to see how to vote");
 
+		/*
 		if(RankManager.isImperial(((Player)sender).getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/dc imperials " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_IMPERIALS, ChatColor.GRAY));
+			sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/dc imperials " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_IMPERIALS, ChatColor.GRAY));
 		}
 		
 		if(RankManager.isRebel(((Player)sender).getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/dc rebels " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REBELS, ChatColor.GRAY));
+			sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/dc rebels " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REBELS, ChatColor.GRAY));
 		}
+		*/
 
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/dc <player>" + ChatColor.GRAY + " to view info about a player");
 
 	}
 
@@ -594,7 +605,7 @@ public class Commands implements Listener
 					}
 					else
 					{
-						sender.sendMessage(ChatColor.RED + "Only imperials can view members of the Imperial Nobility");
+						sender.sendMessage(ChatColor.DARK_RED + "Only imperials can view members of the Imperial Nobility");
 						return true;
 					}
 					
@@ -638,7 +649,7 @@ public class Commands implements Listener
 					}
 					else
 					{
-						sender.sendMessage(ChatColor.RED + "Only rebels can view members of the Rebel Inner Circle");
+						sender.sendMessage(ChatColor.DARK_RED + "Only rebels can view members of the Rebel Inner Circle");
 						return true;
 					}
 					
@@ -653,7 +664,7 @@ public class Commands implements Listener
 					}
 					else
 					{
-						sender.sendMessage(ChatColor.RED + "Only rebels can view information about transmitters");
+						sender.sendMessage(ChatColor.DARK_RED + "Only rebels can view information about transmitters");
 						return true;
 					}
 					
@@ -737,7 +748,7 @@ public class Commands implements Listener
 		{
 			if(args.length!=2)
 			{
-				player.sendMessage(ChatColor.RED + "Usage: /appoint <playername> <rankname>");													
+				player.sendMessage(ChatColor.DARK_RED + "Usage: /appoint <playername> <rankname>");													
 				return false;
 			}
 		
@@ -745,7 +756,7 @@ public class Commands implements Listener
 			
 			if(RankManager.isNoble(player.getUniqueId()))
 			{			
-				if(rankname.equals("wizard") || rankname.equals("knight") || rankname.equals("farmer") || rankname.equals("shopkeeper"))
+				if(rankname.equals("wizard") || rankname.equals("knight") || rankname.equals("farmer") || rankname.equals("treasurer"))
 				{
 					Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
 
@@ -753,13 +764,13 @@ public class Commands implements Listener
 					{					
 						if(!RankManager.isImperial(player.getUniqueId()))
 						{
-							player.sendMessage(ChatColor.RED + "Target player must be an Imperial");
+							player.sendMessage(ChatColor.DARK_RED + "Target player must be an Imperial");
 							return true;							
 						}
 						
 						if(RankManager.isRoyal(player.getUniqueId()))
 						{
-							player.sendMessage(ChatColor.RED + "Target player cannot be an Imperial Noble or Royal");
+							player.sendMessage(ChatColor.DARK_RED + "Target player cannot be an Imperial Noble or Royal");
 							return true;							
 						}
 
@@ -770,23 +781,23 @@ public class Commands implements Listener
 						
 						PermissionsManager.setRankGroup(targetPlayer, rankname);
 						RankManager.setNobleClientRank(player, targetPlayer.getUniqueId(), rankname);
-						Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.AQUA + " to imperial " + rankname);
-						targetPlayer.sendMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " appointed you to " + rankname);
+						Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " appointed " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " to imperial " + rankname);
+						targetPlayer.sendMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " appointed you to " + rankname);
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + "Target player must be online to be appointed");													
+						player.sendMessage(ChatColor.DARK_RED + "Target player must be online to be appointed");													
 					}
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + "Valid ranks are: wizard, knight, farmer or shopkeeper");																		
+					player.sendMessage(ChatColor.DARK_RED + "Valid ranks are: wizard, knight, farmer or treasurer");																		
 				}
 			}
 			else
 			if(RankManager.isInnerCircle(player.getUniqueId()))
 			{			
-				if(rankname.equals("wizard") || rankname.equals("rogue") || rankname.equals("farmer") || rankname.equals("shopkeeper"))
+				if(rankname.equals("wizard") || rankname.equals("rogue") || rankname.equals("farmer") || rankname.equals("dealer"))
 				{
 					Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
 
@@ -794,13 +805,13 @@ public class Commands implements Listener
 					{					
 						if(!RankManager.isRebel(player.getUniqueId()))
 						{			
-							player.sendMessage(ChatColor.RED + "Target player must be a Rebel");																											
+							player.sendMessage(ChatColor.DARK_RED + "Target player must be a Rebel");																											
 							return true;
 						}
 						
 						if(RankManager.isRingLeader(targetPlayer.getUniqueId()))
 						{			
-							player.sendMessage(ChatColor.RED + "Target player cannot be in the Rebel inner circle or boss");																											
+							player.sendMessage(ChatColor.DARK_RED + "Target player cannot be in the Rebel inner circle or boss");																											
 							return true;
 						}
 
@@ -816,17 +827,17 @@ public class Commands implements Listener
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + "Target player must be online to be appointed");													
+						player.sendMessage(ChatColor.DARK_RED + "Target player must be online to be appointed");													
 					}
 				}								
 				else
 				{
-					player.sendMessage(ChatColor.RED + "Valid ranks are: wizard, rogue, farmer or shopkeeper");																		
+					player.sendMessage(ChatColor.DARK_RED + "Valid ranks are: wizard, rogue, farmer or shopkeeper");																		
 				}
 			}
 			else
 			{
-				player.sendMessage(ChatColor.RED + "You do not have the rights to use this command");								
+				player.sendMessage(ChatColor.DARK_RED + "You do not have the rights to use this command");								
 			}
 
 			return true;
@@ -844,12 +855,28 @@ public class Commands implements Listener
 			{
 				if (args[0].equalsIgnoreCase("setkinghead"))
 				{
-					setKingHead(sender, player);
+					if(sender.isOp())
+					{
+						setKingHead(sender, player);
+					}
+					else
+					{
+						sender.sendMessage(ChatColor.DARK_RED + "Only players with op can set king head blocks");																		
+					}
+					
 					return true;
 				}
 				else if (args[0].equalsIgnoreCase("setqueenhead"))
 				{
-					setQueenHead(sender, player);
+					if(sender.isOp())
+					{
+						setQueenHead(sender, player);
+					}
+					else
+					{
+						sender.sendMessage(ChatColor.DARK_RED + "Only players with op can set queen head blocks");																		
+					}
+					
 					return true;
 				}
 				else 
@@ -988,13 +1015,13 @@ public class Commands implements Listener
 
 					if (targetPlayer == null)
 					{
-						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
+						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.DARK_RED));
 						return true;
 					}
 
 					if (targetPlayer.isOp())
 					{
-						sender.sendMessage(ChatColor.RED + "No.");
+						sender.sendMessage(ChatColor.DARK_RED + "No.");
 						return true;
 					}
 
@@ -1011,7 +1038,7 @@ public class Commands implements Listener
 
 					if (targetPlayer == null)
 					{
-						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
+						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.DARK_RED));
 						return true;
 					}
 
@@ -1034,7 +1061,7 @@ public class Commands implements Listener
 
 					if (targetPlayer == null)
 					{
-						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
+						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.DARK_RED));
 						return true;
 					}
 
@@ -1057,7 +1084,7 @@ public class Commands implements Listener
 
 					if (targetPlayer == null)
 					{
-						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.RED));
+						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.DARK_RED));
 						return true;
 					}
 
@@ -1227,6 +1254,11 @@ public class Commands implements Listener
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.YELLOW + title);
 
+		if(members.size() == 0)
+		{
+			sender.sendMessage(ChatColor.GRAY + " There are currently no members of the Imperial Nobility");			
+		}
+		
 		for(Member m : members)
 		{
 			OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(m.PlayerId);
@@ -1250,16 +1282,16 @@ public class Commands implements Listener
 
 		sender.sendMessage(ChatColor.YELLOW + title);
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.AQUA + "As a " + ChatColor.RED + "REBEL" + ChatColor.WHITE + " it is your duty to challenge the King, Queen and the evil empire they rule!");
+		sender.sendMessage(ChatColor.GRAY + "As a " + ChatColor.RED + "REBEL" + ChatColor.WHITE + " it is your duty to challenge the King, Queen and the evil empire they rule!");
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.AQUA + "- Spread the truth about the Empire by building transmitters");
-		sender.sendMessage(ChatColor.AQUA + "- Mine ore to contribute resources to the rebel stash");			
-		sender.sendMessage(ChatColor.AQUA + "- Vote players into the rebel inner circle");			
+		sender.sendMessage(ChatColor.GRAY + "- Spread the truth about the Empire by building transmitters");
+		sender.sendMessage(ChatColor.GRAY + "- Mine ore to contribute resources to the rebel stash");			
+		sender.sendMessage(ChatColor.GRAY + "- Vote players into the rebel inner circle");			
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/rebels revolution" + ChatColor.AQUA + " to see how to start a revolution");			
-		sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/rebels innercircle" + ChatColor.AQUA + " to see info about the Inner Circle");			
-		sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/rebels transmitter" + ChatColor.AQUA + " to see how to build a rebel transmitter");			
-		sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/rebels resources" + ChatColor.AQUA + " to see how to provide resources for the rebel cause");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels revolution" + ChatColor.GRAY + " to see how to start a revolution");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels resources" + ChatColor.GRAY + " to see how to provide resources for the rebel cause");			
 
 		sender.sendMessage(ChatColor.YELLOW + StringUtils.repeat("-", title.length()));		
 	}
@@ -1284,6 +1316,11 @@ public class Commands implements Listener
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.YELLOW + title);
 
+		if(members.size() == 0)
+		{
+			sender.sendMessage(ChatColor.GRAY + " There are currently no members of the Inner Circle");			
+		}
+
 		for(Member m : members)
 		{
 			Player player = Bukkit.getServer().getPlayer(m.PlayerId);
@@ -1304,25 +1341,25 @@ public class Commands implements Listener
 	{	
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.YELLOW + "--------- How to build a Rebel Transmitter --------");
-		sender.sendMessage(ChatColor.WHITE + "  1) Place a STONE block");
-		sender.sendMessage(ChatColor.WHITE + "  2) Place a TORCH on top of the STONE block");
-		sender.sendMessage(ChatColor.WHITE + "  3) Place an OAK SIGN on the STONE block");
-		sender.sendMessage(ChatColor.WHITE + "  4) Write your TRUTH message on the sign");
+		sender.sendMessage(ChatColor.GRAY + "  1) Place a STONE block");
+		sender.sendMessage(ChatColor.GRAY + "  2) Place a TORCH on top of the STONE block");
+		sender.sendMessage(ChatColor.GRAY + "  3) Place an OAK SIGN on the STONE block");
+		sender.sendMessage(ChatColor.GRAY + "  4) Write your TRUTH message on the sign");
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.WHITE + "Try to be creative and dramatic in your message ;-)");			
+		sender.sendMessage(ChatColor.GRAY + "Try to be creative and dramatic in your message ;-)");			
 	}
 
 	private void imperialsHelp(CommandSender sender)
 	{	
 		sender.sendMessage(ChatColor.YELLOW + "--------- " + ChatColor.AQUA + "Imperials" + ChatColor.YELLOW + " --------");
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.AQUA + "As an " + ChatColor.AQUA + "IMPERIAL" + ChatColor.AQUA + " it is your duty to protect the empire and keep the peace!");
+		sender.sendMessage(ChatColor.GRAY + "As an " + ChatColor.AQUA + "IMPERIAL" + ChatColor.GRAY + " it is your duty to protect the empire and keep the peace!");
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.AQUA + "- Vote players into the Imperial Nobles");			
-		sender.sendMessage(ChatColor.AQUA + "- Make sure that all rebel transmitters are destroyed");			
-		sender.sendMessage(ChatColor.AQUA + "- Mine ore to contribute resources to the imperial treasury");			
+		sender.sendMessage(ChatColor.GRAY + "- Vote players into the Imperial Nobles");			
+		sender.sendMessage(ChatColor.GRAY + "- Make sure that all rebel transmitters are destroyed");			
+		sender.sendMessage(ChatColor.GRAY + "- Mine ore to contribute resources to the imperial treasury");			
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/imperials nobles" + ChatColor.AQUA + " to see info about the Inner Circle");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials nobles" + ChatColor.GRAY + " to see info about the Inner Circle");			
 		//sender.sendMessage(ChatColor.WHITE + "Use /imperials help to see more information");			
 	}
 

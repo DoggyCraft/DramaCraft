@@ -194,8 +194,8 @@ public class RebelTransmitterManager implements Listener
 		
 		if(length < 100)
 		{
-			event.getPlayer().sendMessage(ChatColor.RED + "That is too close to another transmitter");
-			DramaCraft.log("transmitter is too close to another transmitter");
+			event.getPlayer().sendMessage(ChatColor.DARK_RED + "That is too close to another transmitter");
+			DramaCraft.log("Transmitter is too close to another transmitter");
 			return false;
 		}
 		
@@ -206,7 +206,7 @@ public class RebelTransmitterManager implements Listener
 		
 		if(set.size() > 0)
 		{
-			event.getPlayer().sendMessage(ChatColor.RED + "Transmitter cannot be inside an region");
+			event.getPlayer().sendMessage(ChatColor.DARK_RED + "Transmitter cannot be inside an region");
 			DramaCraft.log("transmitter is inside an region");
 			return false;			
 		}		
@@ -220,7 +220,7 @@ public class RebelTransmitterManager implements Listener
 
 		DramaCraft.log(event.getPlayer().getName() + " placed a rebel transmitter at " + event.getBlock().getLocation());
 		event.getPlayer().sendMessage(ChatColor.GREEN + "Rebel Transmitter placed!");
-		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "The Rebels placed a new Transmitter!");
+		Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "The Rebels placed a new Transmitter!");
 
 		return true;
 	}
@@ -230,7 +230,7 @@ public class RebelTransmitterManager implements Listener
 		long hash = hashLocation(location);
 		//config.set(hash + ".CreatedTime", hash);
 		
-		String key = "transmitters." + hash;
+		String key = "Transmitters." + hash;
 		
 		config.set(key + ".PlayerId", player.getUniqueId().toString());
 		config.set(key + ".Message", message);
@@ -247,7 +247,7 @@ public class RebelTransmitterManager implements Listener
 	private void removeTransmitter(Location location)
 	{
 		long hash = hashLocation(location);
-		String key = "transmitters." + hash;
+		String key = "Transmitters." + hash;
 		config.set(key, null);
 		
 		save();
@@ -304,9 +304,9 @@ public class RebelTransmitterManager implements Listener
 		
 		if(RankManager.isImperial(player.getUniqueId()))
 		{
-			player.sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + "100 wanks" + ChatColor.AQUA + " for destroying that transmitter!");
+			player.sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + "100 wanks" + ChatColor.GREEN + " for destroying that rebel transmitter!");
 			DramaCraft.instance().getEconomyManager().depositPlayer(player.getName(), 100);
-			Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.AQUA + " destroyed a Rebel Transmitter!");
+			Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " destroyed a Rebel Transmitter!");
 		}		
 	}
 	
@@ -317,12 +317,12 @@ public class RebelTransmitterManager implements Listener
 	     result = 37 * result + location.getBlockY();
 	     result = 37 * result + location.getBlockZ();
 	     
-	     return result;
+	     return location.hashCode();
 	}
 
 	boolean isTransmitterBlock(Location location)
 	{		
-		return config.getString("transmitters." + hashLocation(location) + ".PlayerId") != null;
+		return config.getString("Transmitters." + hashLocation(location) + ".PlayerId") != null;
 	}
 	
 	public Block getTransmitterBlockFromSign(Block block)
@@ -382,7 +382,7 @@ public class RebelTransmitterManager implements Listener
 		}
 
 		
-		Set<String> keys = config.getConfigurationSection("transmitters").getKeys(false);
+		Set<String> keys = config.getConfigurationSection("Transmitters").getKeys(false);
 				
 		if (keys.size() > 0)
 		{

@@ -1333,7 +1333,7 @@ public class RankManager implements Listener
 		Date thisDate = new Date();
 
 		PermissionsManager.setDramaCraftGroup(player, "default");		
-
+		
 		config.set("Players." + player.getUniqueId().toString(), null);
 		//config.set("Players." + player.getUniqueId().toString() + ".PreviousRank", permissionsManager.getGroup(player.getName()));
 		//config.set("Players." + player.getUniqueId().toString() + ".CurrentRank", "default");
