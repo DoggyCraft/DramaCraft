@@ -69,6 +69,9 @@ public class LanguageManager
 		VOTE_BROADCAST_BOSS2_OVERTURNED,
 		VOTE_BROADCAST_PROGRESS,
 		VOTE_BROADCAST_HELP,
+		VOTE_BROADCAST_PHANTOMS,
+		VOTE_BROADCAST_PHANTOMS_SUCCESS,
+		VOTE_BROADCAST_PHANTOMS_FAILED,
 		VOTE_BROADCAST_DAY,
 		VOTE_BROADCAST_DAY_SUCCESS,
 		VOTE_BROADCAST_DAY_FAILED,
@@ -389,14 +392,14 @@ public class LanguageManager
 		return instance.type;
 	}
 
-	public void setType(String t) throws Exception
+	static public void setType(String t) throws Exception
 	{
 		if (t == null)
 		{
 			DramaCraft.logDebug("WARNING: Setting null string");
 			//throw new Exception("WARNING: Setting null type");
 		}
-		this.type = t;
+		instance.type = t;
 	}
 
 	static public String getLanguageString(LANGUAGESTRING languageString, ChatColor defaultColor)

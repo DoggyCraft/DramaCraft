@@ -60,20 +60,20 @@ public class InfoTask implements Runnable
 			return;
 		}
 
-		this.plugin.getLanguageManager().setPlayerName(this.name1);
+		LanguageManager.setPlayerName(this.name1);
 
 		try
 		{
-			this.plugin.getLanguageManager().setType(this.name2);
+			LanguageManager.setType(this.name2);
 		}
 		catch (Exception ex)
 		{
-			this.plugin.logDebug(Arrays.toString(ex.getStackTrace()));
+			DramaCraft.logDebug(Arrays.toString(ex.getStackTrace()));
 		}
 
-		this.plugin.getLanguageManager().setAmount1(this.amount);
+		LanguageManager.setAmount1(this.amount);
 
-		String questionMessage = this.plugin.getLanguageManager().getLanguageString(message, color);
+		String questionMessage = LanguageManager.getLanguageString(message, color);
 
 		player.sendMessage(this.color + questionMessage);
 	}

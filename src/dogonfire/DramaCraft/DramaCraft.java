@@ -38,6 +38,8 @@ public class DramaCraft extends JavaPlugin
 	private ImperialManager				imperialManager;
 	private PermissionsManager			permissionsManager			= null;
 	private RevolutionPlayerListener	revolutionPlayerListener	= null;
+	private TeleportPreventer			teleportPreventer			= null;
+	private PhantomPreventer			phantomPreventer			= null;
 	private static Server				server;
 	private PluginManager				pluginmanager				= null;
 	public static Economy				economy						= null;
@@ -83,6 +85,11 @@ public class DramaCraft extends JavaPlugin
 		server.getWorld(worldName).setStorm(true);
 	}
 	
+	public static void disablePhantoms()
+	{	
+		instance.phantomPreventer.disablePhantoms();
+	}
+
 	private boolean isDay(long currenttime, int offset)
 	{
 		return (currenttime < 12000 + offset) && (currenttime > offset);
@@ -215,8 +222,11 @@ public class DramaCraft extends JavaPlugin
 		bodyGuardManager = new BodyguardManager(this);
 		getServer().getPluginManager().registerEvents(bodyGuardManager, this);
 
-		TeleportPreventer teleportPreventer = new TeleportPreventer();
+	    teleportPreventer = new TeleportPreventer();
 		getServer().getPluginManager().registerEvents(teleportPreventer, this);
+
+		phantomPreventer = new PhantomPreventer();
+		getServer().getPluginManager().registerEvents(phantomPreventer, this);
 
 		server.getScheduler().runTaskTimerAsynchronously(this, new Runnable()
 		{

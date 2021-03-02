@@ -51,6 +51,7 @@ public class VoteManager
 		VOTE_NOBLE_KICK,
 		VOTE_INNERCIRCLE,
 		VOTE_INNERCIRCLE_KICK,
+		VOTE_DISABLE_PHANTOMS,
 		MASTER_COIN,
 		MASTER_LAW,
 		MASTER_WAR,
@@ -166,6 +167,11 @@ public class VoteManager
 			reqVotes = 5; // 7
 		}
 		
+		if (instance.currentVoteType == VOTE_TYPE.VOTE_DISABLE_PHANTOMS)
+		{
+			reqVotes = 5; 
+		}
+
 		if (instance.currentVoteType == VOTE_TYPE.VOTE_KING || instance.currentVoteType == VOTE_TYPE.VOTE_QUEEN)
 		{
 			reqVotes = 7;//7
@@ -209,6 +215,18 @@ public class VoteManager
 
 			switch (instance.currentVoteType)
 			{
+				case VOTE_DISABLE_PHANTOMS:
+					if (success)
+					{
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_PHANTOMS_SUCCESS, ChatColor.GREEN);
+						DramaCraft.disablePhantoms();
+					}
+					else
+					{
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_PHANTOMS_FAILED, ChatColor.RED);
+					}
+					break;
+
 				case VOTE_RAIN:
 					if (success)
 					{
@@ -390,6 +408,10 @@ public class VoteManager
 
 		switch (instance.currentVoteType)
 		{
+			case VOTE_DISABLE_PHANTOMS:
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_PHANTOMS, ChatColor.AQUA);
+				break;
+
 			case VOTE_RAIN:
 				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RAIN, ChatColor.AQUA);
 				break;
@@ -719,6 +741,10 @@ public class VoteManager
 				break;
 			case VOTE_SUN:
 				broadcast = "A new vote for sun was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
+				instance.voteString = voter.getWorld().getName();
+				break;
+			case VOTE_DISABLE_PHANTOMS:
+				broadcast = "A new vote for disabling phantoms was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
 				instance.voteString = voter.getWorld().getName();
 				break;
 			case VOTE_RAIN:
