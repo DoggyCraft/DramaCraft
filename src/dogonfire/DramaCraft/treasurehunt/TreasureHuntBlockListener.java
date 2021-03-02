@@ -5,9 +5,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-public class THBlockListener implements Listener
+public class TreasureHuntBlockListener implements Listener
 {
-	public THBlockListener()
+	public TreasureHuntBlockListener()
 	{
 	}
 

@@ -1,16 +1,15 @@
 package dogonfire.DramaCraft.treasurehunt;
-import java.util.LinkedList;
-import java.util.List;
+
 import java.util.Random;
 
-import dogonfire.DramaCraft.DramaCraft;
 
-public class THTimer implements Runnable
+
+public class TreasureHuntTimer implements Runnable
 {
 	private long			lastrun;
 	private Random			random;
 
-	public THTimer()
+	public TreasureHuntTimer()
 	{
 		this.lastrun = System.currentTimeMillis();
 		this.random = new Random();

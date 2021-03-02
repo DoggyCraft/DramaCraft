@@ -1423,7 +1423,74 @@ public class RankManager implements Listener
 	
 	static public void setRingLeader1(UUID playerId)
 	{
+		String currentRingLeaderId = config.getString("RingLeader1.Id");
+		String currentRingLeaderPreviousRank = config.getString("Players." + currentRingLeaderId + ".PreviousRank");
+		String currentRingLeaderName = null;
+		String playerName = Bukkit.getServer().getOfflinePlayer(playerId).getName();
+
+		if(currentRingLeaderId!=null)
+		{
+			currentRingLeaderName = Bukkit.getServer().getOfflinePlayer(UUID.fromString(currentRingLeaderId)).getName();
+		}
+
+		String kingHeadWorld = config.getString("RingLeader1.Head.World");
+		if(kingHeadWorld!=null)
+		{
+			try
+			{
+				String headX = config.getString("RingLeader1.Head.X");
+				String headY = config.getString("RingLeader1.Head.Y");
+				String headZ = config.getString("RingLeader1.Head.Z");
+				
+				Location location = new Location(Bukkit.getServer().getWorld(kingHeadWorld), Integer.parseInt(headX), Integer.parseInt(headY), Integer.parseInt(headZ));
+				
+				setHead(playerId, location);
+			}
+			catch(Exception ex)
+			{
+				
+			}
+		}
+
+		if (currentRingLeaderName != null)
+		{
+			LanguageManager.setPlayerName(currentRingLeaderName);
+			String broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_OVERTURNED, ChatColor.AQUA);
+			DramaCraft.broadcastMessage(broadcast);
+
+			OfflinePlayer currentRingLeaderPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(currentRingLeaderId));
+			
+			try
+			{
+				DramaCraft.log("Setting current ringleader '" + currentRingLeaderPlayer.getName() + "' to his previous rank '" + currentRingLeaderPreviousRank + "'");
+				PermissionsManager.setDramaCraftGroup(currentRingLeaderPlayer, currentRingLeaderPreviousRank);
+			}
+			catch (Exception ex)
+			{
+				DramaCraft.log("Error while setting current ringleader to his previous rank '" + currentRingLeaderPreviousRank + "'");
+			}
+
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removeowner castle " + currentRingLeaderName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
+		}
 		
+		DramaCraft.log("Setting new ringleader '" + playerName + "' previous rank to '" + PermissionsManager.getGroup(playerName) + "'");
+		config.set("Players." + playerId + ".PreviousRank", PermissionsManager.getGroup(playerName));
+		config.set("Players." + playerId + ".CurrentRank", "ringleader");
+
+		DramaCraft.log("Setting new ringleader '" + playerName + "' rank to 'ringleader'");
+		PermissionsManager.setDramaCraftGroup(Bukkit.getServer().getOfflinePlayer(playerId), "ringleader");
+		
+		//updatePrefix(playerId);
+	
+		Date thisDate = new Date();
+		
+		config.set("RingLeader1.Id", playerId.toString());
+		//config.set("King.JoinDate", formatter.format(thisDate));
+		config.set("RingLeader1.ElectionTime", formatter.format(thisDate));
+				
+		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addowner castle " + playerName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
+		
+		instance.save();
 	}
 	
 	static public void setRingLeader2(UUID playerId)

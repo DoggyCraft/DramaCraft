@@ -86,50 +86,50 @@ public class Commands implements Listener
 	static private void voteHelp(CommandSender sender)
 	{
 		//sender.sendMessage("" + ChatColor.WHITE + plugin.getLanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_HEAD, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_INFO, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote day " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_DAY, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote night " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NIGHT, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote sun " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_SUN, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote rain " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_RAIN, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_INFO, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote day " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_DAY, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote night " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NIGHT, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote sun " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_SUN, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote rain " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_RAIN, ChatColor.AQUA));
 		
 		Player player = (Player)sender;
 		
 		if(RankManager.isNoble(player.getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote king <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_KING, ChatColor.AQUA));
-			sender.sendMessage("" + ChatColor.WHITE + "/vote queen <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_QUEEN, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote king <playername> " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_KING, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote queen <playername> " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_QUEEN, ChatColor.AQUA));
 		}
 
 		if(RankManager.isNoble(player.getUniqueId()) || RankManager.getActiveNobles() < 3)
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote noble <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote noble <playername> " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE, ChatColor.AQUA));
 		}
 
 		if(RankManager.isNoble(player.getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote kicknoble <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE_KICK, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote kicknoble <playername> " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE_KICK, ChatColor.AQUA));
 		}
 
 		if(RankManager.isInnerCircle(player.getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote ringleader <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_KING, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote ringleader <playername> " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_KING, ChatColor.AQUA));
 		}
 
 		if(RankManager.isInnerCircle(player.getUniqueId()) || RankManager.getActiveInnerCircle() < 3)
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote innercircle <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote innercircle <playername> " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE, ChatColor.AQUA));
 		}
 
 		if(RankManager.isInnerCircle(player.getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote kickinnercircle <playername> " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE_KICK, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote kickinnercircle <playername> " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NOBLE_KICK, ChatColor.AQUA));
 		}
 
-		sender.sendMessage("" + ChatColor.WHITE + "/vote question " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_QUESTION, ChatColor.AQUA));
+		sender.sendMessage("" + ChatColor.WHITE + "/vote question " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_QUESTION, ChatColor.AQUA));
 
 		if(RankManager.isRebel(player.getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/vote revolution " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REVOLUTION, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/vote revolution " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REVOLUTION, ChatColor.AQUA));
 		}
 		
 	}
@@ -137,18 +137,18 @@ public class Commands implements Listener
 	private void dramaCraftInfo(CommandSender sender)
 	{
 		sender.sendMessage(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
-		sender.sendMessage(ChatColor.AQUA + "By DogOnFire");
-		sender.sendMessage("" + ChatColor.AQUA);
+		sender.sendMessage(ChatColor.GRAY + "By DogOnFire");
+		sender.sendMessage("");
 		
-		sender.sendMessage("" + ChatColor.GOLD + RankManager.getNumberOfRebels() + ChatColor.RED + " Rebels vs " + ChatColor.GOLD + RankManager.getNumberOfImperials() + ChatColor.AQUA + " Imperials");
-		sender.sendMessage("" + ChatColor.AQUA);
-		sender.sendMessage("" + ChatColor.AQUA + "Imperials has " + ChatColor.GOLD + ResourceManager.getImperialResources() + ChatColor.AQUA + " resources.");
-		sender.sendMessage("" + ChatColor.AQUA + "Rebels has " + ChatColor.GOLD + ResourceManager.getRebelResources() + ChatColor.AQUA + " resources.");
-		sender.sendMessage("" + ChatColor.AQUA);
+		sender.sendMessage("" + ChatColor.RED + RankManager.getNumberOfRebels() + " Rebels " + ChatColor.GRAY + "vs " + ChatColor.AQUA + RankManager.getNumberOfImperials() + " Imperials");
+		sender.sendMessage("");
+		sender.sendMessage("" + ChatColor.GRAY + "Imperials has " + ChatColor.GOLD + ResourceManager.getImperialResources() + ChatColor.AQUA + " resources.");
+		sender.sendMessage("" + ChatColor.GRAY + "Rebels has " + ChatColor.GOLD + ResourceManager.getRebelResources() + ChatColor.AQUA + " resources.");
+		sender.sendMessage("");
 
 		sendKingQueenWho(sender);
 
-		sender.sendMessage("" + ChatColor.AQUA);
+		sender.sendMessage("");
 
 		Player player = (Player)sender;
 
@@ -177,32 +177,32 @@ public class Commands implements Listener
 			sender.sendMessage(ChatColor.WHITE + "You are a " + ChatColor.RED + " Rebel");
 		}
 
-		sender.sendMessage("" + ChatColor.AQUA);
+		sender.sendMessage("");
 
 		if(RankManager.isImperial(player.getUniqueId()))
 		{			
-			sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/imperials" + ChatColor.AQUA + " to see info about the Imperials");
+			sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials" + ChatColor.GRAY + " to see info about the Imperials");
 		}
 		
 		if(RankManager.isRebel(player.getUniqueId()))
 		{			
-			sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/rebels" + ChatColor.AQUA + " to see info about the Rebels");
+			sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels" + ChatColor.GRAY + " to see info about the Rebels");
 		}
 		
-		sender.sendMessage("" + ChatColor.AQUA);
-		sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/vote help" + ChatColor.AQUA + " to see how to vote");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/vote help" + ChatColor.GRAY + " to see how to vote");
 
 		if(RankManager.isImperial(((Player)sender).getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/dc imperials " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_IMPERIALS, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/dc imperials " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_IMPERIALS, ChatColor.GRAY));
 		}
 		
 		if(RankManager.isRebel(((Player)sender).getUniqueId()))
 		{	
-			sender.sendMessage("" + ChatColor.WHITE + "/dc rebels " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REBELS, ChatColor.AQUA));
+			sender.sendMessage("" + ChatColor.WHITE + "/dc rebels " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REBELS, ChatColor.GRAY));
 		}
 
-		sender.sendMessage(ChatColor.AQUA + "Use " + ChatColor.WHITE + "/dc <player>" + ChatColor.AQUA + " to view info about a player");
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/dc <player>" + ChatColor.GRAY + " to view info about a player");
 
 	}
 
@@ -213,7 +213,7 @@ public class Commands implements Listener
 		
 		if (kingName == null)
 		{
-			sender.sendMessage(ChatColor.AQUA + "DoggyCraft has no King!");
+			sender.sendMessage(ChatColor.GRAY + "DoggyCraft has no King!");
 		}
 		else
 		{
@@ -221,17 +221,17 @@ public class Commands implements Listener
 			
 			if(kingDays == 0)
 			{
-				sender.sendMessage(ChatColor.AQUA + "The king of DoggyCraft is " + ChatColor.GOLD + kingName);
+				sender.sendMessage(ChatColor.GRAY + "The king of DoggyCraft is " + ChatColor.GOLD + kingName);
 			}
 			else
 			{
-				sender.sendMessage(ChatColor.AQUA + "The king of DoggyCraft is " + ChatColor.GOLD + kingName + ChatColor.AQUA + " for " + ChatColor.GOLD + kingDays + " days");				
+				sender.sendMessage(ChatColor.GRAY + "The king of DoggyCraft is " + ChatColor.GOLD + kingName + ChatColor.GRAY + " for " + ChatColor.GOLD + kingDays + " days");				
 			}
 		}
 		
 		if (queenName == null)
 		{
-			sender.sendMessage(ChatColor.AQUA + "DoggyCraft has no Queen!");
+			sender.sendMessage(ChatColor.GRAY + "DoggyCraft has no Queen!");
 		}
 		else
 		{
@@ -239,11 +239,11 @@ public class Commands implements Listener
 
 			if(queenDays == 0)
 			{
-				sender.sendMessage(ChatColor.AQUA + "The queen of DoggyCraft is " + ChatColor.GOLD + queenName);
+				sender.sendMessage(ChatColor.GRAY + "The queen of DoggyCraft is " + ChatColor.GOLD + queenName);
 			}
 			else
 			{
-				sender.sendMessage(ChatColor.AQUA + "The queen of DoggyCraft is " + ChatColor.GOLD + queenName + ChatColor.AQUA + " for " + ChatColor.GOLD + queenDays + " days");				
+				sender.sendMessage(ChatColor.GRAY + "The queen of DoggyCraft is " + ChatColor.GOLD + queenName + ChatColor.GRAY + " for " + ChatColor.GOLD + queenDays + " days");				
 			}
 		}
 	}
@@ -252,27 +252,27 @@ public class Commands implements Listener
 	{
 		if(!RankManager.isImperial(player.getUniqueId()))
 		{
-			player.sendMessage(ChatColor.RED + "Only an imperial can set a bounty a rebel");
+			player.sendMessage(ChatColor.DARK_RED + "Only an imperial can set a bounty a rebel");
 			return;			
 		}
 
 		if(!RankManager.isRebel(targetPlayer.getUniqueId()))
 		{
-			player.sendMessage(ChatColor.RED + "You can only set a bounty on a rebel");
+			player.sendMessage(ChatColor.DARK_RED + "You can only set a bounty on a rebel");
 			return;			
 		}
 
 		if(!DramaCraft.instance().getEconomyManager().has(player.getName(), bounty))
 		{
-			player.sendMessage(ChatColor.RED + "You do not have " + bounty + " wanks");
+			player.sendMessage(ChatColor.DARK_RED + "You do not have " + bounty + " wanks");
 			return;
 		}
 		
 		DramaCraft.instance().getEconomyManager().withdrawPlayer(player.getName(), bounty);
 		BountyManager.addBounty(targetPlayer, bounty);
 		
-		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "A bounty of " + ChatColor.GOLD + bounty + " wanks " + ChatColor.AQUA + " was put on " + ChatColor.GOLD + targetPlayer.getName());
-		Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "The total bounty on " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.AQUA + " is now " + ChatColor.GOLD + BountyManager.getBounty(targetPlayer.getUniqueId()) + " wanks");
+		Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "A bounty of " + ChatColor.GOLD + bounty + " wanks " + ChatColor.GRAY + " was put on " + ChatColor.GOLD + targetPlayer.getName());
+		Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "The total bounty on " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " is now " + ChatColor.GOLD + BountyManager.getBounty(targetPlayer.getUniqueId()) + " wanks");
 	}
 
 	public void listBounties(Player player)
@@ -336,12 +336,12 @@ public class Commands implements Listener
 					
 			if (command.getName().equalsIgnoreCase("dc"))
 			{
-				if(args.length == 0)
+				if (args.length == 0)
 				{
 					sender.sendMessage(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
 					sender.sendMessage(ChatColor.GRAY + "By DogOnFire");
 					sender.sendMessage("");
-					
+
 					sender.sendMessage("" + ChatColor.RED + RankManager.getNumberOfRebels() + " Rebels " + ChatColor.GRAY + "vs " + ChatColor.AQUA + RankManager.getNumberOfImperials() + " Imperials");
 					sender.sendMessage("" + ChatColor.GRAY);
 					sender.sendMessage("" + ChatColor.GRAY + "Imperials has " + ChatColor.GOLD + ResourceManager.getImperialResources() + ChatColor.GRAY + " resources.");
@@ -349,21 +349,25 @@ public class Commands implements Listener
 					sender.sendMessage("" + ChatColor.GRAY);
 					return true;
 				}
-				
+
 				if (args[0].equalsIgnoreCase("setimperial"))
 				{
-					// if(args[1].equalsIgnoreCase("13370x"))
-					{
-						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-						if (targetPlayer != null)
+					if (targetPlayer != null)
+					{
+						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
-							RankManager.setImperial(targetPlayer.getUniqueId());
-						}
-						else
-						{
-							DramaCraft.log("No such player " + args[1]);
-						}
+							@Override
+							public void run()
+							{
+								RankManager.setImperial(targetPlayer.getUniqueId());
+							}
+						});
+					}
+					else
+					{
+						DramaCraft.log("No such player " + args[1]);
 					}
 
 					return true;
@@ -371,18 +375,22 @@ public class Commands implements Listener
 
 				if (args[0].equalsIgnoreCase("setrebel"))
 				{
-					// if(args[1].equalsIgnoreCase("13370x"))
-					{
-						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-						if (targetPlayer != null)
+					if (targetPlayer != null)
+					{
+						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
-							RankManager.setRebel(targetPlayer.getUniqueId());
-						}
-						else
-						{
-							DramaCraft.log("No such player " + args[1]);
-						}
+							@Override
+							public void run()
+							{
+								RankManager.setRebel(targetPlayer.getUniqueId());
+							}
+						});
+					}
+					else
+					{
+						DramaCraft.log("No such player " + args[1]);
 					}
 
 					return true;
@@ -390,18 +398,22 @@ public class Commands implements Listener
 
 				if (args[0].equalsIgnoreCase("setnoble"))
 				{
-					// if(args[1].equalsIgnoreCase("13370x"))
-					{
-						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-						if (targetPlayer != null)
+					if (targetPlayer != null)
+					{
+						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
-							RankManager.setNoble(targetPlayer.getUniqueId());
-						}
-						else
-						{
-							DramaCraft.log("No such player " + args[1]);
-						}
+							@Override
+							public void run()
+							{
+								RankManager.setNoble(targetPlayer.getUniqueId());
+							}
+						});
+					}
+					else
+					{
+						DramaCraft.log("No such player " + args[1]);
 					}
 
 					return true;
@@ -409,18 +421,22 @@ public class Commands implements Listener
 
 				if (args[0].equalsIgnoreCase("setinnercircle"))
 				{
-					// if(args[1].equalsIgnoreCase("13370x"))
-					{
-						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-						if (targetPlayer != null)
+					if (targetPlayer != null)
+					{
+						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
-							RankManager.setInnerCircle(targetPlayer.getUniqueId());
-						}
-						else
-						{
-							DramaCraft.log("No such player " + args[1]);
-						}
+							@Override
+							public void run()
+							{
+								RankManager.setInnerCircle(targetPlayer.getUniqueId());
+							}
+						});
+					}
+					else
+					{
+						DramaCraft.log("No such player " + args[1]);
 					}
 
 					return true;
@@ -428,18 +444,22 @@ public class Commands implements Listener
 
 				if (args[0].equalsIgnoreCase("setneutral"))
 				{
-					// if(args[1].equalsIgnoreCase("13370x"))
-					{
-						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-						if (targetPlayer != null)
+					if (targetPlayer != null)
+					{
+						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
-							RankManager.setNeutral(targetPlayer.getUniqueId());
-						}
-						else
-						{
-							DramaCraft.log("No such player " + args[1]);
-						}
+							@Override
+							public void run()
+							{
+								RankManager.setNeutral(targetPlayer.getUniqueId());
+							}
+						});
+					}
+					else
+					{
+						DramaCraft.log("No such player " + args[1]);
 					}
 
 					return true;
@@ -447,18 +467,22 @@ public class Commands implements Listener
 
 				if (args[0].equalsIgnoreCase("setking"))
 				{
-					// if(args[1].equalsIgnoreCase("13370x"))
-					{
-						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-						if (targetPlayer != null)
+					if (targetPlayer != null)
+					{
+						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
-							RankManager.setKing(targetPlayer.getUniqueId());
-						}
-						else
-						{
-							DramaCraft.log("No such player " + args[1]);
-						}
+							@Override
+							public void run()
+							{
+								RankManager.setKing(targetPlayer.getUniqueId());
+							}
+						});
+					}
+					else
+					{
+						DramaCraft.log("No such player " + args[1]);
 					}
 
 					return true;
@@ -466,18 +490,68 @@ public class Commands implements Listener
 
 				if (args[0].equalsIgnoreCase("setqueen"))
 				{
-					// if(args[1].equalsIgnoreCase("13370x"))
-					{
-						OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-						if (targetPlayer != null)
+					if (targetPlayer != null)
+					{
+						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
-							RankManager.setQueen(targetPlayer.getUniqueId());
-						}
-						else
+							@Override
+							public void run()
+							{
+								RankManager.setQueen(targetPlayer.getUniqueId());
+							}
+						});
+					}
+					else
+					{
+						DramaCraft.log("No such player " + args[1]);
+					}
+
+					return true;
+				}
+
+				if (args[0].equalsIgnoreCase("setringleader1"))
+				{
+					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+
+					if (targetPlayer != null)
+					{
+						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
-							DramaCraft.log("No such player " + args[1]);
-						}
+							@Override
+							public void run()
+							{
+								RankManager.setRingLeader1(targetPlayer.getUniqueId());
+							}
+						});
+					}
+					else
+					{
+						DramaCraft.log("No such player " + args[1]);
+					}
+
+					return true;
+				}
+
+				if (args[0].equalsIgnoreCase("setringleader2"))
+				{
+					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+
+					if (targetPlayer != null)
+					{
+						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								RankManager.setRingLeader2(targetPlayer.getUniqueId());
+							}
+						});
+					}
+					else
+					{
+						DramaCraft.log("No such player " + args[1]);
 					}
 
 					return true;
