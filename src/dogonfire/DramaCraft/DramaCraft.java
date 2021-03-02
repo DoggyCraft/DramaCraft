@@ -21,6 +21,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
+import dogonfire.DramaCraft.tasks.InfoTask;
 
 public class DramaCraft extends JavaPlugin
 {

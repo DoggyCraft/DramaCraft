@@ -1,4 +1,4 @@
-package dogonfire.DramaCraft;
+package dogonfire.DramaCraft.tasks;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -6,6 +6,10 @@ import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import dogonfire.DramaCraft.DramaCraft;
+import dogonfire.DramaCraft.LanguageManager;
+import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
 
 public class InfoTask implements Runnable
 {

@@ -97,7 +97,7 @@ public class RevolutionManager implements Listener
 
 		if(RankManager.isImperial(player.getUniqueId()))
 		{
-			player.sendMessage(ChatColor.AQUA + "You must kill the rebels to protect the king and queen during this revolution!");
+			player.sendMessage(ChatColor.GRAY + "You must kill the rebels to protect the king and queen during this revolution!");
 			
 			Bukkit.getServer().getScheduler().runTaskLater(DramaCraft.instance(), new Runnable()
 			{
@@ -110,7 +110,7 @@ public class RevolutionManager implements Listener
 		
 		if(RankManager.isRebel(player.getUniqueId()))
 		{
-			player.sendMessage(ChatColor.AQUA + "You must kill imperials to overthrow the king and queen during this revolution!");			
+			player.sendMessage(ChatColor.GRAY + "You must kill imperials to overthrow the king and queen during this revolution!");			
 
 			Bukkit.getServer().getScheduler().runTaskLater(DramaCraft.instance(), new Runnable()
 			{
@@ -312,8 +312,8 @@ public class RevolutionManager implements Listener
 		if(rebelPoints > imperialPoints)
 		{
 			Bukkit.broadcastMessage(ChatColor.GREEN + "The Revolution SUCEEDED!");
-			Bukkit.broadcastMessage(ChatColor.GOLD + RankManager.getKingName() + ChatColor.AQUA + " was removed from the throne!");
-			Bukkit.broadcastMessage(ChatColor.GOLD + RankManager.getQueenName() + ChatColor.AQUA + " was removed from the throne!");
+			Bukkit.broadcastMessage(ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " was removed from the throne!");
+			Bukkit.broadcastMessage(ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " was removed from the throne!");
 			
 			RankManager.downgradeRank(RankManager.getKing());
 			RankManager.downgradeRank(RankManager.getQueen());
@@ -364,7 +364,7 @@ public class RevolutionManager implements Listener
 		
 		if(System.currentTimeMillis() - timeRevolutionStarted > 10*60*1000)
 		{
-			Bukkit.getServer().broadcastMessage(ChatColor.AQUA + "The REVOLUTION is over!");
+			Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "The REVOLUTION is over!");
 			
 			endRevolution();
 			
@@ -435,14 +435,14 @@ public class RevolutionManager implements Listener
 				savedInventories.put(player.getUniqueId(), inventory);
 			}*/
 			
-			player.sendMessage(ChatColor.AQUA + "You must kill the rebels to protect the king and queen during this revolution!");
+			player.sendMessage(ChatColor.GRAY + "You must kill the rebels to protect the king and queen during this revolution!");
 			player.teleport(imperialRevolutionSpawn);
 		}
 		else
 		{
 			if(random.nextInt(50)==0)
 			{
-				player.sendMessage(ChatColor.AQUA + "You must protect the king and queen against the rebels during this revolution!");			
+				player.sendMessage(ChatColor.GRAY + "You must protect the king and queen against the rebels during this revolution!");			
 			}
 		}		
 	}		
@@ -451,14 +451,14 @@ public class RevolutionManager implements Listener
 	{
 		if(!isWithinRegion(player, battleRegionName))
 		{
-			player.sendMessage(ChatColor.AQUA + "You must kill imperials to overthrow the king and queen during this revolution!");
+			player.sendMessage(ChatColor.GRAY + "You must kill imperials to overthrow the king and queen during this revolution!");
 			player.teleport(rebelRevolutionSpawn);
 		}
 		else
 		{
 			if(random.nextInt(50)==0)
 			{
-				player.sendMessage(ChatColor.AQUA + "You must kill imperials to overthrow the king and queen during this revolution!");			
+				player.sendMessage(ChatColor.GRAY + "You must kill imperials to overthrow the king and queen during this revolution!");			
 			}
 		}		
 	}		

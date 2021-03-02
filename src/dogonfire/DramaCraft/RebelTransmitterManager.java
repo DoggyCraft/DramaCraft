@@ -174,7 +174,7 @@ public class RebelTransmitterManager implements Listener
 		if (message.length() <= 3)
 		{
 			//this.plugin.sendInfo(player.getUniqueId(), LanguageManager.LANGUAGESTRING.InvalidGodName, ChatColor.DARK_RED, 0, "", 20);
-			event.getPlayer().sendMessage(ChatColor.RED + "That message is too short");
+			event.getPlayer().sendMessage(ChatColor.DARK_RED + "That message is too short");
 			DramaCraft.log("message is too short");
 			return false;
 		}

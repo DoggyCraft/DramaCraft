@@ -38,6 +38,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
+import dogonfire.DramaCraft.tasks.InfoTask;
 
 
 
