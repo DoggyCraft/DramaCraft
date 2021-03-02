@@ -172,4 +172,6 @@ public class ResourceManager implements Listener
 		// TODO add this block to list of blocks for this fametype	
 		//}
 	}
+	
+	
 }

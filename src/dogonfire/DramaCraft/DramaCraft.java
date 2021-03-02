@@ -215,6 +215,9 @@ public class DramaCraft extends JavaPlugin
 		bodyGuardManager = new BodyguardManager(this);
 		getServer().getPluginManager().registerEvents(bodyGuardManager, this);
 
+		TeleportPreventer teleportPreventer = new TeleportPreventer();
+		getServer().getPluginManager().registerEvents(teleportPreventer, this);
+
 		server.getScheduler().runTaskTimerAsynchronously(this, new Runnable()
 		{
 			public void run()
