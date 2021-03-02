@@ -38,30 +38,31 @@ public class FireworkTask implements Runnable
 		int z = (int) this.player.getLocation().getZ();
 
 		int power = (int) (Math.random() * 2.0D) + 1;
-		List<Color> c = new ArrayList();
+		List<Color> c = new ArrayList<Color>();
 
 		for(int n=0; n<2; n++)
 		{
 			switch(random.nextInt(19))
 			{
-				case 0 : c.add(Color.PURPLE);
-				case 1 : c.add(Color.AQUA);
-				case 2 : c.add(Color.BLACK);
-				case 3 : c.add(Color.BLUE);
-				case 4 : c.add(Color.FUCHSIA);
-				case 5 : c.add(Color.GRAY);
-				case 6 : c.add(Color.GREEN);
-				case 7 : c.add(Color.LIME);
-				case 8 : c.add(Color.MAROON);
-				case 9 : c.add(Color.NAVY);
-				case 10 : c.add(Color.OLIVE);
-				case 11 : c.add(Color.ORANGE);
-				case 12 : c.add(Color.PURPLE);
-				case 13 : c.add(Color.RED);
-				case 14 : c.add(Color.SILVER);
-				case 15 : c.add(Color.TEAL);
-				case 16 : c.add(Color.WHITE);
-				case 17 : c.add(Color.YELLOW);
+				case 0 : c.add(Color.PURPLE); break;
+				case 1 : c.add(Color.AQUA);  break;
+				case 2 : c.add(Color.BLACK);  break;
+				case 3 : c.add(Color.BLUE);  break;
+				case 4 : c.add(Color.FUCHSIA);  break;
+				case 5 : c.add(Color.GRAY);  break;
+				case 6 : c.add(Color.GREEN);  break; 
+				case 7 : c.add(Color.LIME);  break; 
+				case 8 : c.add(Color.MAROON); break;
+				case 9 : c.add(Color.NAVY);  break;
+				case 10 : c.add(Color.OLIVE);  break;
+				case 11 : c.add(Color.ORANGE);  break;
+				case 12 : c.add(Color.PURPLE);  break;
+				case 13 : c.add(Color.RED);  break;
+				case 14 : c.add(Color.SILVER); break;
+				case 15 : c.add(Color.TEAL); break;
+				case 16 : c.add(Color.WHITE);  break;
+				case 17 : c.add(Color.YELLOW); break;
+				default: break;
 			}
 		}
 		
@@ -71,16 +72,12 @@ public class FireworkTask implements Runnable
 		
 		switch (type)
 		{
-		case 1:
-			effect = FireworkEffect.Type.BALL;
-		case 2:
-			effect = FireworkEffect.Type.BALL_LARGE;
-		case 3:
-			effect = FireworkEffect.Type.BURST;
-		case 4:
-			effect = FireworkEffect.Type.CREEPER;
-		case 5:
-			effect = FireworkEffect.Type.STAR;
+			case 1:	effect = FireworkEffect.Type.BALL; break;
+			case 2: effect = FireworkEffect.Type.BALL_LARGE; break;
+			case 3: effect = FireworkEffect.Type.BURST; break;
+			case 4:	effect = FireworkEffect.Type.CREEPER; break;
+			case 5:	effect = FireworkEffect.Type.STAR; break;
+			default: break;
 		}
 		
 		for (int x = 0; x <= this.numberOfRockets; x++)
