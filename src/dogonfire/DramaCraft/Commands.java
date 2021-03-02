@@ -1276,13 +1276,34 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.YELLOW + StringUtils.repeat("-", title.length()));		
 	}
 
+	private void royalHelp(CommandSender sender)
+	{	
+		String title = " --------- " + ChatColor.RED + "King & Queen" + ChatColor.YELLOW + " -------- ";
+
+		sender.sendMessage(ChatColor.YELLOW + title);
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "As the " + ChatColor.GOLD + "KING" + ChatColor.GRAY + " or " + ChatColor.GOLD + "QUEEN" + " it is your duty to rule the Kingdom and preserve order!");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "- Set bounties on Rebels and bring them to justice");
+		sender.sendMessage(ChatColor.GRAY + "- Buy cannons to protect the kingdom");			
+		sender.sendMessage(ChatColor.GRAY + "- Hire guards in order to protect the Kingdom tresury");			
+		sender.sendMessage(ChatColor.GRAY + "- Hire knights to attack the Rebel city");			
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials revolution" + ChatColor.GRAY + " to see how to start a revolution");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials resources" + ChatColor.GRAY + " to see how to provide resources for the rebel cause");			
+
+		sender.sendMessage(ChatColor.YELLOW + StringUtils.repeat("-", title.length()));		
+	}
+
 	private void rebelsHelp(CommandSender sender)
 	{	
 		String title = " --------- " + ChatColor.RED + "Rebels" + ChatColor.YELLOW + " -------- ";
 
 		sender.sendMessage(ChatColor.YELLOW + title);
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "As a " + ChatColor.RED + "REBEL" + ChatColor.WHITE + " it is your duty to challenge the King, Queen and the evil empire they rule!");
+		sender.sendMessage(ChatColor.GRAY + "As a " + ChatColor.RED + "REBEL" + ChatColor.GRAY + " it is your duty to challenge the King, Queen and the evil empire they rule!");
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "- Spread the truth about the Empire by building transmitters");
 		sender.sendMessage(ChatColor.GRAY + "- Mine ore to contribute resources to the rebel stash");			
