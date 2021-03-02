@@ -50,13 +50,14 @@ public class VoteManager
 		VOTE_NOBLE,
 		VOTE_NOBLE_KICK,
 		VOTE_INNERCIRCLE,
+		VOTE_INNERCIRCLE_KICK,
 		MASTER_COIN,
 		MASTER_LAW,
 		MASTER_WAR,
 		VOTE_KING,
 		VOTE_QUEEN,
-		VOTE_BOSS1,
-		VOTE_BOSS2,
+		VOTE_RINGLEADER1,
+		VOTE_RINGLEADER2,
 		VOTE_FAME,
 		VOTE_SHAME,
 	}
@@ -114,8 +115,8 @@ public class VoteManager
 		
 		if(RevolutionManager.isRevolution())
 		{
-			Bukkit.broadcastMessage(ChatColor.AQUA + "Revolution!! Will the King and Queen survive the attack by the rebels?");
-			Bukkit.broadcastMessage(ChatColor.AQUA + "The Revolution will end in " + ChatColor.GOLD + RevolutionManager.getMinutesUntilRevolutionEnd() + " minutes.");
+			Bukkit.broadcastMessage(ChatColor.GRAY + "Revolution!! Will the King and Queen survive the attack by the rebels?");
+			Bukkit.broadcastMessage(ChatColor.GRAY + "The Revolution will end in " + ChatColor.GOLD + RevolutionManager.getMinutesUntilRevolutionEnd() + " minutes.");
 			return;
 		}
 		
@@ -175,7 +176,12 @@ public class VoteManager
 			reqVotes = 5;
 		}
 
-		if (instance.currentVoteType == VOTE_TYPE.VOTE_BOSS1 || instance.currentVoteType == VOTE_TYPE.VOTE_BOSS2)
+		if (instance.currentVoteType == VOTE_TYPE.VOTE_NOBLE_KICK || instance.currentVoteType == VOTE_TYPE.VOTE_INNERCIRCLE_KICK)
+		{
+			reqVotes = 5;
+		}
+
+		if (instance.currentVoteType == VOTE_TYPE.VOTE_RINGLEADER1 || instance.currentVoteType == VOTE_TYPE.VOTE_RINGLEADER2)
 		{
 			reqVotes = 7;//7
 		}
@@ -227,21 +233,7 @@ public class VoteManager
 						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_SUN_FAILED, ChatColor.RED);
 					}
 					break;
-					
-				case VOTE_KING:
-					if (success)
-					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
-						LanguageManager.setPlayerName(player.getName());
-						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_SUCCESS, ChatColor.GREEN);
-						RankManager.setKing(UUID.fromString(instance.voteString));
-					}
-					else
-					{
-						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_FAILED, ChatColor.RED);
-					}
-					break;
-					
+										
 				case VOTE_NOBLE:
 					if (success)
 					{
@@ -270,6 +262,20 @@ public class VoteManager
 					}
 					break;
 
+				case VOTE_KING:
+					if (success)
+					{
+						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						LanguageManager.setPlayerName(player.getName());
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_SUCCESS, ChatColor.GREEN);
+						RankManager.setKing(UUID.fromString(instance.voteString));
+					}
+					else
+					{
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_FAILED, ChatColor.RED);
+					}
+					break;
+
 				case VOTE_QUEEN:
 					if (success)
 					{
@@ -284,31 +290,31 @@ public class VoteManager
 					}
 					break;
 					
-				case VOTE_BOSS1:
+				case VOTE_RINGLEADER1:
 					if (success)
 					{
 						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
 						LanguageManager.setPlayerName(player.getName());
-						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS1_SUCCESS, ChatColor.GREEN);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER1_SUCCESS, ChatColor.GREEN);
 						RankManager.setRingLeader1(UUID.fromString(instance.voteString));
 					}
 					else
 					{
-						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS1_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER1_FAILED, ChatColor.RED);
 					}
 					break;
 					
-				case VOTE_BOSS2:
+				case VOTE_RINGLEADER2:
 					if (success)
 					{
 						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
 						LanguageManager.setPlayerName(player.getName());
-						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS2_SUCCESS, ChatColor.GREEN);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER2_SUCCESS, ChatColor.GREEN);
 						RankManager.setRingLeader2(UUID.fromString(instance.voteString));
 					}
 					else
 					{
-						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_BOSS2_FAILED, ChatColor.RED);
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER2_FAILED, ChatColor.RED);
 					}
 					break;
 
@@ -413,6 +419,13 @@ public class VoteManager
 				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE, ChatColor.AQUA);
 			} break;
 
+			case VOTE_INNERCIRCLE_KICK:
+			{
+				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+				LanguageManager.setPlayerName(player.getName());
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE_KICK, ChatColor.AQUA);
+			} break;
+
 			case VOTE_KING:
 			{
 				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
@@ -425,6 +438,20 @@ public class VoteManager
 				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
 				LanguageManager.setPlayerName(player.getName());
 				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_QUEEN, ChatColor.AQUA);
+			} break;
+
+			case VOTE_RINGLEADER1:
+			{
+				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+				LanguageManager.setPlayerName(player.getName());
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER1, ChatColor.AQUA);
+			} break;
+
+			case VOTE_RINGLEADER2:
+			{
+				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+				LanguageManager.setPlayerName(player.getName());
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER2, ChatColor.AQUA);
 			} break;
 
 			case VOTE_DAY:
@@ -584,19 +611,6 @@ public class VoteManager
 			}
 		}
 		
-		if (voteType == VOTE_TYPE.VOTE_NOBLE_KICK)
-		{
-			reqVotes = 3;
-			
-			if(RankManager.getOnlineNobles() < 3)
-			{
-				LanguageManager.setAmount1(reqVotes);
-				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
-				DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few nobels online");
-				return false;
-			}		
-		}
-
 		if (voteType == VOTE_TYPE.VOTE_INNERCIRCLE)
 		{
 			reqVotes = 5;
@@ -637,6 +651,32 @@ public class VoteManager
 			}
 		}
 
+		if (voteType == VOTE_TYPE.VOTE_NOBLE_KICK)
+		{
+			reqVotes = 3;
+			
+			if(RankManager.getOnlineNobles() < 3)
+			{
+				LanguageManager.setAmount1(reqVotes);
+				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
+				DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few nobels online");
+				return false;
+			}		
+		}
+
+		if (voteType == VOTE_TYPE.VOTE_INNERCIRCLE_KICK)
+		{
+			reqVotes = 3;
+			
+			if(RankManager.getOnlineRebels() < 3)
+			{
+				LanguageManager.setAmount1(reqVotes);
+				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
+				DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few nobels online");
+				return false;
+			}		
+		}
+		
 		instance.currentVoteType = voteType;
 		instance.startVoteTime = System.nanoTime();
 		instance.lastVoterId = voter.getUniqueId();
