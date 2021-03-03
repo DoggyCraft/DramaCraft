@@ -34,13 +34,14 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 public class ResourceManager implements Listener
 {		
+	static private ResourceManager instance;
 	private Random 							random = new Random();
 	private FileConfiguration				config		= null;
 	private File							configFile	= null;
 		
 	public ResourceManager()
 	{
-		
+		instance = this;
 	}
 	
 	public void load()
@@ -81,6 +82,20 @@ public class ResourceManager implements Listener
 		DramaCraft.log("Saved configuration.");
 	}
 	
+	static public void depositToImperialTreasury(int amount)
+	{
+		int balance = instance.config.getInt("Imperials.Treasury.Balance") + amount;
+		instance.config.set("Imperials.Treasury.Balance", balance);
+		instance.save();
+	}
+	
+	static public void depositToRebelStash(int amount)
+	{
+		int balance = instance.config.getInt("Imperials.Stash.Balance") + amount;
+		instance.config.set("Imperials.Stash.Balance", balance);
+		instance.save();		
+	}
+
 	static public int getImperialResources()
 	{
 		return 0;		
@@ -149,6 +164,52 @@ public class ResourceManager implements Listener
 		WallSign wallSign = (org.bukkit.block.data.type.WallSign) block.getBlockData();
 		Block fameBlock = block.getRelative(wallSign.getFacing().getOppositeFace());
 		return fameBlock;
+	}
+
+	@EventHandler
+	public void OnBlockBreak(BlockBreakEvent event)
+	{
+		if(RankManager.isImperial(event.getPlayer().getUniqueId()))
+		{
+			int amount = 0;
+			
+			switch(event.getBlock().getType())
+			{
+				case COAL_ORE 		: amount = 1; break;
+				case IRON_ORE 		: amount = 2; break;
+				case EMERALD_ORE 	: amount = 3; break;
+				case GOLD_ORE 		: amount = 4; break;
+				case DIAMOND_ORE 	: amount = 5; break;
+				default : break;
+			}
+						
+			if(amount > 0)
+			{
+				depositToImperialTreasury(amount);
+				event.getPlayer().sendMessage(ChatColor.GREEN + "You contributed " + ChatColor.GOLD + amount + ChatColor.GREEN + " to the Imperial Treasury!");				
+			}
+		}
+
+		if(RankManager.isRebel(event.getPlayer().getUniqueId()))
+		{
+			int amount = 0;
+			
+			switch(event.getBlock().getType())
+			{
+				case COAL_ORE 		: amount = 1; break;
+				case IRON_ORE 		: amount = 2; break;
+				case EMERALD_ORE 	: amount = 3; break;
+				case GOLD_ORE 		: amount = 4; break;
+				case DIAMOND_ORE 	: amount = 5; break;
+				default : break;
+			}
+						
+			if(amount > 0)
+			{
+				depositToRebelStash(amount);
+				event.getPlayer().sendMessage(ChatColor.GREEN + "You contributed " + ChatColor.GOLD + amount + ChatColor.GREEN + " to the Rebel Stash!");				
+			}
+		}
 	}
 	
 	@EventHandler

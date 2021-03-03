@@ -12,6 +12,8 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 
+import net.md_5.bungee.api.ChatColor;
+
 
 public class TeleportPreventer implements Listener
 {
@@ -40,6 +42,7 @@ public class TeleportPreventer implements Listener
 		{
 			if(isWithinRegion(event.getPlayer(), "rebels"))
 			{
+				event.getPlayer().sendMessage(ChatColor.DARK_RED + "You cannot do that from within the Rebel area.");
 				event.setCancelled(true);
 				return;
 			}
@@ -49,6 +52,7 @@ public class TeleportPreventer implements Listener
 		{
 			if(isWithinRegion(event.getPlayer(), "imperials"))
 			{
+				event.getPlayer().sendMessage(ChatColor.DARK_RED + "You cannot do that from within the Imperial area.");
 				event.setCancelled(true);
 				return;
 			}

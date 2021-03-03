@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import dogonfire.DramaCraft.DramaCraft;
+import dogonfire.DramaCraft.LanguageManager;
 import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
 import dogonfire.DramaCraft.VoteManager.VOTE_TYPE;
 
@@ -33,13 +34,13 @@ public abstract class Vote
 	{			
 		if ((this.yes.size() + this.no.size() >= reqVotes) || (System.nanoTime() - this.startVoteTime > DramaCraft.instance().voteTimeLength))
 		{
-			String broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_FINISHED, ChatColor.AQUA);
+			String broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_FINISHED, ChatColor.AQUA);
 
 			DramaCraft.broadcastMessage(broadcast);
 
 			if (this.yes.size() + this.no.size() < reqVotes)
 			{
-				broadcast = DramaCraft.instance().getLanguageManager().getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOT_ENOUGH_VOTES, ChatColor.RED);
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOT_ENOUGH_VOTES, ChatColor.RED);
 				DramaCraft.broadcastMessage(broadcast);
 				//DramaCraft.instance().resetVotes();
 				return false;
@@ -47,8 +48,8 @@ public abstract class Vote
 
 			boolean success = ((float)this.yes.size()) / ((float)(this.no.size() + this.yes.size())) >= reqYesPercentage;
 			
-			DramaCraft.instance().logDebug("success " + ((float)this.yes.size()) / ((float)(this.no.size() + this.yes.size())));
-			DramaCraft.instance().logDebug("reqYesPercentage/100 " + reqYesPercentage / 100.0);
+			DramaCraft.logDebug("success " + ((float)this.yes.size()) / ((float)(this.no.size() + this.yes.size())));
+			DramaCraft.logDebug("reqYesPercentage/100 " + reqYesPercentage / 100.0);
 
 			broadcast = "MISSING_SUCCESS";
 			

@@ -62,17 +62,18 @@ public class Commands implements Listener
 
 			switch (VoteManager.getCurrentVoteType())
 			{
-				case VOTE_INNERCIRCLE: 	message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
-				case VOTE_NOBLE: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
-				case VOTE_KING: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
-				case VOTE_QUEEN: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_QUEEN, ChatColor.RED); break;
-				case VOTE_NIGHT: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_NIGHT, ChatColor.RED); break;
-				case VOTE_DAY: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_DAY, ChatColor.RED); break;
-				case VOTE_SUN: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_SUN, ChatColor.RED); break;
-				case VOTE_RAIN:			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_RAIN, ChatColor.RED); break;
-				case VOTE_GENERAL: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
-				case VOTE_HELP: 		voteHelp(sender); break;
-				default:				break;
+				case VOTE_INNERCIRCLE: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
+				case VOTE_NOBLE: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
+				case VOTE_KING: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
+				case VOTE_QUEEN: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_QUEEN, ChatColor.RED); break;
+				case VOTE_NIGHT: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_NIGHT, ChatColor.RED); break;
+				case VOTE_DAY: 				message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_DAY, ChatColor.RED); break;
+				case VOTE_SUN: 				message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_SUN, ChatColor.RED); break;
+				case VOTE_RAIN:				message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_RAIN, ChatColor.RED); break;
+				case VOTE_GENERAL: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
+				case VOTE_DISABLE_PHANTOMS:	message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
+				case VOTE_HELP: 			voteHelp(sender); break;
+				default:					message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
 			}
 			
 			sender.sendMessage(ChatColor.RED + message);
@@ -85,13 +86,16 @@ public class Commands implements Listener
 
 	static private void voteHelp(CommandSender sender)
 	{
+		sender.sendMessage(ChatColor.YELLOW + "------------------ Voting ------------------");
+		sender.sendMessage("");
 		//sender.sendMessage("" + ChatColor.WHITE + plugin.getLanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_HEAD, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_INFO, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote day " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_DAY, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote night " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NIGHT, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote sun " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_SUN, ChatColor.AQUA));
-		sender.sendMessage("" + ChatColor.WHITE + "/vote rain " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_RAIN, ChatColor.AQUA));
-		
+		sender.sendMessage(" " + ChatColor.WHITE + "/vote " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_INFO, ChatColor.AQUA));
+		sender.sendMessage(" " + ChatColor.WHITE + "/vote day " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_DAY, ChatColor.AQUA));
+		sender.sendMessage(" " + ChatColor.WHITE + "/vote night " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_NIGHT, ChatColor.AQUA));
+		sender.sendMessage(" " + ChatColor.WHITE + "/vote sun " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_SUN, ChatColor.AQUA));
+		sender.sendMessage(" " + ChatColor.WHITE + "/vote rain " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_RAIN, ChatColor.AQUA));
+		sender.sendMessage(" " + ChatColor.WHITE + "/vote phantoms " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_PHANTOMS, ChatColor.AQUA));
+
 		Player player = (Player)sender;
 		
 		if(RankManager.isNoble(player.getUniqueId()))
@@ -132,6 +136,7 @@ public class Commands implements Listener
 			sender.sendMessage("" + ChatColor.WHITE + "/vote revolution " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REVOLUTION, ChatColor.AQUA));
 		}
 		
+		sender.sendMessage(ChatColor.YELLOW + "-------------------------------------------");
 	}
 
 	private void dramaCraftInfo(CommandSender sender)
@@ -142,8 +147,8 @@ public class Commands implements Listener
 		
 		sender.sendMessage("" + ChatColor.RED + RankManager.getNumberOfRebels() + " Rebels " + ChatColor.GRAY + "vs " + ChatColor.AQUA + RankManager.getNumberOfImperials() + " Imperials");
 		sender.sendMessage("");
-		sender.sendMessage("" + ChatColor.GRAY + "Imperials has " + ChatColor.GOLD + ResourceManager.getImperialResources() + ChatColor.AQUA + " resources.");
-		sender.sendMessage("" + ChatColor.GRAY + "Rebels has " + ChatColor.GOLD + ResourceManager.getRebelResources() + ChatColor.AQUA + " resources.");
+		sender.sendMessage("" + ChatColor.GRAY + "Imperials has " + ChatColor.GOLD + ResourceManager.getImperialResources() + ChatColor.GRAY + " resources.");
+		sender.sendMessage("" + ChatColor.GRAY + "Rebels has " + ChatColor.GOLD + ResourceManager.getRebelResources() + ChatColor.GRAY + " resources.");
 		sender.sendMessage("");
 
 		sendKingQueenWho(sender);
@@ -200,7 +205,7 @@ public class Commands implements Listener
 		}
 		
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/dc <player>" + ChatColor.GRAY + " to view info about a player");
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/vote help" + ChatColor.GRAY + " to see how to vote");
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/vote help" + ChatColor.GRAY + " to view what you can vote about");
 
 		/*
 		if(RankManager.isImperial(((Player)sender).getUniqueId()))
@@ -214,7 +219,7 @@ public class Commands implements Listener
 		}
 		*/
 
-
+		sender.sendMessage(ChatColor.YELLOW + "-------------------------------------------");
 	}
 
 	private void sendKingQueenWho(CommandSender sender)
@@ -312,6 +317,8 @@ public class Commands implements Listener
 			n++;
 		}
 		
+		player.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
+
 		//player.sendMessage("");
 		//player.sendMessage("The Empire wants these players dead!");
 	}
@@ -1199,7 +1206,7 @@ public class Commands implements Listener
 			sender.sendMessage(ChatColor.GRAY + "Neutral - Not part of DramaCraft");										
 		}
 
-		sender.sendMessage(ChatColor.YELLOW + StringUtils.repeat("-", title.length()));		
+		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
 	}
 
 	private void setKingHead(CommandSender sender, Player player)
@@ -1249,7 +1256,7 @@ public class Commands implements Listener
 
 		Collections.sort(members, new MemberComparator());
 		
-		String title = " --------- The Imperial Nobility --------- ";
+		String title = "------------ The Imperial Nobility ------------";
 		
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.YELLOW + title);
@@ -1273,33 +1280,38 @@ public class Commands implements Listener
 			}
 		}
 
-		sender.sendMessage(ChatColor.YELLOW + StringUtils.repeat("-", title.length()));		
+		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
 	}
 
 	private void royalHelp(CommandSender sender)
 	{	
-		String title = " --------- " + ChatColor.RED + "King & Queen" + ChatColor.YELLOW + " -------- ";
+		String title = "------------ King & Queen -----------";
 
 		sender.sendMessage(ChatColor.YELLOW + title);
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "As the " + ChatColor.GOLD + "KING" + ChatColor.GRAY + " or " + ChatColor.GOLD + "QUEEN" + " it is your duty to rule the Kingdom and preserve order!");
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "- Set bounties on Rebels and bring them to justice");
-		sender.sendMessage(ChatColor.GRAY + "- Buy cannons to protect the kingdom");			
-		sender.sendMessage(ChatColor.GRAY + "- Hire guards in order to protect the Kingdom tresury");			
+		sender.sendMessage(ChatColor.GRAY + "- Arrange Imperial treasure hunt events");			
+		sender.sendMessage(ChatColor.GRAY + "- Hire guards in order to protect the Kingdoms treasury");			
 		sender.sendMessage(ChatColor.GRAY + "- Hire knights to attack the Rebel city");			
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "- The King & Queen can use /fly");
+		sender.sendMessage(ChatColor.GRAY + "- The King & Queen can use /treasury starthunt");			
+		sender.sendMessage(ChatColor.GRAY + "- The King & Queen can use /treasury buy guard");			
+		sender.sendMessage(ChatColor.GRAY + "- The King & Queen can use /treasury buy attacker");			
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials revolution" + ChatColor.GRAY + " to see how to start a revolution");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials resources" + ChatColor.GRAY + " to see how to provide resources for the rebel cause");			
 
-		sender.sendMessage(ChatColor.YELLOW + StringUtils.repeat("-", title.length()));		
+		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
 	}
 
 	private void rebelsHelp(CommandSender sender)
 	{	
-		String title = " --------- " + ChatColor.RED + "Rebels" + ChatColor.YELLOW + " -------- ";
+		String title = "------------ Rebels -----------";
 
 		sender.sendMessage(ChatColor.YELLOW + title);
 		sender.sendMessage("");
@@ -1308,13 +1320,14 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "- Spread the truth about the Empire by building transmitters");
 		sender.sendMessage(ChatColor.GRAY + "- Mine ore to contribute resources to the rebel stash");			
 		sender.sendMessage(ChatColor.GRAY + "- Vote players into the rebel inner circle");			
+		sender.sendMessage(ChatColor.GRAY + "- Loot the imperial bank and put stolen resources into the rebel stash");			
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels revolution" + ChatColor.GRAY + " to see how to start a revolution");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels resources" + ChatColor.GRAY + " to see how to provide resources for the rebel cause");			
 
-		sender.sendMessage(ChatColor.YELLOW + StringUtils.repeat("-", title.length()));		
+		sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------------");		
 	}
 
 	private void innerCircleHelp(CommandSender sender)
@@ -1355,7 +1368,7 @@ public class Commands implements Listener
 			}
 		}
 
-		sender.sendMessage(ChatColor.YELLOW + StringUtils.repeat("-", title.length()));		
+		sender.sendMessage(ChatColor.YELLOW + "--------------------------------");
 	}
 
 	private void rebelsTransmitterHelp(CommandSender sender)
@@ -1368,6 +1381,7 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "  4) Write your TRUTH message on the sign");
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "Try to be creative and dramatic in your message ;-)");			
+		sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------------");
 	}
 
 	private void imperialsHelp(CommandSender sender)
@@ -1380,8 +1394,9 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "- Make sure that all rebel transmitters are destroyed");			
 		sender.sendMessage(ChatColor.GRAY + "- Mine ore to contribute resources to the imperial treasury");			
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials nobles" + ChatColor.GRAY + " to see info about the Inner Circle");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials nobles" + ChatColor.GRAY + " to view members of the Imperial Nobility");			
 		//sender.sendMessage(ChatColor.WHITE + "Use /imperials help to see more information");			
+		sender.sendMessage(ChatColor.YELLOW + "------------------------------------------------");
 	}
 
 	double roundTwoDecimals(double d)

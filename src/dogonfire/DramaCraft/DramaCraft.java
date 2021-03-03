@@ -87,7 +87,7 @@ public class DramaCraft extends JavaPlugin
 	
 	public static void disablePhantoms()
 	{	
-		instance.phantomPreventer.disablePhantoms();
+		PhantomPreventer.disablePhantoms();
 	}
 
 	private boolean isDay(long currenttime, int offset)

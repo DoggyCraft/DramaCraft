@@ -16,6 +16,12 @@ import dogonfire.DramaCraft.VoteManager.VOTE_TYPE;
 
 public class DayVote extends Vote
 {
+	DayVote()
+	{
+		//reqVotes = DramaCraft.RequiredVotes();
+		//voteCost 			= DramaCraft.instance().startVoteCost;
+	}
+	
 	public void success()
 	{
 		
@@ -34,9 +40,7 @@ public class DayVote extends Vote
 		return isCompleted();
 		
 	}
-	
-	
-	
+		
 	public void progress()
 	{
 		/*
