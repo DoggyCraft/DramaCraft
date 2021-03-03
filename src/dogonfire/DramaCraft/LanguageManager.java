@@ -192,9 +192,15 @@ public class LanguageManager
 		}
 		finally
 		{
-			bout.close();
+			if(bout != null)
+			{
+				bout.close();
+			}
 
-			in.close();
+			if(in != null)
+			{
+				in.close();
+			}
 		}
 	}
 

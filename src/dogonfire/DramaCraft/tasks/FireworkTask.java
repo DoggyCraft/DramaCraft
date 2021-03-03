@@ -33,7 +33,7 @@ public class FireworkTask implements Runnable
 
 	public void run()
 	{
-		int a = (int) this.player.getLocation().getX();
+		double a = (int) this.player.getLocation().getX();
 		int y = (int) this.player.getLocation().getY();
 		int z = (int) this.player.getLocation().getZ();
 
@@ -95,7 +95,7 @@ public class FireworkTask implements Runnable
 		
 		if (n > 0)
 		{
-			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new FireworkTask(this.player, n), 20 + this.random.nextInt(80));
+			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new FireworkTask(this.player, n), 20L + this.random.nextInt(80));
 		}
 	}
 }

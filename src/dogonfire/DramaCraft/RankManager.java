@@ -29,13 +29,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
 import dogonfire.DramaCraft.tasks.InfoTask;
@@ -44,7 +38,7 @@ import dogonfire.DramaCraft.tasks.InfoTask;
 
 public class RankManager implements Listener
 {		
-	private Random 							random = new Random();
+	private Random 							random 		= new Random();
 	static private FileConfiguration		config		= null;
 	static private File						configFile	= null;
 	static private RankManager				instance	= null;

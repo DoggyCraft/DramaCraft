@@ -372,7 +372,7 @@ public class Commands implements Listener
 				{
 					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-					if (targetPlayer != null)
+					if (targetPlayer.hasPlayedBefore())
 					{
 						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
@@ -395,7 +395,7 @@ public class Commands implements Listener
 				{
 					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-					if (targetPlayer != null)
+					if (targetPlayer.hasPlayedBefore())
 					{
 						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
@@ -418,7 +418,7 @@ public class Commands implements Listener
 				{
 					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-					if (targetPlayer != null)
+					if (targetPlayer.hasPlayedBefore())
 					{
 						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
@@ -441,7 +441,7 @@ public class Commands implements Listener
 				{
 					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-					if (targetPlayer != null)
+					if (targetPlayer.hasPlayedBefore())
 					{
 						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
@@ -464,7 +464,7 @@ public class Commands implements Listener
 				{
 					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-					if (targetPlayer != null)
+					if (targetPlayer.hasPlayedBefore())
 					{
 						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
@@ -487,7 +487,7 @@ public class Commands implements Listener
 				{
 					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-					if (targetPlayer != null)
+					if (targetPlayer.hasPlayedBefore())
 					{
 						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
@@ -510,7 +510,7 @@ public class Commands implements Listener
 				{
 					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-					if (targetPlayer != null)
+					if (targetPlayer.hasPlayedBefore())
 					{
 						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
@@ -533,7 +533,7 @@ public class Commands implements Listener
 				{
 					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-					if (targetPlayer != null)
+					if (targetPlayer.hasPlayedBefore())
 					{
 						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
@@ -556,7 +556,7 @@ public class Commands implements Listener
 				{
 					final OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-					if (targetPlayer != null)
+					if (targetPlayer.hasPlayedBefore())
 					{
 						Bukkit.getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new Runnable()
 						{
@@ -577,10 +577,7 @@ public class Commands implements Listener
 
 				if(args[0].equalsIgnoreCase("updateprefix"))
 				{
-					//if(args[1].equalsIgnoreCase("13370x"))
-					{
-						this.updatePrefix(sender, args);
-					}								
+					this.updatePrefix(sender, args);
 
 					return true;
 				}		
