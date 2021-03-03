@@ -86,27 +86,27 @@ public class ImperialManager implements Listener
 	{
 		if (RankManager.isKing(event.getPlayer().getUniqueId()))
 		{
-			for(Player player : DramaCraft.instance().getServer().getOnlinePlayers())
+			for(Player player : Bukkit.getServer().getOnlinePlayers())
 			{
 				if(player.getUniqueId().equals(event.getPlayer().getUniqueId()))
 				{
 					continue;
 				}
 				
-				TitleManager.sendTitle(player, 1*20, 3*20, 1*20, ChatColor.GOLD + "The King has arrived", ChatColor.GREEN + "Please greet his majesty " + ChatColor.GOLD + event.getPlayer().getName() + ChatColor.GREEN + "!");
+				TitleManager.sendTitle(player, 1*20, 3*20, 1*20, ChatColor.GOLD + "The King has arrived", ChatColor.GREEN + "Velkommen til hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GREEN + "!");
 			}
 		}		
 		
 		if (RankManager.isKing(event.getPlayer().getUniqueId()))
 		{
-			for(Player player : DramaCraft.instance().getServer().getOnlinePlayers())
+			for(Player player : Bukkit.getServer().getOnlinePlayers())
 			{
 				if(player.getUniqueId().equals(event.getPlayer().getUniqueId()))
 				{
 					continue;
 				}
 				
-				TitleManager.sendTitle(event.getPlayer(), 1*20, 3*20, 1*20, ChatColor.GOLD + "The Queen has arrived", ChatColor.GREEN + "Please greet her majesty " + ChatColor.GOLD + event.getPlayer().getName() + ChatColor.GREEN + "!");
+				TitleManager.sendTitle(event.getPlayer(), 1*20, 3*20, 1*20, ChatColor.GOLD + "The Queen has arrived", ChatColor.GREEN + "Velkommen til hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GREEN + "!");
 			}
 		}		
 	}
