@@ -543,7 +543,7 @@ public class RankManager implements Listener
 
 		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(king));
 
-		return player.getName() + " den " + convertToRomanNumeral(getKingCardinality(player.getUniqueId()));
+		return player.getName() + " den " + convertToRomanNumeral(getKingCardinality(player.getUniqueId()) + 1);
 	}
 
 	static public UUID getQueen()
@@ -569,7 +569,7 @@ public class RankManager implements Listener
 
 		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(queen));
 
-		return player.getName() + " den " + convertToRomanNumeral(getKingCardinality(player.getUniqueId()));
+		return player.getName() + " den " + convertToRomanNumeral(getKingCardinality(player.getUniqueId()) + 1);
 	}
 
 	static public boolean setKingHead(Location location)
@@ -680,9 +680,9 @@ public class RankManager implements Listener
 
 		String playerName = Bukkit.getServer().getOfflinePlayer(clientId).getName();
 
-		instance.config.set("Nobles." + player.getUniqueId().toString() + ".Client.Id", clientId.toString());
-		instance.config.set("Nobles." + player.getUniqueId().toString() + ".Client.OldRank", PermissionsManager.getDramaCraftGroup(player));
-		instance.config.set("Nobles." + player.getUniqueId().toString() + ".Client.Rank", rankname);
+		config.set("Nobles." + player.getUniqueId().toString() + ".Client.Id", clientId.toString());
+		config.set("Nobles." + player.getUniqueId().toString() + ".Client.OldRank", PermissionsManager.getDramaCraftGroup(player));
+		config.set("Nobles." + player.getUniqueId().toString() + ".Client.Rank", rankname);
 		
 		//permissionsManager.setDramaCraftGroup(playerName, "DoggyCraft");
 		
