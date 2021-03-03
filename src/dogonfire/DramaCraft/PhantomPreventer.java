@@ -32,7 +32,7 @@ public class PhantomPreventer implements Listener
 			return;
 		}
 
-		if(System.currentTimeMillis() - instance.timeStarted > 15 * 60 * 1000)
+		if(System.currentTimeMillis() - instance.timeStarted > 30 * 60 * 1000)
 		{
 			instance.preventPhantoms = false;
 		}
