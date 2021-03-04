@@ -74,6 +74,30 @@ Info:
   - The vote for night SUCCEEDED! Let it be night!
   VOTE_BROADCAST_NIGHT_FAILED: 
   - The vote for night FAILED!
+  VOTE_BROADCAST_NOBLE:
+  - Should $PlayerName be an Imperial Noble?
+  VOTE_BROADCAST_NOBLE_SUCCESS:
+  - The vote for nobility SUCCEEDED! $PlayerName is now an Imperial Noble!
+  VOTE_BROADCAST_NOBLE_FAILED:
+  - The vote for nobility FAILED!
+  VOTE_BROADCAST_NOBLE_KICK:
+  - Should $PlayerName be kicked from Imperial Nobility?
+  VOTE_BROADCAST_NOBLE_KICK_SUCCESS:
+  - The vote for kick SUCCEEDED! $PlayerName is no longer in the Inner Circle!
+  VOTE_BROADCAST_NOBLE_KICK_FAILED:
+  - The vote for kick FAILED!
+  VOTE_BROADCAST_INNERCIRCLE:
+  - Should $PlayerName be in the Rebel Inner Circle?
+  VOTE_BROADCAST_INNERCIRCLE_SUCCESS:
+  - The vote for Inner Circle SUCCEEDED! $PlayerName is now in the Inner Circle!
+  VOTE_BROADCAST_INNERCIRCLE_FAILED:
+  - The vote for Inner Circle FAILED!
+  VOTE_BROADCAST_INNERCIRCLE_KICK:
+  - Should $PlayerName be kicked from the Inner Circle?
+  VOTE_BROADCAST_INNERCIRCLE_KICK_SUCCESS:
+  - The vote for kick SUCCEEDED! $PlayerName is no longer in the Inner Circle!
+  VOTE_BROADCAST_INNERCIRCLE_KICK_FAILED:
+  - The vote for Inner Circle FAILED!
   VOTE_BROADCAST_SUN: 
   - Do you want it to be sun?
   VOTE_BROADCAST_SUN_SUCCESS: 

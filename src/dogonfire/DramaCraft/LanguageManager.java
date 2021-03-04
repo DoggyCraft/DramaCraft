@@ -63,10 +63,10 @@ public class LanguageManager
 		VOTE_BROADCAST_RINGLEADER2,
 		VOTE_BROADCAST_RINGLEADER1_SUCCESS,
 		VOTE_BROADCAST_RINGLEADER1_FAILED,
-		VOTE_BROADCAST_BOSS1_OVERTURNED,
+		VOTE_BROADCAST_RINGLEADER1_OVERTURNED,
 		VOTE_BROADCAST_RINGLEADER2_SUCCESS,
 		VOTE_BROADCAST_RINGLEADER2_FAILED,
-		VOTE_BROADCAST_BOSS2_OVERTURNED,
+		VOTE_BROADCAST_RINGLEADER2_OVERTURNED,
 		VOTE_BROADCAST_PROGRESS,
 		VOTE_BROADCAST_HELP,
 		VOTE_BROADCAST_PHANTOMS,
@@ -356,6 +356,10 @@ public class LanguageManager
 			string = string.replace("$Type", ChatColor.GOLD + this.type + defaultColor);
 		}
 		
+		string = string.replace("SUCCEEDED", ChatColor.GREEN + "SUCCEEDED" + defaultColor);
+
+		string = string.replace("FAILED", ChatColor.RED + "FAILED" + defaultColor);
+
 		return string;
 	}
 
