@@ -18,17 +18,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Sign;
 import org.bukkit.block.Skull;
-import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
@@ -38,13 +32,13 @@ import dogonfire.DramaCraft.tasks.InfoTask;
 
 public class RankManager implements Listener
 {		
-	private Random 							random 		= new Random();
-	static private FileConfiguration		config		= null;
-	static private File						configFile	= null;
-	static private RankManager				instance	= null;
+	private Random 					random 		= new Random();
+	private FileConfiguration		config		= null;
+	private File					configFile	= null;
+	static  private RankManager		instance	= null;
 		
-	static private String 					pattern 	= "HH:mm:ss dd-MM-yyyy";
-	static private DateFormat 				formatter 	= new SimpleDateFormat(pattern);
+	private String 					pattern 	= "HH:mm:ss dd-MM-yyyy";
+	private DateFormat 				formatter 	= new SimpleDateFormat(pattern);
 
 	public RankManager()
 	{
@@ -165,7 +159,7 @@ public class RankManager implements Listener
 	
 	static public int getNumberOfImperials()
 	{	
-		ConfigurationSection section = config.getConfigurationSection("Imperials");	
+		ConfigurationSection section = instance.config.getConfigurationSection("Imperials");	
 		
 		if(section==null)
 		{
@@ -177,7 +171,7 @@ public class RankManager implements Listener
 
 	static public int getNumberOfRebels()
 	{	
-		ConfigurationSection section = config.getConfigurationSection("Rebels");	
+		ConfigurationSection section = instance.config.getConfigurationSection("Rebels");	
 		
 		if(section==null)
 		{
@@ -194,12 +188,12 @@ public class RankManager implements Listener
 
 	static public boolean isRebel(UUID playerId)
 	{	
-		return config.getString("Rebels." + playerId.toString()) != null;
+		return instance.config.getString("Rebels." + playerId.toString()) != null;
 	}
 
 	static public boolean isImperial(UUID playerId)
 	{	
-		return config.getString("Imperials." + playerId.toString()) != null;
+		return instance.config.getString("Imperials." + playerId.toString()) != null;
 	}
 
 	static public boolean isBasicRebel(UUID playerId)
@@ -482,7 +476,7 @@ public class RankManager implements Listener
 	{
 		int numberOfActiveInnerCircle = 0;
 		
-		ConfigurationSection section = config.getConfigurationSection("Rebels");	
+		ConfigurationSection section = instance.config.getConfigurationSection("Rebels");	
 		
 		if(section==null)
 		{
@@ -522,7 +516,7 @@ public class RankManager implements Listener
 	
 	static public UUID getKing()	
 	{
-		String king = config.getString("King.Id");
+		String king = instance.config.getString("King.Id");
 
 		if (king == null)
 		{
@@ -534,7 +528,7 @@ public class RankManager implements Listener
 
 	static public String getKingName()
 	{
-		String king = config.getString("King.Id");
+		String king = instance.config.getString("King.Id");
 
 		if (king == null)
 		{
@@ -543,12 +537,12 @@ public class RankManager implements Listener
 
 		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(king));
 
-		return player.getName() + " den " + convertToRomanNumeral(getKingCardinality(player.getUniqueId()) + 1);
+		return player.getName() + " den " + convertToRomanNumeral(getKingCardinality(player.getUniqueId()) + 1) + ".";
 	}
 
 	static public UUID getQueen()
 	{
-		String queen = config.getString("Queen.Id");
+		String queen = instance.config.getString("Queen.Id");
 
 		if (queen == null)
 		{
@@ -560,7 +554,7 @@ public class RankManager implements Listener
 
 	static public String getQueenName()
 	{
-		String queen = config.getString("Queen.Id");
+		String queen = instance.config.getString("Queen.Id");
 
 		if (queen == null)
 		{
@@ -569,12 +563,12 @@ public class RankManager implements Listener
 
 		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(queen));
 
-		return player.getName() + " den " + convertToRomanNumeral(getKingCardinality(player.getUniqueId()) + 1);
+		return player.getName() + " den " + convertToRomanNumeral(getKingCardinality(player.getUniqueId()) + 1) + ".";
 	}
 
 	static public boolean setKingHead(Location location)
 	{
-		UUID ownerId = UUID.fromString(config.getString("King.Id"));
+		UUID ownerId = UUID.fromString(instance.config.getString("King.Id"));
 
 		setKingHead(ownerId, location);
 		
@@ -585,17 +579,17 @@ public class RankManager implements Listener
 	{
 		setHead(ownerId, location);
 		
-		config.set("King.Head.World", location.getWorld().getName());
-		config.set("King.Head.X", location.getBlockX());
-		config.set("King.Head.Y", location.getBlockY());
-		config.set("King.Head.Z", location.getBlockZ());
+		instance.config.set("King.Head.World", location.getWorld().getName());
+		instance.config.set("King.Head.X", location.getBlockX());
+		instance.config.set("King.Head.Y", location.getBlockY());
+		instance.config.set("King.Head.Z", location.getBlockZ());
 		
 		instance.save();				
 	}
 
 	static public boolean setQueenHead(Location location)
 	{
-		UUID ownerId = UUID.fromString(config.getString("Queen.Id"));
+		UUID ownerId = UUID.fromString(instance.config.getString("Queen.Id"));
 		
 		setQueenHead(ownerId, location);
 		
@@ -606,10 +600,10 @@ public class RankManager implements Listener
 	{
 		setHead(ownerId, location);
 		
-		config.set("Queen.Head.World", location.getWorld().getName());
-		config.set("Queen.Head.X", location.getBlockX());
-		config.set("Queen.Head.Y", location.getBlockY());
-		config.set("Queen.Head.Z", location.getBlockZ());
+		instance.config.set("Queen.Head.World", location.getWorld().getName());
+		instance.config.set("Queen.Head.X", location.getBlockX());
+		instance.config.set("Queen.Head.Y", location.getBlockY());
+		instance.config.set("Queen.Head.Z", location.getBlockZ());
 		
 		instance.save();				
 	}
@@ -669,20 +663,20 @@ public class RankManager implements Listener
 
 	static public void	setNobleClientRank(Player player, UUID clientId, String rankname)
 	{
-		String oldClientId = config.getString("Nobles." + player.getUniqueId().toString() + ".Client.Id");
+		String oldClientId = instance.config.getString("Nobles." + player.getUniqueId().toString() + ".Client.Id");
 		if(oldClientId!=null)
 		{
 			String oldClientName = Bukkit.getServer().getOfflinePlayer(UUID.fromString(oldClientId)).getName();
-			String oldClientRank = config.getString("Nobles." + player.getUniqueId().toString() + ".Client.OldRank");
+			String oldClientRank = instance.config.getString("Nobles." + player.getUniqueId().toString() + ".Client.OldRank");
 			
 			//permissionsManager.setDramaCraftGroup(player, newGroupName);Group(oldClientName, oldClientRank);		
 		}
 
 		String playerName = Bukkit.getServer().getOfflinePlayer(clientId).getName();
 
-		config.set("Nobles." + player.getUniqueId().toString() + ".Client.Id", clientId.toString());
-		config.set("Nobles." + player.getUniqueId().toString() + ".Client.OldRank", PermissionsManager.getDramaCraftGroup(player));
-		config.set("Nobles." + player.getUniqueId().toString() + ".Client.Rank", rankname);
+		instance.config.set("Nobles." + player.getUniqueId().toString() + ".Client.Id", clientId.toString());
+		instance.config.set("Nobles." + player.getUniqueId().toString() + ".Client.OldRank", PermissionsManager.getDramaCraftGroup(player));
+		instance.config.set("Nobles." + player.getUniqueId().toString() + ".Client.Rank", rankname);
 		
 		//permissionsManager.setDramaCraftGroup(playerName, "DoggyCraft");
 		
@@ -691,20 +685,20 @@ public class RankManager implements Listener
 
 	static public void setInnerCircleClientRank(Player player, UUID clientId, String rankname)
 	{
-		String oldClientId = config.getString("InnerCircle." + player.getUniqueId().toString() + ".Client.Id");
+		String oldClientId = instance.config.getString("InnerCircle." + player.getUniqueId().toString() + ".Client.Id");
 		if(oldClientId!=null)
 		{
 			String oldClientName = Bukkit.getServer().getOfflinePlayer(UUID.fromString(oldClientId)).getName();
-			String oldClientRank = config.getString("InnerCircle." + player.getUniqueId().toString() + ".Client.OldRank");
+			String oldClientRank = instance.config.getString("InnerCircle." + player.getUniqueId().toString() + ".Client.OldRank");
 			
 			//permissionsManager.setRankGroup(oldClientName, oldClientRank);		
 		}
 
 		String playerName = Bukkit.getServer().getOfflinePlayer(clientId).getName();
 
-		config.set("InnerCircle." + player.getUniqueId().toString() + ".Client.Id", clientId.toString());
-		config.set("InnerCircle." + player.getUniqueId().toString() + ".Client.OldRank", PermissionsManager.getDramaCraftGroup(player));
-		config.set("InnerCircle." + player.getUniqueId().toString() + ".Client.Rank", rankname);
+		instance.config.set("InnerCircle." + player.getUniqueId().toString() + ".Client.Id", clientId.toString());
+		instance.config.set("InnerCircle." + player.getUniqueId().toString() + ".Client.OldRank", PermissionsManager.getDramaCraftGroup(player));
+		instance.config.set("InnerCircle." + player.getUniqueId().toString() + ".Client.Rank", rankname);
 		
 		//permissionsManager.setDramaCraftGroup(playerName, "DoggyCraft");
 		
@@ -713,14 +707,14 @@ public class RankManager implements Listener
 
 	static public void clearRingLeader1()
 	{
-		config.set("RingLeader1", null);
+		instance.config.set("RingLeader1", null);
 						
 		instance.save();
 	}
 	
 	public void clearRingLeader2()
 	{
-		config.set("RingLeader2", null);
+		instance.config.set("RingLeader2", null);
 						
 		instance.save();
 	}
@@ -728,14 +722,14 @@ public class RankManager implements Listener
 	static public void setImperialLastLogin(UUID playerId)
 	{
 		Date thisDate = new Date();
-		config.set("Imperials." + playerId.toString() + ".LastLoginTime", formatter.format(thisDate));
+		instance.config.set("Imperials." + playerId.toString() + ".LastLoginTime", instance.formatter.format(thisDate));
 		
 		instance.save();				
 	}
 
 	static public void clearImperialLastLogin(UUID playerId)
 	{
-		config.set("Imperials." + playerId.toString(), null);
+		instance.config.set("Imperials." + playerId.toString(), null);
 		
 		instance.save();				
 	}
@@ -743,23 +737,23 @@ public class RankManager implements Listener
 	static public void setRebelLastLogin(UUID playerId)
 	{
 		Date thisDate = new Date();
-		config.set("Rebels." + playerId.toString() + ".LastLoginTime", formatter.format(thisDate));
+		instance.config.set("Rebels." + playerId.toString() + ".LastLoginTime", instance.formatter.format(thisDate));
 		
 		instance.save();				
 	}
 
 	static public void clearRebelLastLogin(UUID playerId)
 	{
-		config.set("Rebels." + playerId.toString(), null);
+		instance.config.set("Rebels." + playerId.toString(), null);
 		
 		instance.save();				
 	}
 
 	static public long getRebelLastOnlineDays(UUID playerId)
 	{
-		String electionTime = config.getString("Rebels." + playerId.toString() + ".LastLoginTime");
+		String electionTime = instance.config.getString("Rebels." + playerId.toString() + ".LastLoginTime");
 
-		DateFormat formatter = new SimpleDateFormat(pattern);
+		DateFormat formatter = new SimpleDateFormat(instance.pattern);
 		Date electionDate = null;
 		Date thisDate = new Date();
 		try
@@ -778,9 +772,9 @@ public class RankManager implements Listener
 
 	static public long getImperialLastOnlineDays(UUID playerId)
 	{
-		String electionTime = config.getString("Imperials." + playerId.toString() + ".LastLoginTime");
+		String electionTime = instance.config.getString("Imperials." + playerId.toString() + ".LastLoginTime");
 
-		DateFormat formatter = new SimpleDateFormat(pattern);
+		DateFormat formatter = new SimpleDateFormat(instance.pattern);
 		Date electionDate = null;
 		Date thisDate = new Date();
 		try
@@ -799,9 +793,9 @@ public class RankManager implements Listener
 	
 	static public long getNobleElectionDays(UUID playerId)
 	{
-		String electionTime = config.getString("Imperials." + playerId.toString() + ".Noble.JoinDate");
+		String electionTime = instance.config.getString("Imperials." + playerId.toString() + ".Noble.JoinDate");
 
-		DateFormat formatter = new SimpleDateFormat(pattern);
+		DateFormat formatter = new SimpleDateFormat(instance.pattern);
 		Date electionDate = null;
 		Date thisDate = new Date();
 		try
@@ -820,9 +814,9 @@ public class RankManager implements Listener
 	
 	static public long getKingElectionDays()
 	{
-		String electionTime = config.getString("King.ElectionTime");
+		String electionTime = instance.config.getString("King.ElectionTime");
 
-		DateFormat formatter = new SimpleDateFormat(pattern);
+		DateFormat formatter = new SimpleDateFormat(instance.pattern);
 		Date electionDate = null;
 		Date thisDate = new Date();
 		try
@@ -841,9 +835,9 @@ public class RankManager implements Listener
 	
 	static public long getQueenElectionDays()
 	{
-		String electionTime = config.getString("Queen.ElectionTime");
+		String electionTime = instance.config.getString("Queen.ElectionTime");
 
-		DateFormat formatter = new SimpleDateFormat(pattern);
+		DateFormat formatter = new SimpleDateFormat(instance.pattern);
 		Date electionDate = null;
 		Date thisDate = new Date();
 		try
@@ -872,7 +866,7 @@ public class RankManager implements Listener
 
 	static public Set<UUID> getImperials()
 	{
-		ConfigurationSection section = config.getConfigurationSection("Imperials");
+		ConfigurationSection section = instance.config.getConfigurationSection("Imperials");
 		
 		if(section==null)
 		{
@@ -892,7 +886,7 @@ public class RankManager implements Listener
 	static public Set<String> getNobles()
 	{
 		Set<String> nobles = new HashSet<String>();
-		ConfigurationSection section = config.getConfigurationSection("Imperials");
+		ConfigurationSection section = instance.config.getConfigurationSection("Imperials");
 		
 		if(section==null)
 		{
@@ -917,7 +911,7 @@ public class RankManager implements Listener
 	static public Set<String> getInnerCircle()
 	{
 		Set<String> innercircle = new HashSet<String>();
-		ConfigurationSection section = config.getConfigurationSection("Rebels");
+		ConfigurationSection section = instance.config.getConfigurationSection("Rebels");
 
 		if(section==null)
 		{
@@ -1158,21 +1152,21 @@ public class RankManager implements Listener
 		}		
 	}
 
-	static public Set<String> getKings()
+	static public String getLastKing()
 	{
-		ConfigurationSection section = config.getConfigurationSection("Kings");
+		ConfigurationSection section = instance.config.getConfigurationSection("Kings");
 		
 		if(section==null)
 		{
 			return null;			
 		}
 		
-		return section.getKeys(false);
-	}	
+		return (String) section.getKeys(false).toArray()[section.getKeys(false).size() - 1];
+	}
 	
 	static public int getKingCardinality(UUID playerId)
 	{
-		ConfigurationSection section = config.getConfigurationSection("Kings");
+		ConfigurationSection section = instance.config.getConfigurationSection("Kings");
 		
 		if(section==null)
 		{
@@ -1183,9 +1177,9 @@ public class RankManager implements Listener
 		
 		for(String key : section.getKeys(false))
 		{
-			if(config.getString("Kings." + key + ".EndDate") != null)
+			if(instance.config.getString("Kings." + key + ".EndDate") != null)
 			{
-				String kingPlayerId = config.getString("Kings." + key + ".PlayerId");
+				String kingPlayerId = instance.config.getString("Kings." + key + ".PlayerId");
 				if(kingPlayerId.equals(playerId.toString()))
 				{
 					cardinality++;
@@ -1196,21 +1190,21 @@ public class RankManager implements Listener
 		return cardinality;
 	}	
 
-	static public Set<String> getQueens()
+	static public String getLastQueen()
 	{
-		ConfigurationSection section = config.getConfigurationSection("Queens");
+		ConfigurationSection section = instance.config.getConfigurationSection("Queens");
 		
 		if(section==null)
 		{
 			return null;			
 		}
-		
-		return section.getKeys(false);
-	}	
+				
+		return (String) section.getKeys(false).toArray()[section.getKeys(false).size() - 1];
+	}
 
 	static public int getQueenCardinality(UUID playerId)
 	{
-		ConfigurationSection section = config.getConfigurationSection("Queens");
+		ConfigurationSection section = instance.config.getConfigurationSection("Queens");
 		
 		if(section==null)
 		{
@@ -1221,9 +1215,9 @@ public class RankManager implements Listener
 		
 		for(String key : section.getKeys(false))
 		{
-			if(config.getString("Queens." + key + ".EndDate") != null)
+			if(instance.config.getString("Queens." + key + ".EndDate") != null)
 			{
-				String queenPlayerId = config.getString("Queens." + key + ".PlayerId");
+				String queenPlayerId = instance.config.getString("Queens." + key + ".PlayerId");
 				if(queenPlayerId.equals(playerId.toString()))
 				{
 					cardinality++;
@@ -1236,10 +1230,11 @@ public class RankManager implements Listener
 
 	static public void setKing(UUID playerId)
 	{
-		String currentKingId = config.getString("King.Id");
-		String currentKingPreviousRank = config.getString("Players." + currentKingId + ".PreviousRank");
+		String currentKingId = instance.config.getString("King.Id");
+		String currentKingPreviousRank = instance.config.getString("Players." + currentKingId + ".PreviousRank");
 		String currentKingName = null;
-		String playerName = Bukkit.getServer().getOfflinePlayer(playerId).getName();
+		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerId);
+		String playerName = player.getName();
 		Date thisDate = new Date();
 
 		if(currentKingId!=null)
@@ -1247,14 +1242,14 @@ public class RankManager implements Listener
 			currentKingName = Bukkit.getServer().getOfflinePlayer(UUID.fromString(currentKingId)).getName();
 		}
 
-		String kingHeadWorld = config.getString("King.Head.World");
+		String kingHeadWorld = instance.config.getString("King.Head.World");
 		if(kingHeadWorld!=null)
 		{
 			try
 			{
-				String kingHeadX = config.getString("King.Head.X");
-				String kingHeadY = config.getString("King.Head.Y");
-				String kingHeadZ = config.getString("King.Head.Z");
+				String kingHeadX = instance.config.getString("King.Head.X");
+				String kingHeadY = instance.config.getString("King.Head.Y");
+				String kingHeadZ = instance.config.getString("King.Head.Z");
 				
 				Location location = new Location(Bukkit.getServer().getWorld(kingHeadWorld), Integer.parseInt(kingHeadX), Integer.parseInt(kingHeadY), Integer.parseInt(kingHeadZ));
 				
@@ -1286,31 +1281,30 @@ public class RankManager implements Listener
 
 			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removeowner castle " + currentKingName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 			
-			Set<String> kings = getKings();
-			if(kings != null)
+			String lastKingId = getLastKing();
+			if(lastKingId != null)
 			{
-				String lastKingId = (String) kings.toArray()[kings.size() - 1];
-				
-				config.set("Kings." + lastKingId + ".EndDate", formatter.format(thisDate));				
+				instance.config.set("Kings." + lastKingId + ".EndDate", instance.formatter.format(thisDate));				
 			}
 		}
 		
-		DramaCraft.log("Setting new king '" + playerName + "' previous rank to '" + PermissionsManager.getGroup(playerName) + "'");
-		config.set("Players." + playerId + ".PreviousRank", PermissionsManager.getGroup(playerName));
-		config.set("Players." + playerId + ".CurrentRank", "king");
+		DramaCraft.log("Setting new king '" + playerName + "' previous rank to '" + PermissionsManager.getDramaCraftGroup(player) + "'");
+		instance.config.set("Players." + playerId + ".PreviousRank", PermissionsManager.getDramaCraftGroup(player));
+		instance.config.set("Players." + playerId + ".CurrentRank", "king");
 
 		DramaCraft.log("Setting new king '" + playerName + "' rank to 'king'");
-		PermissionsManager.setDramaCraftGroup(Bukkit.getServer().getOfflinePlayer(playerId), "king");
+		PermissionsManager.setDramaCraftGroup(player, "king");
+		
+		clearRebelLastLogin(playerId);
+		setImperialLastLogin(playerId);
 		
 		//updatePrefix(playerId);
 			
-		config.set("King.Id", playerId.toString());
-		//config.set("King.JoinDate", formatter.format(thisDate));
-		//config.set("King.ElectionTime", formatter.format(thisDate));
+		instance.config.set("King.Id", playerId.toString());
 
 		long id = System.currentTimeMillis();
-		config.set("Kings." + id + ".PlayerId", playerId.toString());
-		config.set("Kings." + id + ".StartDate", formatter.format(thisDate));
+		instance.config.set("Kings." + id + ".PlayerId", playerId.toString());
+		instance.config.set("Kings." + id + ".StartDate", instance.formatter.format(thisDate));
 		
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addowner castle " + playerName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 		
@@ -1319,10 +1313,11 @@ public class RankManager implements Listener
 	
 	static public void setQueen(UUID playerId)
 	{
-		String currentQueenId = config.getString("Queen.Id");
-		String currentQueenPreviousRank = config.getString("Players." + currentQueenId + ".PreviousRank");
+		String currentQueenId = instance.config.getString("Queen.Id");
+		String currentQueenPreviousRank = instance.config.getString("Players." + currentQueenId + ".PreviousRank");
 		String currentQueenName = null;
-		String playerName = Bukkit.getServer().getOfflinePlayer(playerId).getName();
+		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerId);
+		String playerName = player.getName();
 		Date thisDate = new Date();
 
 		if(currentQueenId!=null)
@@ -1330,14 +1325,14 @@ public class RankManager implements Listener
 			currentQueenName = Bukkit.getServer().getOfflinePlayer(UUID.fromString(currentQueenId)).getName();
 		}
 
-		String queenHeadWorld = config.getString("Queen.Head.World");
+		String queenHeadWorld = instance.config.getString("Queen.Head.World");
 		if(queenHeadWorld!=null)
 		{
 			try
 			{
-				String headX = config.getString("Queen.Head.X");
-				String headY = config.getString("Queen.Head.Y");
-				String headZ = config.getString("Queen.Head.Z");
+				String headX = instance.config.getString("Queen.Head.X");
+				String headY = instance.config.getString("Queen.Head.Y");
+				String headZ = instance.config.getString("Queen.Head.Z");
 				
 				Location location = new Location(Bukkit.getServer().getWorld(queenHeadWorld), Integer.parseInt(headX), Integer.parseInt(headY), Integer.parseInt(headZ));
 				
@@ -1369,27 +1364,28 @@ public class RankManager implements Listener
 
 			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removeowner castle " + currentQueenName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 
-			Set<String> queens = getQueens();
-			if(queens != null)
+			String lastQueenId = getLastQueen();
+			if(lastQueenId != null)
 			{
-				String lastKingId = (String) queens.toArray()[queens.size() - 1];
-				
-				config.set("Queens." + lastKingId + ".EndDate", formatter.format(thisDate));				
+				instance.config.set("Queens." + lastQueenId + ".EndDate", instance.formatter.format(thisDate));				
 			}
 		}
 		
-		DramaCraft.log("Setting new queen '" + playerName + "' previous rank to '" + PermissionsManager.getGroup(playerName) + "'");
-		config.set("Players." + playerId + ".PreviousRank", PermissionsManager.getGroup(playerName));
-		config.set("Players." + playerId + ".CurrentRank", "queen");
+		DramaCraft.log("Setting new queen '" + playerName + "' previous rank to '" + PermissionsManager.getDramaCraftGroup(player) + "'");
+		instance.config.set("Players." + playerId + ".PreviousRank", PermissionsManager.getDramaCraftGroup(player));
+		instance.config.set("Players." + playerId + ".CurrentRank", "queen");
 
 		DramaCraft.log("Setting new queen '" + playerName + "' rank to 'queen'");
-		PermissionsManager.setDramaCraftGroup(Bukkit.getServer().getOfflinePlayer(playerId), "queen");
+		PermissionsManager.setDramaCraftGroup(player, "queen");
 		
+		clearRebelLastLogin(playerId);
+		setImperialLastLogin(playerId);
+
 		//updatePrefix(playerId);
 			
-		config.set("Queen.Id", playerId.toString());
+		instance.config.set("Queen.Id", playerId.toString());
 		//config.set("King.JoinDate", formatter.format(thisDate));
-		config.set("Queen.ElectionTime", formatter.format(thisDate));
+		instance.config.set("Queen.ElectionTime", instance.formatter.format(thisDate));
 				
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addowner castle " + playerName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 		
@@ -1400,28 +1396,29 @@ public class RankManager implements Listener
 	{
 		Date thisDate = new Date();
 
+		instance.config.set("Players." + player.getUniqueId().toString() + ".PreviousRank", PermissionsManager.getDramaCraftGroup(player));
+
 		PermissionsManager.setDramaCraftGroup(player, groupname);		
 
-		config.set("Players." + player.getUniqueId().toString() + ".PreviousRank", PermissionsManager.getGroup(player.getName()));
-		config.set("Players." + player.getUniqueId().toString() + ".CurrentRank", groupname);
-		config.set("Players." + player.getUniqueId().toString() + ".ChangeDate", formatter.format(thisDate));
+		instance.config.set("Players." + player.getUniqueId().toString() + ".CurrentRank", groupname);
+		instance.config.set("Players." + player.getUniqueId().toString() + ".ChangeDate", instance.formatter.format(thisDate));
 
-		String joinDate = config.getString("Players." + player.getUniqueId().toString() + ".JoinDate");
+		String joinDate = instance.config.getString("Players." + player.getUniqueId().toString() + ".JoinDate");
 		if(joinDate == null)
 		{
-			config.set("Players." + player.getUniqueId().toString() + ".JoinDate", formatter.format(thisDate));			
+			instance.config.set("Players." + player.getUniqueId().toString() + ".JoinDate", instance.formatter.format(thisDate));			
 		}
 		
-		updatePrefix(player.getUniqueId());
+		//updatePrefix(player.getUniqueId());
 	}
 	
 	static public void setImperial(UUID playerId)
 	{							
 		OfflinePlayer player = Bukkit.getOfflinePlayer(playerId);
 
+		clearRank(player.getUniqueId());
 		setRank(player, "imperial");		
 		setImperialLastLogin(playerId);
-		clearRebelLastLogin(playerId);
 		
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember mansion " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember rebels " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
@@ -1436,9 +1433,9 @@ public class RankManager implements Listener
 	{
 		OfflinePlayer player = Bukkit.getOfflinePlayer(playerId);
 		
+		clearRank(player.getUniqueId());
 		setRank(player, "rebel");
 		setRebelLastLogin(playerId);
-		clearImperialLastLogin(playerId);
 		
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember imperials " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
@@ -1453,11 +1450,12 @@ public class RankManager implements Listener
 	{
 		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerId);
 
+		clearRank(player.getUniqueId());
 		setRank(player, "noble");		
 
 		Date thisDate = new Date();
 		
-		config.set("Imperials." + player.getUniqueId().toString() + ".Noble.JoinDate", formatter.format(thisDate));
+		instance.config.set("Imperials." + player.getUniqueId().toString() + ".Noble.JoinDate", instance.formatter.format(thisDate));
 
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember mansion " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember rebels " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
@@ -1473,11 +1471,12 @@ public class RankManager implements Listener
 	{
 		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerId);
 
+		clearRank(player.getUniqueId());
 		setRank(player, "innercircle");		
 	
 		Date thisDate = new Date();
 
-		config.set("Rebels." + playerId.toString() + ".InnerCircle.JoinDate", formatter.format(thisDate));
+		instance.config.set("Rebels." + playerId.toString() + ".InnerCircle.JoinDate", instance.formatter.format(thisDate));
 		
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember imperials " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
@@ -1493,17 +1492,14 @@ public class RankManager implements Listener
 	{
 		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerId);
 
-		Date thisDate = new Date();
+		clearRank(player.getUniqueId());
 
 		PermissionsManager.setDramaCraftGroup(player, "default");		
 		
-		config.set("Players." + player.getUniqueId().toString(), null);
-		//config.set("Players." + player.getUniqueId().toString() + ".PreviousRank", permissionsManager.getGroup(player.getName()));
-		//config.set("Players." + player.getUniqueId().toString() + ".CurrentRank", "default");
-		//config.set("Players." + player.getUniqueId().toString() + ".ChangeDate", formatter.format(thisDate));
+		instance.config.set("Players." + player.getUniqueId().toString(), null);
 		
-		config.set("Rebels." + playerId.toString(), null);
-		config.set("Imperials." + playerId.toString(), null);
+		instance.config.set("Rebels." + playerId.toString(), null);
+		instance.config.set("Imperials." + playerId.toString(), null);
 
 		updatePrefix(player.getUniqueId());
 						
@@ -1517,9 +1513,67 @@ public class RankManager implements Listener
 		instance.save();
 	}
 	
+	static public void clearRank(UUID playerId)
+	{				
+		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerId);
+		Date thisDate = new Date();
+
+		if(instance.config.getString("King.Id") != null)
+		{				
+			if(UUID.fromString(instance.config.getString("King.Id")).equals(playerId))
+			{
+				String lastKingId = getLastKing();
+				if(lastKingId != null)
+				{					
+					if(instance.config.getString("Kings." + lastKingId + ".PlayerId").equals(playerId.toString()))
+					{
+						instance.config.set("Kings." + lastKingId + ".EndDate", instance.formatter.format(thisDate));			
+					}
+				}
+				
+				instance.config.set("King", null);
+			}			
+		}
+		
+		if(instance.config.getString("Queen.Id") != null)
+		{				
+			if(UUID.fromString(instance.config.getString("Queen.Id")).equals(playerId))
+			{
+				String lastQueenId = getLastQueen();
+				if(lastQueenId != null)
+				{
+					if(instance.config.getString("Queens." + lastQueenId + ".PlayerId").equals(playerId.toString()))
+					{
+						instance.config.set("Queens." + lastQueenId + ".EndDate", instance.formatter.format(thisDate));			
+					}
+				}
+
+				instance.config.set("Queen", null);
+			}
+		}
+
+		if(instance.config.getString("Imperials." + playerId.toString()) != null)
+		{				
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember imperials " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
+			instance.config.set("Imperials." + playerId.toString(), null);
+		}
+		
+		if(instance.config.getString("Rebels." + playerId.toString()) != null)
+		{				
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember mansion " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember rebels " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
+			instance.config.set("Rebels." + playerId.toString(), null);
+		}
+
+		
+		
+		instance.save();
+	}
+
 	static public void clearKing()
 	{				
-		String kingId = config.getString("Queen.Id");
+		String kingId = instance.config.getString("King.Id");
 
 		if(kingId == null)
 		{
@@ -1532,14 +1586,14 @@ public class RankManager implements Listener
 
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 
-		config.set("King", null);
+		instance.config.set("King", null);
 		
 		instance.save();
 	}
 	
 	static public void clearQueen()
 	{
-		String queenId = config.getString("Queen.Id");
+		String queenId = instance.config.getString("Queen.Id");
 		
 		if(queenId == null)
 		{
@@ -1552,14 +1606,14 @@ public class RankManager implements Listener
 
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 
-		config.set("Queen", null);
+		instance.config.set("Queen", null);
 						
 		instance.save();
 	}
 
 	static public Date getJoinDate(UUID playerId)
 	{		
-		String joinDate = config.getString("Players." + playerId.toString() + ".JoinDate");
+		String joinDate = instance.config.getString("Players." + playerId.toString() + ".JoinDate");
 
 		if(joinDate == null)
 		{
@@ -1568,7 +1622,7 @@ public class RankManager implements Listener
 		
 		try
 		{
-			return formatter.parse(joinDate);
+			return instance.formatter.parse(joinDate);
 		}
 		catch (ParseException e)
 		{
@@ -1586,26 +1640,28 @@ public class RankManager implements Listener
 	
 	static public void setRingLeader1(UUID playerId)
 	{
-		String currentRingLeaderId = config.getString("RingLeader1.Id");
-		String currentRingLeaderPreviousRank = config.getString("Players." + currentRingLeaderId + ".PreviousRank");
-		String currentRingLeaderName = null;
-		String playerName = Bukkit.getServer().getOfflinePlayer(playerId).getName();
+		String currentRingleaderId = instance.config.getString("Ringleader1.Id");
+		String currentRingleaderPreviousRank = instance.config.getString("Players." + currentRingleaderId + ".PreviousRank");
+		String currentKingName = null;
+		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerId);
+		String playerName = player.getName();
+		Date thisDate = new Date();
 
-		if(currentRingLeaderId!=null)
+		if(currentRingleaderId!=null)
 		{
-			currentRingLeaderName = Bukkit.getServer().getOfflinePlayer(UUID.fromString(currentRingLeaderId)).getName();
+			currentKingName = Bukkit.getServer().getOfflinePlayer(UUID.fromString(currentRingleaderId)).getName();
 		}
 
-		String kingHeadWorld = config.getString("RingLeader1.Head.World");
-		if(kingHeadWorld!=null)
+		String headWorld = instance.config.getString("Ringleader1.Head.World");
+		if(headWorld!=null)
 		{
 			try
 			{
-				String headX = config.getString("RingLeader1.Head.X");
-				String headY = config.getString("RingLeader1.Head.Y");
-				String headZ = config.getString("RingLeader1.Head.Z");
+				String headX = instance.config.getString("Ringleader1.Head.X");
+				String headY = instance.config.getString("Ringleader1.Head.Y");
+				String headZ = instance.config.getString("Ringleader1.Head.Z");
 				
-				Location location = new Location(Bukkit.getServer().getWorld(kingHeadWorld), Integer.parseInt(headX), Integer.parseInt(headY), Integer.parseInt(headZ));
+				Location location = new Location(Bukkit.getServer().getWorld(headWorld), Integer.parseInt(headX), Integer.parseInt(headY), Integer.parseInt(headZ));
 				
 				setHead(playerId, location);
 			}
@@ -1615,49 +1671,137 @@ public class RankManager implements Listener
 			}
 		}
 
-		if (currentRingLeaderName != null)
+		if (currentKingName != null)
 		{
-			LanguageManager.setPlayerName(currentRingLeaderName);
+			LanguageManager.setPlayerName(currentKingName);
 			String broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_OVERTURNED, ChatColor.AQUA);
-			DramaCraft.broadcastMessage(broadcast);
+			//DramaCraft.broadcastMessage(broadcast);
 
-			OfflinePlayer currentRingLeaderPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(currentRingLeaderId));
+			OfflinePlayer currentKingPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(currentRingleaderId));
 			
 			try
 			{
-				DramaCraft.log("Setting current ringleader '" + currentRingLeaderPlayer.getName() + "' to his previous rank '" + currentRingLeaderPreviousRank + "'");
-				PermissionsManager.setDramaCraftGroup(currentRingLeaderPlayer, currentRingLeaderPreviousRank);
+				DramaCraft.log("Setting current ringleader1 '" + currentKingPlayer.getName() + "' to his previous rank '" + currentRingleaderPreviousRank + "'");
+				PermissionsManager.setDramaCraftGroup(currentKingPlayer, currentRingleaderPreviousRank);
 			}
 			catch (Exception ex)
 			{
-				DramaCraft.log("Error while setting current ringleader to his previous rank '" + currentRingLeaderPreviousRank + "'");
+				DramaCraft.log("Error while setting current ringleader1 to his previous rank '" + currentRingleaderPreviousRank + "'");
 			}
 
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removeowner castle " + currentRingLeaderName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removeowner mansion " + currentKingName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
+			
+			String lastKingId = getLastKing();
+			if(lastKingId != null)
+			{
+				instance.config.set("Ringleader1." + lastKingId + ".EndDate", instance.formatter.format(thisDate));				
+			}
 		}
 		
-		DramaCraft.log("Setting new ringleader '" + playerName + "' previous rank to '" + PermissionsManager.getGroup(playerName) + "'");
-		config.set("Players." + playerId + ".PreviousRank", PermissionsManager.getGroup(playerName));
-		config.set("Players." + playerId + ".CurrentRank", "ringleader");
+		DramaCraft.log("Setting new ringleader1 '" + playerName + "' previous rank to '" + PermissionsManager.getDramaCraftGroup(player) + "'");
+		instance.config.set("Players." + playerId + ".PreviousRank", PermissionsManager.getDramaCraftGroup(player));
+		instance.config.set("Players." + playerId + ".CurrentRank", "ringleader");
 
-		DramaCraft.log("Setting new ringleader '" + playerName + "' rank to 'ringleader'");
-		PermissionsManager.setDramaCraftGroup(Bukkit.getServer().getOfflinePlayer(playerId), "ringleader");
+		DramaCraft.log("Setting new ringleader1 '" + playerName + "' rank to 'ringleader'");
+		PermissionsManager.setDramaCraftGroup(player, "ringleader");
+		
+		clearRebelLastLogin(playerId);
+		setImperialLastLogin(playerId);
 		
 		//updatePrefix(playerId);
-	
-		Date thisDate = new Date();
+			
+		instance.config.set("Ringleader1.Id", playerId.toString());
+
+		long id = System.currentTimeMillis();
+		instance.config.set("Ringleaders." + id + ".PlayerId", playerId.toString());
+		instance.config.set("Ringleaders." + id + ".StartDate", instance.formatter.format(thisDate));
 		
-		config.set("RingLeader1.Id", playerId.toString());
-		//config.set("King.JoinDate", formatter.format(thisDate));
-		config.set("RingLeader1.ElectionTime", formatter.format(thisDate));
-				
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addowner castle " + playerName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
+		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addowner mansion " + playerName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 		
 		instance.save();
 	}
 	
 	static public void setRingLeader2(UUID playerId)
 	{
+		String currentRingleaderId = instance.config.getString("Ringleader2.Id");
+		String currentRingleaderPreviousRank = instance.config.getString("Players." + currentRingleaderId + ".PreviousRank");
+		String currentKingName = null;
+		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerId);
+		String playerName = player.getName();
+		Date thisDate = new Date();
+
+		if(currentRingleaderId!=null)
+		{
+			currentKingName = Bukkit.getServer().getOfflinePlayer(UUID.fromString(currentRingleaderId)).getName();
+		}
+
+		String headWorld = instance.config.getString("Ringleader2.Head.World");
+		if(headWorld!=null)
+		{
+			try
+			{
+				String headX = instance.config.getString("Ringleader2.Head.X");
+				String headY = instance.config.getString("Ringleader2.Head.Y");
+				String headZ = instance.config.getString("Ringleader2.Head.Z");
+				
+				Location location = new Location(Bukkit.getServer().getWorld(headWorld), Integer.parseInt(headX), Integer.parseInt(headY), Integer.parseInt(headZ));
+				
+				setHead(playerId, location);
+			}
+			catch(Exception ex)
+			{
+				
+			}
+		}
+
+		if (currentKingName != null)
+		{
+			LanguageManager.setPlayerName(currentKingName);
+			String broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_OVERTURNED, ChatColor.AQUA);
+			//DramaCraft.broadcastMessage(broadcast);
+
+			OfflinePlayer currentKingPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(currentRingleaderId));
+			
+			try
+			{
+				DramaCraft.log("Setting current ringleader2 '" + currentKingPlayer.getName() + "' to his previous rank '" + currentRingleaderPreviousRank + "'");
+				PermissionsManager.setDramaCraftGroup(currentKingPlayer, currentRingleaderPreviousRank);
+			}
+			catch (Exception ex)
+			{
+				DramaCraft.log("Error while setting current ringleader2 to his previous rank '" + currentRingleaderPreviousRank + "'");
+			}
+
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removeowner mansion " + currentKingName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
+			
+			String lastKingId = getLastKing();
+			if(lastKingId != null)
+			{
+				instance.config.set("Ringleaders." + lastKingId + ".EndDate", instance.formatter.format(thisDate));				
+			}
+		}
+		
+		DramaCraft.log("Setting new ringleader2 '" + playerName + "' previous rank to '" + PermissionsManager.getDramaCraftGroup(player) + "'");
+		instance.config.set("Players." + playerId + ".PreviousRank", PermissionsManager.getDramaCraftGroup(player));
+		instance.config.set("Players." + playerId + ".CurrentRank", "ringleader");
+
+		DramaCraft.log("Setting new ringleader '" + playerName + "' rank to 'ringleader'");
+		PermissionsManager.setDramaCraftGroup(player, "ringleader");
+		
+		clearRebelLastLogin(playerId);
+		setImperialLastLogin(playerId);
+		
+		//updatePrefix(playerId);
+			
+		instance.config.set("Ringleader2.Id", playerId.toString());
+
+		long id = System.currentTimeMillis();
+		instance.config.set("Ringleaders." + id + ".PlayerId", playerId.toString());
+		instance.config.set("Ringleaders." + id + ".StartDate", instance.formatter.format(thisDate));
+		
+		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addowner mansion " + playerName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
+		
+		instance.save();
 	}
 	
 	public void sendToRebels(String message)
@@ -1674,13 +1818,13 @@ public class RankManager implements Listener
 	static public void downgradeRank(UUID playerId)
 	{
 		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerId);		
-		String previousRank = config.getString("Players." + playerId.toString() + ".PreviousRank");
+		String previousRank = instance.config.getString("Players." + playerId.toString() + ".PreviousRank");
 
 		PermissionsManager.setDramaCraftGroup(player, previousRank);
 		
 		updatePrefix(playerId);
 
-		config.set("Players." + playerId.toString() + ".PreviousRank", null);				
+		instance.config.set("Players." + playerId.toString() + ".PreviousRank", null);				
 	}
 	
 	static public void sendInfo(UUID playerId, LanguageManager.LANGUAGESTRING message, ChatColor color, int amount, int delay)

@@ -24,14 +24,6 @@ public class PermissionsManager
 	private static PermissionsManager instance;
 	private List<String> dramaCraftGroups = new ArrayList<String>();
 
-	/*
-	public static PermissionsManager instance()
-	{
-		if (instance == null)
-			instance = new PermissionsManager();
-		return instance;
-	}*/
-
 	private String				pluginName			= "null";
 	private Permission 			vaultPermission;
 	private Chat 				vaultChat;
@@ -44,7 +36,7 @@ public class PermissionsManager
 		
 		if(permissionProvider==null)
 		{
-			//Gods.instance().log(ChatColor.RED + "Could not detect Vault plugin.");
+			DramaCraft.log(ChatColor.RED + "Could not detect Vault permissions plugin.");
 			return;
 		}
 		
@@ -54,7 +46,7 @@ public class PermissionsManager
 		
 		if(chatProvider==null)
 		{
-			//Gods.instance().log(ChatColor.RED + "Could not detect Vault plugin.");
+			DramaCraft.log(ChatColor.RED + "Could not detect Vault chat plugin.");
 			return;
 		}
 		
@@ -72,33 +64,7 @@ public class PermissionsManager
 
 	public void load()
 	{
-		/*
-		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
 
-		for(String dramaGroup : dramaCraftGroups)
-		{
-			boolean hasGroup = false;
-			for(String group : vaultPermission.getGroups())
-			{
-				if(group.equals(dramaGroup))
-				{
-					hasGroup = true;					
-				}				
-			}
-			
-			if(!hasGroup) 
-			{
-				if(vaultPermission.(worldName, dramaGroup, "essentials.warps." + dramaGroup))
-				{
-					DramaCraft.instance().log("Added permission group '" + dramaGroup + "' for DramaCraft.");
-				}
-				else
-				{
-					DramaCraft.instance().log("Failed to add permission group '" + dramaGroup + "' for DramaCraft.");					
-				}
-			}
-		}
-		*/
 	}
 
 	public String getPermissionPluginName()
@@ -111,11 +77,6 @@ public class PermissionsManager
 		return vaultPermission.has(player, node);
 	}
 
-	static public String getGroup(String playerName)
-	{
-		return instance.vaultPermission.getPrimaryGroup(DramaCraft.instance().getServer().getPlayer(playerName));
-	}
-	
 	static public String getDramaCraftGroup(OfflinePlayer player)
 	{
 		String worldName = Bukkit.getServer().getWorlds().get(0).getName();
