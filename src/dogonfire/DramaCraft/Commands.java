@@ -141,18 +141,18 @@ public class Commands implements Listener
 
 	private void dramaCraftInfo(CommandSender sender)
 	{
-		sender.sendMessage(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
+		sender.sendMessage(ChatColor.YELLOW + "-------------- " + DramaCraft.instance().getDescription().getFullName() + " --------------");
 		sender.sendMessage(ChatColor.GRAY + "By DogOnFire");
 		sender.sendMessage("");
 		
 		sender.sendMessage("" + ChatColor.RED + RankManager.getNumberOfRebels() + " Rebels " + ChatColor.GRAY + "vs " + ChatColor.AQUA + RankManager.getNumberOfImperials() + " Imperials");
 		sender.sendMessage("");
-		sender.sendMessage("" + ChatColor.GRAY + "Imperials has " + ChatColor.GOLD + ResourceManager.getImperialResources() + ChatColor.GRAY + " resources.");
-		sender.sendMessage("" + ChatColor.GRAY + "Rebels has " + ChatColor.GOLD + ResourceManager.getRebelResources() + ChatColor.GRAY + " resources.");
-		sender.sendMessage("");
 
 		sendKingQueenWho(sender);
 
+		sender.sendMessage("");
+		sender.sendMessage("" + ChatColor.GRAY + "Imperials has " + ChatColor.GOLD + ResourceManager.getImperialResources() + ChatColor.GRAY + " resources.");
+		sender.sendMessage("" + ChatColor.GRAY + "Rebels has " + ChatColor.GOLD + ResourceManager.getRebelResources() + ChatColor.GRAY + " resources.");
 		sender.sendMessage("");
 
 		Player player = (Player)sender;
@@ -1277,12 +1277,12 @@ public class Commands implements Listener
 			}
 		}
 
-		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
+		sender.sendMessage(ChatColor.YELLOW + "------------------------------------------");		
 	}
 
 	private void royalHelp(CommandSender sender)
 	{	
-		String title = "------------ King & Queen -----------";
+		String title = "----------------- King & Queen ----------------";
 
 		sender.sendMessage(ChatColor.YELLOW + title);
 		sender.sendMessage("");
@@ -1308,7 +1308,7 @@ public class Commands implements Listener
 
 	private void rebelsHelp(CommandSender sender)
 	{	
-		String title = "------------ Rebels -----------";
+		String title = "------------------- Rebels ------------------";
 
 		sender.sendMessage(ChatColor.YELLOW + title);
 		sender.sendMessage("");
@@ -1383,7 +1383,7 @@ public class Commands implements Listener
 
 	private void imperialsHelp(CommandSender sender)
 	{	
-		sender.sendMessage(ChatColor.YELLOW + "--------- " + ChatColor.AQUA + "Imperials" + ChatColor.YELLOW + " --------");
+		sender.sendMessage(ChatColor.YELLOW + "------------------- Imperials ------------------");
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "As an " + ChatColor.AQUA + "IMPERIAL" + ChatColor.GRAY + " it is your duty to protect the empire and keep the peace!");
 		sender.sendMessage("");

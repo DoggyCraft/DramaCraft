@@ -403,7 +403,7 @@ public class LanguageManager
 	{
 		if (t == null)
 		{
-			DramaCraft.logDebug("WARNING: Setting null string");
+			//DramaCraft.logDebug("WARNING: Setting null string");
 			//throw new Exception("WARNING: Setting null type");
 		}
 		instance.type = t;
