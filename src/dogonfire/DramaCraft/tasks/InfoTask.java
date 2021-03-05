@@ -3,17 +3,16 @@ package dogonfire.DramaCraft.tasks;
 import java.util.Arrays;
 import java.util.UUID;
 
-
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import dogonfire.DramaCraft.DramaCraft;
 import dogonfire.DramaCraft.LanguageManager;
-import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
+
 
 public class InfoTask implements Runnable
 {
-	private DramaCraft						plugin;
 	private UUID							playerId	= null;
 	private String							name1		= null;
 	private String							name2		= null;
@@ -21,9 +20,8 @@ public class InfoTask implements Runnable
 	private int								amount		= 0;
 	private ChatColor						color;
 
-	public InfoTask(DramaCraft instance, ChatColor color, UUID playerId, LanguageManager.LANGUAGESTRING m, int amount, String name1)
+	public InfoTask(ChatColor color, UUID playerId, LanguageManager.LANGUAGESTRING m, int amount, String name1)
 	{
-		this.plugin = instance;
 		this.playerId = playerId;
 		this.message = m;
 		this.name1 = name1;
@@ -31,9 +29,8 @@ public class InfoTask implements Runnable
 		this.color = color;
 	}
 
-	public InfoTask(DramaCraft instance, ChatColor color, UUID playerId, LanguageManager.LANGUAGESTRING m, String name1, String name2)
+	public InfoTask(ChatColor color, UUID playerId, LanguageManager.LANGUAGESTRING m, String name1, String name2)
 	{
-		this.plugin = instance;
 		this.playerId = playerId;
 		this.name1 = name1;
 		this.name2 = name2;
@@ -41,9 +38,8 @@ public class InfoTask implements Runnable
 		this.color = color;
 	}
 
-	public InfoTask(DramaCraft instance, ChatColor color, UUID playerId, LanguageManager.LANGUAGESTRING m, int amount1)
+	public InfoTask(ChatColor color, UUID playerId, LanguageManager.LANGUAGESTRING m, int amount1)
 	{
-		this.plugin = instance;
 		this.playerId = playerId;
 		this.name1 = String.valueOf(amount1);
 		this.message = m;
@@ -53,7 +49,7 @@ public class InfoTask implements Runnable
 
 	public void run()
 	{
-		Player player = this.plugin.getServer().getPlayer(this.playerId);
+		Player player = Bukkit.getServer().getPlayer(this.playerId);
 
 		if (player == null)
 		{

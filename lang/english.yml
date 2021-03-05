@@ -116,6 +116,8 @@ Info:
    - The vote for '$PlayerName' SUCCEEDED! This is now a fact!
   VOTE_BROADCAST_GENERAL_FAILED: 
   - The vote for '$PlayerName' FAILED! It's just not true.
+  VOTE_BROADCAST_REBEL_HIDDEN: 
+  - [This is a secret message and can only be seen by Rebels]
   VOTE_BROADCAST_HELP: 
   - /vote yes or /vote no now!
   VOTING_COMMANDS_VOTE_DESC_REVOLUTION: 
@@ -134,6 +136,8 @@ Info:
   - Vote for sunshine
   VOTING_COMMANDS_VOTE_DESC_RAIN:
   - Vote for rain
+  VOTING_COMMANDS_VOTE_DESC_PHANTOMS:
+  - Vote for disabling phantoms
   VOTING_COMMANDS_VOTE_DESC_UNDO: 
   - undo (reset) all you votings to default (no)
   VOTING_COMMANDS_VOTE_DESC_KING: 
@@ -150,13 +154,13 @@ Info:
   - View information about the imperials
   VOTING_COMMANDS_VOTE_DESC_REBELS: 
   - View information about the rebels
-  VOTE_BROADCAST_RINGLEADER1_SUCCESS
+  VOTE_BROADCAST_RINGLEADER1_SUCCESS:
   - The vote for Ringleader SUCCEEDED! Welcome $PlayerName to the Nobles!
-  VOTE_BROADCAST_RINGLEADER1_FAILED
+  VOTE_BROADCAST_RINGLEADER1_FAILED:
   - The vote for Ringleader FAILED!
-  VOTE_BROADCAST_RINGLEADER2_SUCCESS
+  VOTE_BROADCAST_RINGLEADER2_SUCCESS:
   - The vote for Ringleader SUCCEEDED! Welcome $PlayerName to the Nobles!
-  VOTE_BROADCAST_RINGLEADER2_FAILED
+  VOTE_BROADCAST_RINGLEADER2_FAILED:
   - The vote for Ringleader FAILED!
   VOTE_BROADCAST_NOBLE_SUCCESS: 
   - The vote for Nobility SUCCEEDED! Welcome $PlayerName to the Nobles!
@@ -192,6 +196,8 @@ Info:
   - A vote for sun is already in progress. Wait for it to complete!
   VOTE_ALREADY_RAIN: 
   - A vote for storm is already in progress. Wait for it to complete!
+  VOTE_ALREADY_PHANTOMS: 
+  - A vote for disabling phantoms is already in progress. Wait for it to complete!
   VOTE_ALREADY_NIGHT: 
   - A vote for night is already in progress. Wait for it to complete!
   VOTE_ALREADY_GENERAL: 

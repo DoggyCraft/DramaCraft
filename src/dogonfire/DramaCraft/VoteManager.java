@@ -156,6 +156,7 @@ public class VoteManager
 
 		double reqYesPercentage = DramaCraft.instance().requiredYesPercentage / 100.0D;
 		int reqVotes = DramaCraft.instance().requiredVotes;
+		boolean rebelMessage = false;
 
 		if ((instance.currentVoteType == VOTE_TYPE.VOTE_DAY) || instance.currentVoteType == VOTE_TYPE.VOTE_NIGHT || instance.currentVoteType == VOTE_TYPE.VOTE_RAIN || instance.currentVoteType == VOTE_TYPE.VOTE_SUN)
 		{
@@ -255,7 +256,7 @@ public class VoteManager
 				case VOTE_NOBLE:
 					if (success)
 					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
 						LanguageManager.setPlayerName(player.getName());
 						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_SUCCESS, ChatColor.GREEN);
 						RankManager.setNoble(UUID.fromString(instance.voteString));
@@ -283,7 +284,7 @@ public class VoteManager
 				case VOTE_KING:
 					if (success)
 					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
 						LanguageManager.setPlayerName(player.getName());
 						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_KING_SUCCESS, ChatColor.GREEN);
 						RankManager.setKing(UUID.fromString(instance.voteString));
@@ -297,7 +298,7 @@ public class VoteManager
 				case VOTE_QUEEN:
 					if (success)
 					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
 						LanguageManager.setPlayerName(player.getName());
 						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_QUEEN_SUCCESS, ChatColor.GREEN);
 						RankManager.setQueen(UUID.fromString(instance.voteString));
@@ -311,7 +312,7 @@ public class VoteManager
 				case VOTE_RINGLEADER1:
 					if (success)
 					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
 						LanguageManager.setPlayerName(player.getName());
 						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER1_SUCCESS, ChatColor.GREEN);
 						RankManager.setRingLeader1(UUID.fromString(instance.voteString));
@@ -325,7 +326,7 @@ public class VoteManager
 				case VOTE_RINGLEADER2:
 					if (success)
 					{
-						OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
 						LanguageManager.setPlayerName(player.getName());
 						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER2_SUCCESS, ChatColor.GREEN);
 						RankManager.setRingLeader2(UUID.fromString(instance.voteString));
@@ -434,20 +435,6 @@ public class VoteManager
 				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOBLE_KICK, ChatColor.AQUA);
 			} break;
 
-			case VOTE_INNERCIRCLE:
-			{
-				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
-				LanguageManager.setPlayerName(player.getName());
-				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE, ChatColor.AQUA);
-			} break;
-
-			case VOTE_INNERCIRCLE_KICK:
-			{
-				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
-				LanguageManager.setPlayerName(player.getName());
-				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE_KICK, ChatColor.AQUA);
-			} break;
-
 			case VOTE_KING:
 			{
 				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
@@ -462,18 +449,44 @@ public class VoteManager
 				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_QUEEN, ChatColor.AQUA);
 			} break;
 
+			case VOTE_INNERCIRCLE:
+			{
+				rebelMessage = true;
+				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+				LanguageManager.setPlayerName(player.getName());
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE, ChatColor.AQUA);
+				DramaCraft.broadcastToRebels(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE, ChatColor.AQUA, player.getName());
+				DramaCraft.broadcastToRebels(LANGUAGESTRING.VOTE_BROADCAST_REBEL_HIDDEN, ChatColor.GRAY, player.getName());
+			} break;
+
+			case VOTE_INNERCIRCLE_KICK:
+			{
+				rebelMessage = true;
+				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+				LanguageManager.setPlayerName(player.getName());
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE_KICK, ChatColor.AQUA);
+				DramaCraft.broadcastToRebels(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE_KICK, ChatColor.AQUA, player.getName());
+				DramaCraft.broadcastToRebels(LANGUAGESTRING.VOTE_BROADCAST_REBEL_HIDDEN, ChatColor.GRAY, player.getName());
+			} break;
+
 			case VOTE_RINGLEADER1:
 			{
+				rebelMessage = true;
 				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
 				LanguageManager.setPlayerName(player.getName());
 				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER1, ChatColor.AQUA);
+				DramaCraft.broadcastToRebels(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER1, ChatColor.AQUA, player.getName());
+				DramaCraft.broadcastToRebels(LANGUAGESTRING.VOTE_BROADCAST_REBEL_HIDDEN, ChatColor.GRAY, player.getName());
 			} break;
 
 			case VOTE_RINGLEADER2:
 			{
+				rebelMessage = true;
 				OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
 				LanguageManager.setPlayerName(player.getName());
 				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER2, ChatColor.AQUA);
+				DramaCraft.broadcastToRebels(LANGUAGESTRING.VOTE_BROADCAST_RINGLEADER2, ChatColor.AQUA, player.getName());
+				DramaCraft.broadcastToRebels(LANGUAGESTRING.VOTE_BROADCAST_REBEL_HIDDEN, ChatColor.GRAY, player.getName());
 			} break;
 
 			case VOTE_DAY:
@@ -496,7 +509,10 @@ public class VoteManager
 			default: break;	
 		}
 
-		DramaCraft.broadcastMessage(broadcast);
+		if(!rebelMessage)
+		{
+			DramaCraft.broadcastMessage(broadcast);
+		}
 
 		int percent = 100;
 		percent = (int) (100.0F * instance.yes.size() / (instance.yes.size() + instance.no.size()));
@@ -767,8 +783,12 @@ public class VoteManager
 				broadcast = "A new vote for the rebel inner circle was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
 				instance.voteString = voteText;
 				break;
+			case VOTE_INNERCIRCLE_KICK:
+				broadcast = "A new vote for removing a member from the inner circle was started by " + ChatColor.WHITE + voter.getDisplayName() + "!";
+				instance.voteString = voteText;
+				break;
 			default:
-				broadcast = "Not a valid new Vote!";
+				broadcast = "A new vote was started.";
 				return false;
 		}
 

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,7 +22,6 @@ import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
 // Also to encourage them to use their powers and maintain a level of tension (drama) among the factions, thereby creating a lore and culture. 
 public class AdviceManager implements Listener
 {
-	private DramaCraft 					plugin;
 	private Random 						random = new Random();
 	private FileConfiguration			config		= null;
 	private File						configFile	= null;
@@ -30,10 +30,9 @@ public class AdviceManager implements Listener
 	private long 						lastRebelHelpTime;
 	private long 						lastImperialHelpTime;
 	
-	public AdviceManager(DramaCraft plugin)
+	public AdviceManager()
 	{
-		worldGuard = (WorldGuardPlugin) plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-		this.plugin = plugin;	
+		worldGuard = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 	}
 	
 		
@@ -49,7 +48,7 @@ public class AdviceManager implements Listener
 			{
 				for(Player rebelPlayer : RankManager.getOnlineRebelPlayers())
 				{
-					plugin.sendInfo(
+					DramaCraft.sendInfo(
 						rebelPlayer.getUniqueId(), 
 						LANGUAGESTRING.INFO_REBEL_REVOLUTION, 
 						ChatColor.AQUA,
@@ -68,7 +67,7 @@ public class AdviceManager implements Listener
 		{
 			for(Player rebelPlayer : RankManager.getOnlineRebelPlayers())
 			{
-				plugin.sendInfo(
+				DramaCraft.sendInfo(
 					rebelPlayer.getUniqueId(), 
 					LANGUAGESTRING.INFO_REBEL_BUILD_TRANSMITTERS, 
 					ChatColor.AQUA,
@@ -86,7 +85,7 @@ public class AdviceManager implements Listener
 		{
 			for(Player imperialPlayer : RankManager.getOnlineImperialPlayers())
 			{
-				plugin.sendInfo(
+				DramaCraft.sendInfo(
 					imperialPlayer.getUniqueId(), 
 					LANGUAGESTRING.INFO_IMPERIAL_ACTIVE_TRANSMITTERS, 
 					ChatColor.AQUA,
@@ -113,6 +112,6 @@ public class AdviceManager implements Listener
 
 		String message = config.getString(path + ".Message");
 
-		plugin.getServer().broadcastMessage(ChatColor.RED + "Rebel Message >> " + message);
+		Bukkit.getServer().broadcastMessage(ChatColor.RED + "Rebel Message >> " + message);
 	}
 }

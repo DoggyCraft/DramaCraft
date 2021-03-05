@@ -137,9 +137,20 @@ public class DramaCraft extends JavaPlugin
 		server.broadcastMessage(ChatColor.AQUA + message);
 	}
 	
-	public void sendInfo(UUID playerId, LanguageManager.LANGUAGESTRING message, ChatColor color, int amount, int delay)
+	public static void broadcastToRebels(LanguageManager.LANGUAGESTRING message, ChatColor color, String playerName)
 	{
-		Player player = getServer().getPlayer(playerId);
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			if(RankManager.isRebel(player.getUniqueId()))
+			{		
+				Bukkit.getServer().getScheduler().runTaskLater(DramaCraft.instance, new InfoTask(color, player.getUniqueId(), message, playerName, null), 2);
+			}
+		}
+	}
+
+	public static void sendInfo(UUID playerId, LanguageManager.LANGUAGESTRING message, ChatColor color, int amount, int delay)
+	{
+		Player player = Bukkit.getServer().getPlayer(playerId);
 
 		if (player == null)
 		{
@@ -147,7 +158,7 @@ public class DramaCraft extends JavaPlugin
 			return;
 		}
 		
-		getServer().getScheduler().runTaskLater(this, new InfoTask(this, color, playerId, message, amount), delay);
+		Bukkit.getServer().getScheduler().runTaskLater(DramaCraft.instance, new InfoTask(color, playerId, message, amount), delay);
 	}
 	
 	public void startTreasureHunt()
