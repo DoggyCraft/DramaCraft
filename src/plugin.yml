@@ -36,6 +36,10 @@ commands:
         description: Update Empire prefix for a player
         usage: /<command> [stuff]
         permissions: dramacraft.*
+    donate:
+        description: Donate to your faction treasury
+        usage: /donate <amount>
+        permissions: dramacraft.*
     addbounty:
         description: Set a bounty on a player
         usage: /<command> [stuff]

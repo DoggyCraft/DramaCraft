@@ -59,7 +59,7 @@ public abstract class Vote
 		return false;
 	}
 	
-	public abstract boolean checkVote(int timeFactor);  // This is called periodically while the vote is running
 	public abstract boolean newVote(World world, Player voter, String voteText, boolean vote, VOTE_TYPE voteType); // This is called when a player is trying to start the vote
+	public abstract boolean checkVote(int timeFactor);  // This is called periodically while the vote is running
 	public abstract boolean tryVote(World world, Player voter, boolean vote, VOTE_TYPE voteType); // This is called when a player is voting yes or no towards this vote		
 }

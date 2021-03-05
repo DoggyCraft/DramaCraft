@@ -119,7 +119,7 @@ public class FameManager implements Listener
 	
 		//location.getBlock().setData((byte) 3);
 	
-		OfflinePlayer player = DramaCraft.instance().getServer().getOfflinePlayer(ownerId);
+		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(ownerId);
 		
 		//Skull s = (Skull)location.getBlock().getState();
 		//s.setOwningPlayer(player);

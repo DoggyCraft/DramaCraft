@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -86,7 +85,7 @@ public class Commands implements Listener
 
 	static private void voteHelp(CommandSender sender)
 	{
-		sender.sendMessage(ChatColor.YELLOW + "------------------ Voting ------------------");
+		sender.sendMessage(ChatColor.YELLOW + "------------------ Voting -------------------");
 		sender.sendMessage("");
 		//sender.sendMessage("" + ChatColor.WHITE + plugin.getLanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_HEAD, ChatColor.AQUA));
 		sender.sendMessage(" " + ChatColor.WHITE + "/vote " + ChatColor.GRAY + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_INFO, ChatColor.AQUA));
@@ -219,7 +218,7 @@ public class Commands implements Listener
 		}
 		*/
 
-		sender.sendMessage(ChatColor.YELLOW + "-------------------------------------------");
+		sender.sendMessage(ChatColor.YELLOW + "--------------------------------------------");
 	}
 
 	private void sendKingQueenWho(CommandSender sender)
@@ -670,8 +669,7 @@ public class Commands implements Listener
 					{
 						sender.sendMessage(ChatColor.DARK_RED + "Only rebels can view information about transmitters");
 						return true;
-					}
-					
+					}					
 				}
 			}
 
@@ -680,6 +678,21 @@ public class Commands implements Listener
 			return true;
 		}							
 
+		if(command.getName().equalsIgnoreCase("donate"))
+		{
+			if(args.length == 1)
+			{
+				donate(player, args);
+			}								
+			else
+			{
+				sender.sendMessage("Usage: /donate <amount>");
+				return true;
+			}					
+
+			return true;
+		}	
+		
 		if(command.getName().equalsIgnoreCase("addbounty"))
 		{
 			if(args.length == 2)
@@ -734,7 +747,7 @@ public class Commands implements Listener
 			{			
 				if(args.length == 1)
 				{
-					Player target = plugin.getServer().getPlayer(args[0]);
+					Player target = Bukkit.getServer().getPlayer(args[0]);
 					plugin.getBodyguardManager().spawnTerminator(player, target);
 					plugin.getServer().broadcastMessage(ChatColor.AQUA + "A terminator has been sent towards " + ChatColor.GOLD + target.getName() + ChatColor.AQUA + "...");
 				}	
@@ -1130,6 +1143,58 @@ public class Commands implements Listener
 		return true;
 	}
 	
+	private void donate(Player player, String[] args)
+	{
+		int amount = 0;
+		
+		if(RankManager.isNeutral(player.getUniqueId()))
+		{
+			player.sendMessage(ChatColor.DARK_RED + "Only Rebels or Imperials can donate to their treasuries.");						
+			return;
+		}
+
+		try
+		{
+			
+		}
+		catch(Exception ex)
+		{
+			player.sendMessage(ChatColor.DARK_RED + "That is not a valid amount");						
+			return;
+		}
+
+		if(amount==0)
+		{
+			player.sendMessage(ChatColor.DARK_RED + "You want to donate nothing? Try again...");						
+			return;			
+		}
+		
+		if(amount<0)
+		{
+			player.sendMessage(ChatColor.DARK_RED + "Nice try...");						
+			return;			
+		}
+
+		if(!DramaCraft.economy.has(player, amount))
+		{
+			player.sendMessage(ChatColor.DARK_RED + "You do not have that much.");						
+			return;						
+		}
+		
+		DramaCraft.economy.withdrawPlayer(player.getName(), amount);
+
+		if(RankManager.isImperial(player.getUniqueId()))
+		{
+			ResourceManager.depositToImperialTreasury(amount);
+			player.sendMessage(ChatColor.GREEN + "You donated " + ChatColor.GOLD + amount + ChatColor.GREEN + " wanks to the Imperial Treasury!");							
+		}
+		else if(RankManager.isRebel(player.getUniqueId()))
+		{
+			ResourceManager.depositToRebelStash(amount);
+			player.sendMessage(ChatColor.GREEN + "You donated " + ChatColor.GOLD + amount + ChatColor.GREEN + " wanks to the Rebel Stash!");							
+		}
+	}
+	
 	private void playerInfo(CommandSender sender, String[] args)
 	{
 		OfflinePlayer player = Bukkit.getPlayer(args[0]);
@@ -1253,7 +1318,7 @@ public class Commands implements Listener
 
 		Collections.sort(members, new MemberComparator());
 		
-		String title = "------------ The Imperial Nobility ------------";
+		String title = "--------------- The Imperial Nobility ---------------";
 		
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.YELLOW + title);
@@ -1277,7 +1342,7 @@ public class Commands implements Listener
 			}
 		}
 
-		sender.sendMessage(ChatColor.YELLOW + "------------------------------------------");		
+		sender.sendMessage(ChatColor.YELLOW + "------------------------------------------------");		
 	}
 
 	private void royalHelp(CommandSender sender)
@@ -1308,7 +1373,7 @@ public class Commands implements Listener
 
 	private void rebelsHelp(CommandSender sender)
 	{	
-		String title = "------------------- Rebels ------------------";
+		String title = "---------------------- Rebels ---------------------";
 
 		sender.sendMessage(ChatColor.YELLOW + title);
 		sender.sendMessage("");
@@ -1324,7 +1389,7 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels resources" + ChatColor.GRAY + " to see how to provide resources for the rebel cause");			
 
-		sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------------");		
+		sender.sendMessage(ChatColor.YELLOW + "-----------------------------------------------------");		
 	}
 
 	private void innerCircleHelp(CommandSender sender)
@@ -1383,7 +1448,7 @@ public class Commands implements Listener
 
 	private void imperialsHelp(CommandSender sender)
 	{	
-		sender.sendMessage(ChatColor.YELLOW + "------------------- Imperials ------------------");
+		sender.sendMessage(ChatColor.YELLOW + "--------------------- Imperials --------------------");
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "As an " + ChatColor.AQUA + "IMPERIAL" + ChatColor.GRAY + " it is your duty to protect the empire and keep the peace!");
 		sender.sendMessage("");
@@ -1393,7 +1458,7 @@ public class Commands implements Listener
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials nobles" + ChatColor.GRAY + " to view members of the Imperial Nobility");			
 		//sender.sendMessage(ChatColor.WHITE + "Use /imperials help to see more information");			
-		sender.sendMessage(ChatColor.YELLOW + "------------------------------------------------");
+		sender.sendMessage(ChatColor.YELLOW + "--------------------------------------------------");
 	}
 
 	double roundTwoDecimals(double d)
