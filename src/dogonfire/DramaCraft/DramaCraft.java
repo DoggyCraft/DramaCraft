@@ -251,20 +251,22 @@ public class DramaCraft extends JavaPlugin
 		{
 			public void run()
 			{
+				rebelTransmitterManager.transmitMessage();
+			}
+		}, 40L, 5*60*20L);
+
+		server.getScheduler().runTaskTimer(this, new Runnable()
+		{
+			public void run()
+			{
+				PhantomPreventer.evaluate();
+
 				if(!revolutionManager.enforceRevolution())
 				{
 					VoteManager.checkVote(20);
 				}
 			}
-		}, 20L, 100*20L);
-		
-		server.getScheduler().runTaskTimer(this, new Runnable()
-		{
-			public void run()
-			{
-				rebelTransmitterManager.transmitMessage();
-			}
-		}, 40L, 5*60*20L);
+		}, 20L, 100*20L);		
 	}
 
 	@Override
