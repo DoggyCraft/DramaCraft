@@ -32,14 +32,14 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 
 
-public class ResourceManager implements Listener
+public class TreasuryManager implements Listener
 {		
-	static private ResourceManager instance;
+	static private TreasuryManager 			instance;
 	private Random 							random = new Random();
 	private FileConfiguration				config		= null;
 	private File							configFile	= null;
 		
-	public ResourceManager()
+	public TreasuryManager()
 	{
 		instance = this;
 	}
@@ -91,19 +91,53 @@ public class ResourceManager implements Listener
 	
 	static public void depositToRebelStash(int amount)
 	{
-		int balance = instance.config.getInt("Imperials.Stash.Balance") + amount;
-		instance.config.set("Imperials.Stash.Balance", balance);
+		int balance = instance.config.getInt("Rebels.Stash.Balance") + amount;
+		instance.config.set("Rebels.Stash.Balance", balance);
 		instance.save();		
 	}
 
-	static public int getImperialResources()
+	static public boolean withdrawFromImperialTreasury(int amount)
 	{
-		return 0;		
+		int balance = getImperialBalance();
+		
+		if(amount > balance)
+		{
+			return false;
+		}
+
+		balance -= amount;
+		
+		instance.config.set("Imperials.Treasury.Balance", balance);
+		instance.save();
+		
+		return true;		
 	}
 	
-	static public int getRebelResources()
+	static public boolean withdrawFromRebelStash(int amount)
 	{
-		return 0;		
+		int balance = getRebelsBalance();
+		
+		if(amount > balance)
+		{
+			return false;
+		}
+
+		balance -= amount;
+		
+		instance.config.set("Rebels.Treasury.Balance", balance);
+		instance.save();
+		
+		return true;		
+	}
+
+	static public int getImperialBalance()
+	{
+		return instance.config.getInt("Imperials.Treasury.Balance");		
+	}
+	
+	static public int getRebelsBalance()
+	{
+		return instance.config.getInt("Rebels.Stash.Balance");		
 	}
 
 	public void setFactionBank(UUID ownerId, Location location)

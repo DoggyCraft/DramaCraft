@@ -29,7 +29,7 @@ public class DramaCraft extends JavaPlugin
 	private	Commands					command;
 	private VoteManager					voteManager;
 	private RankManager					rankManager;
-	private ResourceManager				resourceManager;
+	private TreasuryManager				resourceManager;
 	private BodyguardManager			bodyGuardManager;
 	private BountyManager				bountyManager;
 	private RevolutionManager			revolutionManager;
@@ -117,7 +117,7 @@ public class DramaCraft extends JavaPlugin
 		}
 	}
 
-	public ResourceManager getResourceManager()
+	public TreasuryManager getResourceManager()
 	{
 		return resourceManager;
 	}
@@ -202,7 +202,7 @@ public class DramaCraft extends JavaPlugin
 		rankManager = new RankManager();
 		rankManager.load();
 
-		resourceManager = new ResourceManager();
+		resourceManager = new TreasuryManager();
 		resourceManager.load();
 
 		voteManager = new VoteManager();

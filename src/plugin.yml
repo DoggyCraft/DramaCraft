@@ -24,6 +24,34 @@ commands:
         description: Track rebel transmitters or imperial statues
         usage: /track
         permissions: dramacraft.*
+    king:
+        description: Do king stuff
+        usage: /<command> [stuff]
+        permissions: dramacraft.*
+    queen:
+        description: Do queen stuff
+        usage: /<command> [stuff]
+        permissions: dramacraft.*
+    noble:
+        description: Do imperial noble stuff
+        usage: /<command> [stuff]
+        permissions: dramacraft.*
+    innercircle:
+        description: Do rebel innercircle stuff
+        usage: /<command> [stuff]
+        permissions: dramacraft.*
+    ringleader:
+        description: Do Ringleader stuff
+        usage: /<command> [stuff]
+        permissions: dramacraft.*
+    imperial:
+        description: vote for king & stuff
+        usage: /<command> [stuff]
+        permissions: dramacraft.*
+    rebel:
+        description: vote for king & stuff
+        usage: /<command> [stuff]
+        permissions: dramacraft.*
     guard:
         description: Checks bounties on rebels
         usage: /<command> [stuff]
@@ -42,14 +70,6 @@ commands:
         permissions: dramacraft.*
     addbounty:
         description: Set a bounty on a player
-        usage: /<command> [stuff]
-        permissions: dramacraft.*
-    imperials:
-        description: vote for king & stuff
-        usage: /<command> [stuff]
-        permissions: dramacraft.*
-    rebels:
-        description: vote for king & stuff
         usage: /<command> [stuff]
         permissions: dramacraft.*
     vote:
