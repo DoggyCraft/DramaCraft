@@ -596,14 +596,17 @@ public class Commands implements Listener
 			{
 				if(args[0].equals("pay"))
 				{
+					pay((Player) sender, args);
 					return true;
 				}
 				else if(args[0].equals("treasurehunt"))
 				{
+					treasurehunt((Player) sender, args);
 					return true;
 				}
 				else if(args[0].equals("addbounty"))
 				{
+					addbounty((Player) sender, args);
 					return true;
 				}
 				else if(args[0].equals("buy"))
@@ -1216,6 +1219,48 @@ public class Commands implements Listener
 		}
 	}
 	
+	private void pay(Player player, String[] args)
+	{
+		float paidAmount = 0;
+		int amount = 100;		
+		
+		if(!TreasuryManager.withdrawFromImperialTreasury(amount))
+		{
+			player.sendMessage(ChatColor.DARK_RED + "The treasury does not have that much.");						
+			return;									
+		}
+		
+		paidAmount = amount / RankManager.getOnlineImperialPlayers().size();
+		
+		for(Player imperialPlayer : RankManager.getOnlineImperialPlayers())
+		{
+			DramaCraft.economy.depositPlayer(imperialPlayer.getName(), paidAmount);
+			imperialPlayer.sendMessage(ChatColor.GREEN + "You recieved " + ChatColor.GOLD + paidAmount + " wanks.");
+		}
+		
+		if(RankManager.isKing(player.getUniqueId()))
+		{
+			DramaCraft.broadcastMessage(ChatColor.GOLD + RankManager.getKingName() + ChatColor.GREEN + " paid " + paidAmount + " wanks to " + RankManager.getOnlineImperialPlayers().size() + " imperials!");
+		}
+
+		if(RankManager.isKing(player.getUniqueId()))
+		{
+			DramaCraft.broadcastMessage(ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GREEN + " paid " + paidAmount + " wanks to " + RankManager.getOnlineImperialPlayers().size() + " imperials!");
+		}
+	}
+	
+	private void treasurehunt(Player player, String[] args)
+	{
+		player.sendMessage(ChatColor.DARK_RED + "Not implemented yet :/");						
+		return;											
+	}
+	
+	private void addbounty(Player player, String[] args)
+	{
+		player.sendMessage(ChatColor.DARK_RED + "Not implemented yet :/");						
+		return;											
+	}
+
 	private void playerInfo(CommandSender sender, String[] args)
 	{
 		OfflinePlayer player = Bukkit.getPlayer(args[0]);
