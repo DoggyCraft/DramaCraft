@@ -140,18 +140,29 @@ public class TreasuryManager implements Listener
 		return instance.config.getInt("Rebels.Stash.Balance");		
 	}
 
-	public void setFactionBank(UUID ownerId, Location location)
+	static public void setImperialBankLocation(UUID ownerId, Location location)
 	{
 		//setHead(ownerId, location);
 		
-		config.set("Queen.Head.World", location.getWorld().getName());
-		config.set("Queen.Head.X", location.getBlockX());
-		config.set("Queen.Head.Y", location.getBlockY());
-		config.set("Queen.Head.Z", location.getBlockZ());
+		instance.config.set("Imperials.Treasury.Balance.World", location.getWorld().getName());
+		instance.config.set("Imperials.Treasury.Balance.X", location.getBlockX());
+		instance.config.set("Imperials.Treasury.Balance.Y", location.getBlockY());
+		instance.config.set("Imperials.Treasury.Balance.Z", location.getBlockZ());
 		
-		save();				
+		instance.save();				
 	}
 		
+	static public void setRebelStashLocation(UUID ownerId, Location location)
+	{
+		//setHead(ownerId, location);
+		
+		instance.config.set("Rebels.Treasury.Balance.World", location.getWorld().getName());
+		instance.config.set("Rebels.Treasury.Balance.X", location.getBlockX());
+		instance.config.set("Rebels.Treasury.Balance.Y", location.getBlockY());
+		instance.config.set("Rebels.Treasury.Balance.Z", location.getBlockZ());
+		
+		instance.save();				
+	}
 			
 	public boolean isFameBlock(Block block)
 	{
@@ -220,7 +231,7 @@ public class TreasuryManager implements Listener
 			if(amount > 0)
 			{
 				depositToImperialTreasury(amount);
-				event.getPlayer().sendMessage(ChatColor.GREEN + "You contributed " + ChatColor.GOLD + amount + ChatColor.GREEN + " to the Imperial Treasury!");				
+				event.getPlayer().sendMessage(ChatColor.GREEN + "You contributed " + ChatColor.GOLD + amount + " wanks" + ChatColor.GREEN + " to the Imperial Treasury!");				
 			}
 		}
 
@@ -241,7 +252,7 @@ public class TreasuryManager implements Listener
 			if(amount > 0)
 			{
 				depositToRebelStash(amount);
-				event.getPlayer().sendMessage(ChatColor.GREEN + "You contributed " + ChatColor.GOLD + amount + ChatColor.GREEN + " to the Rebel Stash!");				
+				event.getPlayer().sendMessage(ChatColor.GREEN + "You contributed " + ChatColor.GOLD + amount + " wanks" + ChatColor.GREEN + " to the Rebel Stash!");				
 			}
 		}
 	}

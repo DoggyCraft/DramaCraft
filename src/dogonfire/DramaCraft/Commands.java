@@ -193,18 +193,10 @@ public class Commands implements Listener
 		
 		sender.sendMessage("");
 
-		if(RankManager.isImperial(player.getUniqueId()))
-		{			
-			sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials" + ChatColor.GRAY + " to see info about the Imperials");
-		}
-		
-		if(RankManager.isRebel(player.getUniqueId()))
-		{			
-			sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels" + ChatColor.GRAY + " to see info about the Rebels");
-		}
-		
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperial" + ChatColor.GRAY + " to view info about the Imperials");		
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebel" + ChatColor.GRAY + " to view info about the Rebels");		
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/dc <player>" + ChatColor.GRAY + " to view info about a player");
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/vote help" + ChatColor.GRAY + " to view what you can vote about");
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/vote" + ChatColor.GRAY + " to view what you can vote about");
 
 		/*
 		if(RankManager.isImperial(((Player)sender).getUniqueId()))
@@ -361,8 +353,8 @@ public class Commands implements Listener
 
 					sender.sendMessage("" + ChatColor.RED + RankManager.getNumberOfRebels() + " Rebels " + ChatColor.GRAY + "vs " + ChatColor.AQUA + RankManager.getNumberOfImperials() + " Imperials");
 					sender.sendMessage("" + ChatColor.GRAY);
-					sender.sendMessage("" + ChatColor.GRAY + "Imperials has " + ChatColor.GOLD + TreasuryManager.getImperialBalance() + ChatColor.GRAY + " resources.");
-					sender.sendMessage("" + ChatColor.GRAY + "Rebels has " + ChatColor.GOLD + TreasuryManager.getRebelsBalance() + ChatColor.GRAY + " resources.");
+					sender.sendMessage("" + ChatColor.GRAY + "The Imperial Bank contains " + ChatColor.GOLD + TreasuryManager.getImperialBalance() + ChatColor.GRAY + " wanks.");
+					sender.sendMessage("" + ChatColor.GRAY + "The Rebel Stash contains " + ChatColor.GOLD + TreasuryManager.getRebelsBalance() + ChatColor.GRAY + " wanks.");
 					sender.sendMessage("" + ChatColor.GRAY);
 					return true;
 				}
@@ -586,52 +578,41 @@ public class Commands implements Listener
 		}
 	
 		// Player commands
-		if(command.getName().equalsIgnoreCase("king"))
+		if(command.getName().equalsIgnoreCase("king") || command.getName().equalsIgnoreCase("queen"))
 		{
 			if(args.length==0)
 			{
 				royalHelp(sender);
+				return true;
 			}
 			
-			if(args.length==1)
-			{
-				if(args[0].equals("help"))
-				{
-					if(RankManager.isRebel(player.getUniqueId()))
-					{			
-						imperialsHelp(sender);
-						return true;
-					}
-				}
-
-				if(args[0].equals("nobles"))
-				{
-					if(RankManager.isImperial(player.getUniqueId()))
-					{			
-						nobleHelp(sender);
-						return true;
-					}
-					else
-					{
-						sender.sendMessage(ChatColor.DARK_RED + "Only imperials can view members of the Imperial Nobility");
-						return true;
-					}
-					
-				}
+			if(!RankManager.isKing(player.getUniqueId()))
+			{			
+				sender.sendMessage(ChatColor.DARK_RED + "Only imperials can use this command");
+				return true;
 			}
-			else if(args.length==2)
+
+			if(args.length==2)
 			{
-				if(args[0].equals("help"))
+				if(args[0].equals("pay"))
 				{
-					if(RankManager.isRebel(player.getUniqueId()))
-					{			
-						imperialsHelp(sender);
-						return true;
-					}
+					return true;
+				}
+				else if(args[0].equals("treasurehunt"))
+				{
+					return true;
+				}
+				else if(args[0].equals("addbounty"))
+				{
+					return true;
+				}
+				else if(args[0].equals("buy"))
+				{
+					return true;
 				}
 			}
 
-			imperialsHelp(sender);
+			royalHelp(sender);
 			return true;
 		}	
 		
@@ -640,113 +621,37 @@ public class Commands implements Listener
 			if(args.length==0)
 			{
 				nobleHelp(sender);
-			}
+				return true;
+			}			
 			
-			else if(args.length==1)
-			{
-				if(RankManager.isImperial(player.getUniqueId()))
-				{			
-					nobleHelp(sender);
-					return true;
-				}
-				else
-				{
-					sender.sendMessage(ChatColor.DARK_RED + "Only imperials can view members of the Imperial Nobility");
-					return true;
-				}
-			}
-			else if(args.length==2)
-			{
-				if(args[0].equals("help"))
-				{
-					if(RankManager.isRebel(player.getUniqueId()))
-					{			
-						imperialsHelp(sender);
-						return true;
-					}
-				}
-			}
-			else
-			{
-				nobleHelp(sender);			
+			if(!RankManager.isNoble(player.getUniqueId()))
+			{			
+				sender.sendMessage(ChatColor.DARK_RED + "Only imperials nobles can use this command");
 				return true;
 			}
+
+			if(args.length==1)
+			{
+				if(args[0].equals("list"))
+				{			
+					nobleList(sender);
+					return true;
+				}
+			}
+
+			nobleHelp(sender);			
+			return true;
 		}	
 		
 		if(command.getName().equalsIgnoreCase("imperial"))
 		{
-			if(args.length==1)
-			{
-				if(args[0].equals("help"))
-				{
-					if(RankManager.isRebel(player.getUniqueId()))
-					{			
-						imperialsHelp(sender);
-						return true;
-					}
-				}
-
-				if(args[0].equals("nobles"))
-				{
-					if(RankManager.isImperial(player.getUniqueId()))
-					{			
-						nobleHelp(sender);
-						return true;
-					}
-					else
-					{
-						sender.sendMessage(ChatColor.DARK_RED + "Only imperials can view members of the Imperial Nobility");
-						return true;
-					}
-					
-				}
-			}
-			else if(args.length==2)
-			{
-				if(args[0].equals("help"))
-				{
-					if(RankManager.isRebel(player.getUniqueId()))
-					{			
-						imperialsHelp(sender);
-						return true;
-					}
-				}
-			}
-
 			imperialsHelp(sender);
 			return true;
 		}			
 		
 		if(command.getName().equalsIgnoreCase("rebel"))
 		{
-			if(args.length==1)
-			{
-				if(args[0].equals("help"))
-				{
-					if(RankManager.isRebel(player.getUniqueId()))
-					{			
-						rebelsHelp(sender);
-						return true;
-					}
-				}
-				
-				if(args[0].equals("transmitter"))
-				{
-					if(RankManager.isRebel(player.getUniqueId()))
-					{			
-						rebelsTransmitterHelp(sender);
-						return true;
-					}
-					else
-					{
-						sender.sendMessage(ChatColor.DARK_RED + "Only rebels can view information about transmitters");
-						return true;
-					}					
-				}
-			}
-
 			rebelsHelp(sender);			
-
 			return true;
 		}							
 
@@ -754,30 +659,22 @@ public class Commands implements Listener
 		{
 			if(args.length==0)
 			{
-				nobleHelp(sender);
+				innercircleHelp(sender);
+				return true;
+			}			
+			
+			if(!RankManager.isInnerCircle(player.getUniqueId()))
+			{			
+				sender.sendMessage(ChatColor.DARK_RED + "Only Inner Circle rebels can use this command");
+				return true;
 			}
 			
 			else if(args.length==1)
 			{
-				if(RankManager.isRebel(player.getUniqueId()))
-				{			
-					innerCircleList(sender);
-					return true;
-				}
-				else
-				{
-					sender.sendMessage(ChatColor.DARK_RED + "Only rebels can view members of the Rebel Inner Circle");
-					return true;
-				}
 			}
-			else if(args.length==2)
-			{
-			}
-			else
-			{
-				nobleHelp(sender);			
-				return true;
-			}
+
+			innercircleHelp(sender);			
+			return true;
 		}	
 
 		if(command.getName().equalsIgnoreCase("ringleader"))
@@ -785,37 +682,21 @@ public class Commands implements Listener
 			if(args.length==0)
 			{
 				ringleaderHelp(sender);
+				return true;
+			}			
+			
+			if(!RankManager.isRingLeader(player.getUniqueId()))
+			{			
+				sender.sendMessage(ChatColor.DARK_RED + "Only ring leaders can use this command");
+				return true;
 			}
 			
 			else if(args.length==1)
 			{
-				if(RankManager.isImperial(player.getUniqueId()))
-				{			
-					ringleaderHelp(sender);
-					return true;
-				}
-				else
-				{
-					sender.sendMessage(ChatColor.DARK_RED + "Only imperials can view members of the Imperial Nobility");
-					return true;
-				}
 			}
-			else if(args.length==2)
-			{
-				if(args[0].equals("help"))
-				{
-					if(RankManager.isRebel(player.getUniqueId()))
-					{			
-						imperialsHelp(sender);
-						return true;
-					}
-				}
-			}
-			else
-			{
-				ringleaderHelp(sender);			
-				return true;
-			}
+
+			ringleaderHelp(sender);			
+			return true;
 		}	
 
 		if(command.getName().equalsIgnoreCase("donate"))
@@ -1441,7 +1322,7 @@ public class Commands implements Listener
 		}
 	}
 		
-	private void nobleHelp(CommandSender sender)
+	private void nobleList(CommandSender sender)
 	{
 		//sender.sendMessage(ChatColor.WHITE + "The Empire has " + ChatColor.GOLD + plugin.getStatueManager().getStatues() + ChatColor.WHITE + " statues placed across these lands");
 		
@@ -1511,31 +1392,6 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
 	}
 
-	private void innercircleHelp(CommandSender sender)
-	{	
-		String title = "----------------- Inner Circle ----------------";
-
-		sender.sendMessage(ChatColor.YELLOW + title);
-		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "As the " + ChatColor.GOLD + "INNER CIRCLE" + ChatColor.GRAY + " it is your task to lead the rebels against the Empire!");
-		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "- Start revololutins");
-		sender.sendMessage(ChatColor.GRAY + "- Steal loot from Imperial treasure hunts");			
-		sender.sendMessage(ChatColor.GRAY + "- Rob the Imperial treasury");			
-		sender.sendMessage(ChatColor.GRAY + "- Hire guards in order to protect the Rebel stash");			
-		sender.sendMessage(ChatColor.GRAY + "- Hire guards to attack the Rebel city");			
-		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "- Ringleader can use /pay to pay all rebels their cut from the Rebel stash");
-		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "[The identity of the Inner Circle must be kept secret! Never let the Empire know who is in the Inner Circle!]");
-		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/ringleader revolution" + ChatColor.GRAY + " to see how to start a revolution");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
-
-		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
-	}
-
 	private void royalHelp(CommandSender sender)
 	{	
 		String title = "----------------- King & Queen ----------------";
@@ -1562,6 +1418,52 @@ public class Commands implements Listener
 
 		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
 	}
+	
+	private void innercircleHelp(CommandSender sender)
+	{	
+		String title = "----------------- Inner Circle ----------------";
+
+		sender.sendMessage(ChatColor.YELLOW + title);
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "As the " + ChatColor.GOLD + "INNER CIRCLE" + ChatColor.GRAY + " it is your task to lead the rebels against the Empire!");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "- Start revolutions");
+		sender.sendMessage(ChatColor.GRAY + "- Steal loot from Imperial treasure hunts");			
+		sender.sendMessage(ChatColor.GRAY + "- Rob the Imperial treasury");			
+		sender.sendMessage(ChatColor.GRAY + "- Hire guards in order to protect the Rebel stash");			
+		sender.sendMessage(ChatColor.GRAY + "- Hire guards to attack the Rebel city");			
+		sender.sendMessage(ChatColor.GRAY + "- Arrange secret meetings & scheme against the Empire!");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "- Ringleader can use /pay to pay all rebels their cut from the Rebel stash");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "[The identity of the Inner Circle must be kept secret! Never let the Empire know who is in the Inner Circle!]");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/ringleader revolution" + ChatColor.GRAY + " to see how to start a revolution");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
+
+		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
+	}
+	
+	private void nobleHelp(CommandSender sender)
+	{	
+		String title = "----------------- Noble ----------------";
+
+		sender.sendMessage(ChatColor.YELLOW + title);
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "As the " + ChatColor.GOLD + "IMPERIAL NOBLE" + ChatColor.GRAY + " you must support the King & Queen!");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "- Vote for King & Queen");
+		sender.sendMessage(ChatColor.GRAY + "- Vote for other Imperials to be Noble");			
+		sender.sendMessage(ChatColor.GRAY + "- Vote for other Imperials to not be Noble");			
+		sender.sendMessage(ChatColor.GRAY + "- Perform political drama & complicated plans!");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/ringleader revolution" + ChatColor.GRAY + " to see how to start a revolution");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
+
+		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
+	}
 
 	private void rebelsHelp(CommandSender sender)
 	{	
@@ -1572,19 +1474,37 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "As a " + ChatColor.RED + "REBEL" + ChatColor.GRAY + " it is your duty to challenge the King, Queen and the evil empire they rule!");
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "- Spread the truth about the Empire by building transmitters");
+		sender.sendMessage(ChatColor.GRAY + "- Donate to the Rebel Stash");			
 		sender.sendMessage(ChatColor.GRAY + "- Mine ore to contribute resources to the rebel stash");			
 		sender.sendMessage(ChatColor.GRAY + "- Vote players into the rebel inner circle");			
 		sender.sendMessage(ChatColor.GRAY + "- Loot the imperial bank and put stolen resources into the rebel stash");			
 		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/donate" + ChatColor.GRAY + " to donate to the rebel stash");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels revolution" + ChatColor.GRAY + " to see how to start a revolution");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels resources" + ChatColor.GRAY + " to see how to provide resources for the rebel cause");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebel transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/innercircle" + ChatColor.GRAY + " to view info about the Inner Circle");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/ringleader" + ChatColor.GRAY + " to view info about Ringleaders");			
 
 		sender.sendMessage(ChatColor.YELLOW + "-----------------------------------------------------");		
 	}
+	
+	private void imperialsHelp(CommandSender sender)
+	{	
+		sender.sendMessage(ChatColor.YELLOW + "--------------------- Imperials --------------------");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "As an " + ChatColor.AQUA + "IMPERIAL" + ChatColor.GRAY + " it is your duty to protect the empire and keep the peace!");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "- Donate to the imperial treasury");			
+		sender.sendMessage(ChatColor.GRAY + "- Make sure that all rebel transmitters are destroyed");			
+		sender.sendMessage(ChatColor.GRAY + "- Mine ore to contribute resources to the imperial treasury");			
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/donate" + ChatColor.GRAY + " to donate to the imperial treasury");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/noble" + ChatColor.GRAY + " to view info about the Imperial Nobility");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king or /queen" + ChatColor.GRAY + " to view info about the Royal");			
+		sender.sendMessage(ChatColor.YELLOW + "--------------------------------------------------");
+	}
 
-	private void innerCircleList(CommandSender sender)
+	private void innercircleList(CommandSender sender)
 	{	
 		Set<String> innerCircle = RankManager.getInnerCircle();
 		List<Member> members = new ArrayList<Member>();
@@ -1638,20 +1558,7 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------------");
 	}
 
-	private void imperialsHelp(CommandSender sender)
-	{	
-		sender.sendMessage(ChatColor.YELLOW + "--------------------- Imperials --------------------");
-		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "As an " + ChatColor.AQUA + "IMPERIAL" + ChatColor.GRAY + " it is your duty to protect the empire and keep the peace!");
-		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "- Vote players into the Imperial Nobles");			
-		sender.sendMessage(ChatColor.GRAY + "- Make sure that all rebel transmitters are destroyed");			
-		sender.sendMessage(ChatColor.GRAY + "- Mine ore to contribute resources to the imperial treasury");			
-		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials nobles" + ChatColor.GRAY + " to view members of the Imperial Nobility");			
-		//sender.sendMessage(ChatColor.WHITE + "Use /imperials help to see more information");			
-		sender.sendMessage(ChatColor.YELLOW + "--------------------------------------------------");
-	}
+
 
 	double roundTwoDecimals(double d)
 	{
