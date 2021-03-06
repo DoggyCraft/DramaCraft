@@ -23,7 +23,7 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 
 import dogonfire.DramaCraft.DramaCraft;
-import dogonfire.DramaCraft.tasks.FindLocationTask;
+import dogonfire.DramaCraft.tasks.FindTreasureChestLocationTask;
 import dogonfire.DramaCraft.tasks.FireworkTask;
 import dogonfire.DramaCraft.tasks.TeleportTask;
 
@@ -39,7 +39,7 @@ public class TreasureHunt
 	public Inventory		contents;
 	public Location			startLocation;
 	public Location			location;
-	public List<Location>	fakeLocations	= new ArrayList();
+	//public List<Location>	fakeLocations	= new ArrayList();
 	
 	private Player			playerfound;
 	private Player			closestplayer;
@@ -58,7 +58,7 @@ public class TreasureHunt
 		this.closestplayer = null;
 		this.value = maxvalue;
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new FindLocationTask(this, world), 10);
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DramaCraft.instance(), new FindTreasureChestLocationTask(this, world), 10);
 		
 		/*
 		int numberOfFakeChests = this.random.nextInt(11);
@@ -506,10 +506,10 @@ public class TreasureHunt
 
 		this.location.getBlock().setType(Material.AIR);
 		
-		for (Location fakeLocation : this.fakeLocations)
-		{
-			fakeLocation.getBlock().setType(Material.AIR);
-		}
+		//for (Location fakeLocation : this.fakeLocations)
+		//{
+		//	fakeLocation.getBlock().setType(Material.AIR);
+		//}
 		
 		if (TreasureHuntManager.isUsingMarkers())
 		{

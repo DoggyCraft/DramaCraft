@@ -72,9 +72,9 @@ public class PermissionsManager
 		return pluginName;
 	}
 
-	public boolean hasPermission(Player player, String node)
+	static public boolean hasPermission(Player player, String node)
 	{
-		return vaultPermission.has(player, node);
+		return instance.vaultPermission.has(player, node);
 	}
 
 	static public String getDramaCraftGroup(OfflinePlayer player)

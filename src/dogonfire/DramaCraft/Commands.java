@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
+import dogonfire.DramaCraft.treasurehunt.TreasureHuntManager;
 
 
 public class Commands implements Listener
@@ -140,7 +141,7 @@ public class Commands implements Listener
 
 	private void dramaCraftInfo(CommandSender sender)
 	{
-		sender.sendMessage(ChatColor.YELLOW + "-------------- " + DramaCraft.instance().getDescription().getFullName() + " --------------");
+		sender.sendMessage(ChatColor.YELLOW + "----------------- " + DramaCraft.instance().getDescription().getFullName() + " -----------------");
 		sender.sendMessage(ChatColor.GRAY + "By DogOnFire");
 		sender.sendMessage("");
 		
@@ -198,19 +199,7 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/dc <player>" + ChatColor.GRAY + " to view info about a player");
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/vote" + ChatColor.GRAY + " to view what you can vote about");
 
-		/*
-		if(RankManager.isImperial(((Player)sender).getUniqueId()))
-		{	
-			sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/dc imperials " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_IMPERIALS, ChatColor.GRAY));
-		}
-		
-		if(RankManager.isRebel(((Player)sender).getUniqueId()))
-		{	
-			sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/dc rebels " + LanguageManager.getLanguageString(LANGUAGESTRING.VOTING_COMMANDS_VOTE_DESC_REBELS, ChatColor.GRAY));
-		}
-		*/
-
-		sender.sendMessage(ChatColor.YELLOW + "--------------------------------------------");
+		sender.sendMessage(ChatColor.YELLOW + "--------------------------------------------------");
 	}
 
 	private void sendKingQueenWho(CommandSender sender)
@@ -253,33 +242,6 @@ public class Commands implements Listener
 				sender.sendMessage(ChatColor.GRAY + "The queen of DoggyCraft is " + ChatColor.GOLD + queenName + ChatColor.GRAY + " for " + ChatColor.GOLD + queenDays + " days");				
 			}
 		}
-	}
-
-	public void addBounty(Player player, Player targetPlayer, int bounty)
-	{
-		if(!RankManager.isImperial(player.getUniqueId()))
-		{
-			player.sendMessage(ChatColor.DARK_RED + "Only an imperial can set a bounty a rebel");
-			return;			
-		}
-
-		if(!RankManager.isRebel(targetPlayer.getUniqueId()))
-		{
-			player.sendMessage(ChatColor.DARK_RED + "You can only set a bounty on a rebel");
-			return;			
-		}
-
-		if(!DramaCraft.instance().getEconomyManager().has(player.getName(), bounty))
-		{
-			player.sendMessage(ChatColor.DARK_RED + "You do not have " + bounty + " wanks");
-			return;
-		}
-		
-		DramaCraft.instance().getEconomyManager().withdrawPlayer(player.getName(), bounty);
-		BountyManager.addBounty(targetPlayer, bounty);
-		
-		Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "A bounty of " + ChatColor.GOLD + bounty + " wanks " + ChatColor.GRAY + " was put on " + ChatColor.GOLD + targetPlayer.getName());
-		Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "The total bounty on " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " is now " + ChatColor.GOLD + BountyManager.getBounty(targetPlayer.getUniqueId()) + " wanks");
 	}
 
 	public void listBounties(Player player)
@@ -601,12 +563,12 @@ public class Commands implements Listener
 				}
 				else if(args[0].equals("treasurehunt"))
 				{
-					treasurehunt((Player) sender, args);
+					treasurehunt((Player) sender, command.getName(), args);
 					return true;
 				}
 				else if(args[0].equals("addbounty"))
 				{
-					addbounty((Player) sender, args);
+					addbounty((Player) sender, command.getName(), args);
 					return true;
 				}
 				else if(args[0].equals("buy"))
@@ -654,6 +616,20 @@ public class Commands implements Listener
 		
 		if(command.getName().equalsIgnoreCase("rebel"))
 		{
+			if(args.length==1)
+			{
+				if(args[0].equals("revolution"))
+				{			
+					revolutionHelp(sender);
+					return true;
+				}
+				if(args[0].equals("transmitter"))
+				{			
+					transmitterHelp(sender);
+					return true;
+				}
+			}
+			
 			rebelsHelp(sender);			
 			return true;
 		}							
@@ -717,21 +693,12 @@ public class Commands implements Listener
 			return true;
 		}	
 		
+		/*
 		if(command.getName().equalsIgnoreCase("addbounty"))
 		{
 			if(args.length == 2)
 			{
-				Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
-				int bounty = Integer.parseInt(args[1]);
-
-				if(targetPlayer!=null)
-				{
-					addBounty((Player)sender, targetPlayer, bounty);
-				}
-				else
-				{
-					DramaCraft.log("No such online player " + args[0]);
-				}
+				
 			}								
 			else
 			{
@@ -739,14 +706,11 @@ public class Commands implements Listener
 			}
 
 			return true;
-		}		
+		}		*/
 			
 		if(command.getName().equalsIgnoreCase("bounty"))
 		{
-			if(args.length == 0)
-			{
-				listBounties(player);
-			}								
+			listBounties(player);
 
 			return true;
 		}		
@@ -1249,16 +1213,67 @@ public class Commands implements Listener
 		}
 	}
 	
-	private void treasurehunt(Player player, String[] args)
+	private void treasurehunt(Player player, String cmd, String[] args)
 	{
 		player.sendMessage(ChatColor.DARK_RED + "Not implemented yet :/");						
-		return;											
+
+		if(true) 
+		{
+			return;
+		}
+		
+		if(args.length!=1)
+		{
+			player.sendMessage(ChatColor.GRAY + "Usage: " + ChatColor.WHITE + "/" + cmd + " treasurehunt <amount>");
+			return;			
+		}
+		
+		int value = 1000;
+		
+		TreasureHuntManager.startHunt(value);
 	}
 	
-	private void addbounty(Player player, String[] args)
+	private void addbounty(Player player, String cmd, String[] args)
 	{
-		player.sendMessage(ChatColor.DARK_RED + "Not implemented yet :/");						
-		return;											
+		Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
+		int bounty = Integer.parseInt(args[1]);
+
+		if(args.length!=1)
+		{
+			player.sendMessage(ChatColor.GRAY + "Usage: " + ChatColor.WHITE + "/" + cmd + " addbounty <amount>");
+			return;			
+		}
+		
+		if(targetPlayer == null)
+		{
+			DramaCraft.log("No such online player " + args[0]);
+			return;
+		}		
+		
+		if(!RankManager.isImperial(player.getUniqueId()))
+		{
+			player.sendMessage(ChatColor.DARK_RED + "Only an imperial can set a bounty a rebel");
+			return;			
+		}
+
+		if(!RankManager.isRebel(targetPlayer.getUniqueId()))
+		{
+			player.sendMessage(ChatColor.DARK_RED + "You can only set a bounty on a rebel");
+			return;			
+		}
+
+		if(!DramaCraft.instance().getEconomyManager().has(player.getName(), bounty))
+		{
+			player.sendMessage(ChatColor.DARK_RED + "You do not have " + bounty + " wanks");
+			return;
+		}
+		
+		DramaCraft.instance().getEconomyManager().withdrawPlayer(player.getName(), bounty);
+		BountyManager.addBounty(targetPlayer, bounty);
+		
+		Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "A bounty of " + ChatColor.GOLD + bounty + " wanks " + ChatColor.GRAY + " was put on " + ChatColor.GOLD + targetPlayer.getName());
+		Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "The total bounty on " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " is now " + ChatColor.GOLD + BountyManager.getBounty(targetPlayer.getUniqueId()) + " wanks");
+		
 	}
 
 	private void playerInfo(CommandSender sender, String[] args)
@@ -1413,7 +1428,7 @@ public class Commands implements Listener
 
 	private void ringleaderHelp(CommandSender sender)
 	{	
-		String title = "----------------- Ringleaders ----------------";
+		String title = "-------------------- Ringleaders -------------------";
 
 		sender.sendMessage(ChatColor.YELLOW + title);
 		sender.sendMessage("");
@@ -1434,7 +1449,7 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
 
-		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
+		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------------");		
 	}
 
 	private void royalHelp(CommandSender sender)
@@ -1456,10 +1471,9 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "- The King & Queen can use /treasury buy guard");			
 		sender.sendMessage(ChatColor.GRAY + "- The King & Queen can use /treasury buy attacker");			
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials revolution" + ChatColor.GRAY + " to see how to start a revolution");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/imperials resources" + ChatColor.GRAY + " to see how to provide resources for the rebel cause");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king pay" + ChatColor.GRAY + " to see how to pay your subjects from the treasury");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king addbounty" + ChatColor.GRAY + " to set bounties on rebel players");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king treasurehunt" + ChatColor.GRAY + " to start an Imperial Treasurehunt");			
 
 		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
 	}
@@ -1483,9 +1497,9 @@ public class Commands implements Listener
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "[The identity of the Inner Circle must be kept secret! Never let the Empire know who is in the Inner Circle!]");
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/ringleader revolution" + ChatColor.GRAY + " to see how to start a revolution");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");	
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebel revolution" + ChatColor.GRAY + " to see how to start a revolution");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebel transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
 
 		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
 	}
@@ -1503,16 +1517,14 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "- Vote for other Imperials to not be Noble");			
 		sender.sendMessage(ChatColor.GRAY + "- Perform political drama & complicated plans!");
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/ringleader revolution" + ChatColor.GRAY + " to see how to start a revolution");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/vote" + ChatColor.GRAY + " to vote players in/out of Nobility");	
 
 		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------");		
 	}
 
 	private void rebelsHelp(CommandSender sender)
 	{	
-		String title = "---------------------- Rebels ---------------------";
+		String title = "------------------------ Rebels -----------------------";
 
 		sender.sendMessage(ChatColor.YELLOW + title);
 		sender.sendMessage("");
@@ -1525,7 +1537,7 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "- Loot the imperial bank and put stolen resources into the rebel stash");			
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/donate" + ChatColor.GRAY + " to donate to the rebel stash");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebels revolution" + ChatColor.GRAY + " to see how to start a revolution");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebel revolution" + ChatColor.GRAY + " to see how to start a revolution");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebel transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/innercircle" + ChatColor.GRAY + " to view info about the Inner Circle");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/ringleader" + ChatColor.GRAY + " to view info about Ringleaders");			
@@ -1564,7 +1576,7 @@ public class Commands implements Listener
 
 		Collections.sort(members, new MemberComparator());
 		
-		String title = "--------- The Rebel Inner Circle --------";
+		String title = "------------ The Rebel Inner Circle -----------";
 
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.YELLOW + title);
@@ -1587,22 +1599,33 @@ public class Commands implements Listener
 			}
 		}
 
-		sender.sendMessage(ChatColor.YELLOW + "--------------------------------");
+		sender.sendMessage(ChatColor.YELLOW + "--------------------------------------");
 	}
 
-	private void rebelsTransmitterHelp(CommandSender sender)
+	private void transmitterHelp(CommandSender sender)
 	{	
 		sender.sendMessage("");
-		sender.sendMessage(ChatColor.YELLOW + "--------- How to build a Rebel Transmitter --------");
+		sender.sendMessage(ChatColor.YELLOW + "------------- How to build a Rebel Transmitter ------------");
 		sender.sendMessage(ChatColor.GRAY + "  1) Place a STONE block");
 		sender.sendMessage(ChatColor.GRAY + "  2) Place a TORCH on top of the STONE block");
 		sender.sendMessage(ChatColor.GRAY + "  3) Place an OAK SIGN on the STONE block");
 		sender.sendMessage(ChatColor.GRAY + "  4) Write your TRUTH message on the sign");
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "Try to be creative and dramatic in your message ;-)");			
-		sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------------");
+		sender.sendMessage(ChatColor.YELLOW + "-----------------------------------------------------");
 	}
 
+	private void revolutionHelp(CommandSender sender)
+	{	
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.YELLOW + "---------------- Revolutions ---------------");
+		sender.sendMessage(ChatColor.GRAY + "  A revolution is a PvP battle between imperials and Rebels.");
+		sender.sendMessage(ChatColor.GRAY + "  The battle has a max time of 15 minutes.");
+		sender.sendMessage(ChatColor.GRAY + "  Each PvP kill counts as a point for the players faction.");
+		sender.sendMessage(ChatColor.GRAY + "  When the battle is over and Rebels has the most points, the King & Queen is removed from their ranks.");
+		sender.sendMessage("");
+		sender.sendMessage(ChatColor.YELLOW + "-----------------------------------------------------");
+	}
 
 
 	double roundTwoDecimals(double d)

@@ -1,6 +1,6 @@
 # Libs and stuff
 /bukkit
-/lib
+#/lib
 /jar
 dependency-reduced-pom.xml
 

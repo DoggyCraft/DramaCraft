@@ -160,18 +160,12 @@ public class TreasureHuntManager implements Listener
 		*/
 	}
 
-	public void startRandomHunt(int value, World world)
+	static public void startHunt(int value)
 	{
-		if (this.worlds.size() == 0)
-		{
-			DramaCraft.log("Unable to start hunt!  No worlds set!");
-			return;
-		}
-		
-		World worldtouse = Bukkit.getServer().getWorld((String) this.worlds.get(this.random.nextInt(this.worlds.size())));
-
+		World world = Bukkit.getWorlds().get(0);
+				
 		long startTime = System.currentTimeMillis() + 600000L;
-		TreasureHunt hunt = new TreasureHunt(startTime, value, this.duration, worldtouse);
+		TreasureHunt hunt = new TreasureHunt(startTime, value, instance.duration, world);
 
 		/*
 		if (hunt.isExpired())

@@ -20,7 +20,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
+import com.dogonfire.dramacraft.commands.KingCommandExecutor;
+
 import dogonfire.DramaCraft.tasks.InfoTask;
 
 public class DramaCraft extends JavaPlugin
@@ -193,6 +194,10 @@ public class DramaCraft extends JavaPlugin
 		}
 		
 		this.command = new Commands();
+		
+		getCommand("king").setExecutor(KingCommandExecutor.instance());
+		getCommand("queen").setExecutor(KingCommandExecutor.instance());
+
 
 		this.pluginmanager = getServer().getPluginManager();
 
