@@ -231,9 +231,9 @@ public class FameManager implements Listener
 			return;
 		}
 				
-		if (!handleNewFameBlock(event.getBlock(), fameBlock))
-		{
+		//if (!handleNewFameBlock(event.getBlock(), fameBlock))
+		//{
 		// TODO add this block to list of blocks for this fametype	
-		}
+		//}
 	}
 }

@@ -558,7 +558,7 @@ public class Commands implements Listener
 			{
 				if(args[0].equals("pay"))
 				{
-					pay((Player) sender, args);
+					pay((Player) sender, command.getName(), args);
 					return true;
 				}
 				else if(args[0].equals("treasurehunt"))
@@ -680,16 +680,7 @@ public class Commands implements Listener
 
 		if(command.getName().equalsIgnoreCase("donate"))
 		{
-			if(args.length == 1)
-			{
-				donate(player, args);
-			}								
-			else
-			{
-				sender.sendMessage("Usage: /donate <amount>");
-				return true;
-			}					
-
+			donate(player, args);
 			return true;
 		}	
 		
@@ -1135,6 +1126,12 @@ public class Commands implements Listener
 	{
 		int amount = 0;
 		
+		if(args.length!=1)
+		{
+			player.sendMessage(ChatColor.GRAY + "Usage: " + ChatColor.WHITE + "/donate <amount>");
+			return;			
+		}
+
 		if(RankManager.isNeutral(player.getUniqueId()))
 		{
 			player.sendMessage(ChatColor.DARK_RED + "Only Rebels or Imperials can donate to their treasuries.");						
@@ -1183,18 +1180,24 @@ public class Commands implements Listener
 		}
 	}
 	
-	private void pay(Player player, String[] args)
+	private void pay(Player player, String cmd, String[] args)
 	{
 		float paidAmount = 0;
 		int amount = 100;		
 		
+		if(args.length!=2)
+		{
+			player.sendMessage(ChatColor.GRAY + "Usage: " + ChatColor.WHITE + "/" + cmd + " pay <amount>");
+			return;			
+		}
+
 		if(!TreasuryManager.withdrawFromImperialTreasury(amount))
 		{
 			player.sendMessage(ChatColor.DARK_RED + "The treasury does not have that much.");						
 			return;									
 		}
 		
-		paidAmount = amount / RankManager.getOnlineImperialPlayers().size();
+		paidAmount = amount / (float)RankManager.getOnlineImperialPlayers().size();
 		
 		for(Player imperialPlayer : RankManager.getOnlineImperialPlayers())
 		{
@@ -1222,7 +1225,7 @@ public class Commands implements Listener
 			return;
 		}
 		
-		if(args.length!=1)
+		if(args.length!=2)
 		{
 			player.sendMessage(ChatColor.GRAY + "Usage: " + ChatColor.WHITE + "/" + cmd + " treasurehunt <amount>");
 			return;			

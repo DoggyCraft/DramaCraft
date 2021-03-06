@@ -272,7 +272,7 @@ public class TreasureHuntManager implements Listener
 		
 		for (int i = 0; i < numberOfMobs; i++)
 		{
-			Location spawnLocation = player.getLocation().add(instance.random.nextInt(20) - 10, player.getLocation().getY(), instance.random.nextInt(20));
+			Location spawnLocation = player.getLocation().add(instance.random.nextInt(20) - 10.0, player.getLocation().getY(), instance.random.nextInt(20) - 10.0);
 			Creature spawnedMob = (Creature) player.getWorld().spawnEntity(spawnLocation, mobType);
 			spawnedMob.setTarget(player);
 		}
