@@ -1172,11 +1172,13 @@ public class Commands implements Listener
 		{
 			TreasuryManager.depositToImperialTreasury(amount);
 			player.sendMessage(ChatColor.GREEN + "You donated " + ChatColor.GOLD + amount + ChatColor.GREEN + " wanks to the Imperial Treasury!");							
+			DramaCraft.broadcastToImperials(ChatColor.GRAY + player.getName() + " donated " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " to the Imperial Treasury!");							
 		}
 		else if(RankManager.isRebel(player.getUniqueId()))
 		{
 			TreasuryManager.depositToRebelStash(amount);
 			player.sendMessage(ChatColor.GREEN + "You donated " + ChatColor.GOLD + amount + ChatColor.GREEN + " wanks to the Rebel Stash!");							
+			DramaCraft.broadcastToRebels(ChatColor.GRAY + player.getName() + " donated " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " to the Rebel Stash!");							
 		}
 	}
 	
@@ -1210,7 +1212,7 @@ public class Commands implements Listener
 			DramaCraft.broadcastMessage(ChatColor.GOLD + RankManager.getKingName() + ChatColor.GREEN + " paid " + paidAmount + " wanks to " + RankManager.getOnlineImperialPlayers().size() + " imperials!");
 		}
 
-		if(RankManager.isKing(player.getUniqueId()))
+		if(RankManager.isQueen(player.getUniqueId()))
 		{
 			DramaCraft.broadcastMessage(ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GREEN + " paid " + paidAmount + " wanks to " + RankManager.getOnlineImperialPlayers().size() + " imperials!");
 		}

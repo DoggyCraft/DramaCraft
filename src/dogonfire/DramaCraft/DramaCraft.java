@@ -138,11 +138,44 @@ public class DramaCraft extends JavaPlugin
 		server.broadcastMessage(ChatColor.AQUA + message);
 	}
 	
+	public static void broadcastToRebels(String message)
+	{
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			if(RankManager.isRebel(player.getUniqueId()))
+			{		
+				Bukkit.getServer().getScheduler().runTaskLater(DramaCraft.instance, new InfoTask(player.getUniqueId(), message), 2);
+			}
+		}
+	}
+
+	public static void broadcastToImperials(String message)
+	{
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			if(RankManager.isImperial(player.getUniqueId()))
+			{		
+				Bukkit.getServer().getScheduler().runTaskLater(DramaCraft.instance, new InfoTask(player.getUniqueId(), message), 2);
+			}
+		}
+	}
+
 	public static void broadcastToRebels(LanguageManager.LANGUAGESTRING message, ChatColor color, String playerName)
 	{
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
 			if(RankManager.isRebel(player.getUniqueId()))
+			{		
+				Bukkit.getServer().getScheduler().runTaskLater(DramaCraft.instance, new InfoTask(color, player.getUniqueId(), message, playerName, null), 2);
+			}
+		}
+	}
+
+	public static void broadcastToImperials(LanguageManager.LANGUAGESTRING message, ChatColor color, String playerName)
+	{
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			if(RankManager.isImperial(player.getUniqueId()))
 			{		
 				Bukkit.getServer().getScheduler().runTaskLater(DramaCraft.instance, new InfoTask(color, player.getUniqueId(), message, playerName, null), 2);
 			}

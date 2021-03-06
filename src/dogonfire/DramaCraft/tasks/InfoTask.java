@@ -17,8 +17,15 @@ public class InfoTask implements Runnable
 	private String							name1		= null;
 	private String							name2		= null;
 	private LanguageManager.LANGUAGESTRING	message		= null;
+	private String							rawMessage	= null;
 	private int								amount		= 0;
 	private ChatColor						color;
+
+	public InfoTask(UUID playerId, String message)
+	{
+		this.playerId = playerId;
+		this.rawMessage = message;
+	}
 
 	public InfoTask(ChatColor color, UUID playerId, LanguageManager.LANGUAGESTRING m, int amount, String name1)
 	{
@@ -48,13 +55,19 @@ public class InfoTask implements Runnable
 	}
 
 	public void run()
-	{
+	{		
 		Player player = Bukkit.getServer().getPlayer(this.playerId);
 
 		if (player == null)
 		{
 			return;
 		}
+
+		if(rawMessage != null)
+		{
+			player.sendMessage(rawMessage);
+			return;
+		}		
 
 		LanguageManager.setPlayerName(this.name1);
 
