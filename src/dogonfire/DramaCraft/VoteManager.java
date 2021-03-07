@@ -541,11 +541,12 @@ public class VoteManager
 
 		int reqVotes = DramaCraft.instance().requiredVotes;
 		int voteCost = 0;//DramaCraft.instance().startVoteCost;
-		long voteInterval = DramaCraft.instance().voteTimeLengthBetween;
-
-		if (System.nanoTime() - instance.startVoteTime < voteInterval)
+		long voteInterval = DramaCraft.instance().voteMinutesBetween;
+		long timeIntervalMinutes = (System.currentTimeMillis() - instance.startVoteTime)  / (60 * 1000);
+		
+		if (timeIntervalMinutes < voteInterval)
 		{
-			int time = (int) ((instance.startVoteTime + voteInterval - System.nanoTime()) / 60000000L);
+			int time = (int) ((instance.startVoteTime + voteInterval - System.nanoTime()) / 60000000L); // 60000000L
 			LanguageManager.setAmount1(time);
 			voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOSOON, ChatColor.RED));
 			DramaCraft.logDebug(voter.getName() + " tried to start a vote too soon");
@@ -716,7 +717,7 @@ public class VoteManager
 		}
 		
 		instance.currentVoteType = voteType;
-		instance.startVoteTime = System.nanoTime();
+		instance.startVoteTime = System.currentTimeMillis();
 		instance.lastVoterId = voter.getUniqueId();
 
 		//TODO: Encapsulate votes logic into its own class and replace entire content with this:

@@ -25,7 +25,6 @@ public abstract class Vote
 	public int 			reqVotes 			= DramaCraft.instance().requiredVotes;
 	public int 			voteCost 			= DramaCraft.instance().startVoteCost;
 	public long			startVoteTime;
-	public long 		voteInterval 		= DramaCraft.instance().voteTimeLengthBetween;
 	public List<String>	all					= new ArrayList<String>();
 	public List<String>	yes					= new ArrayList<String>();
 	public List<String>	no					= new ArrayList<String>();

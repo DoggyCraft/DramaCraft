@@ -46,7 +46,7 @@ public class DramaCraft extends JavaPlugin
 	public static Economy				economy						= null;
 
 	public long							voteTimeLength				= 800000000000L;
-	public long							voteTimeLengthBetween		= 600000000L; // 60000000000L
+	public int							voteMinutesBetween			= 1; // 60000000000L
 	public double						requiredYesPercentage		= 66;
 	public int							requiredVotes				= 20;
 	public int							votePayment					= 10;
@@ -324,7 +324,7 @@ public class DramaCraft extends JavaPlugin
 		
 		serverName = this.config.getString("ServerName", "Your Server");
 		voteTimeLength = this.config.getLong("VoteTimeLength", 800000000000L);
-		//voteTimeLengthBetween = this.config.getLong("VoteTimeLengthBetween", 60000000000L);
+		//voteMinutesBetween = this.config.getLong("voteMinutesBetween", 5L);
 		requiredYesPercentage = this.config.getInt("RequiredYesPercentage", 66);
 		requiredVotes = this.config.getInt("RequiredVotes", 7);
 		votePayment = this.config.getInt("VotePayment", 10);
@@ -335,7 +335,7 @@ public class DramaCraft extends JavaPlugin
 	{
 		this.config.set("ServerName", serverName);
 		this.config.set("VoteTimeLength", voteTimeLength);
-		this.config.set("VoteTimeLengthBetween", voteTimeLengthBetween);
+		this.config.set("VoteMinutesBetween", voteMinutesBetween);
 		this.config.set("RequiredYesPercentage", requiredYesPercentage);
 		this.config.set("RequiredVotes", requiredVotes);
 		this.config.set("VotePayment", votePayment);

@@ -1277,8 +1277,6 @@ public class RankManager implements Listener
 			{
 				DramaCraft.log("Error while setting current king to his previous rank '" + currentKingPreviousRank + "'");
 			}
-
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removeowner castle " + currentKingName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 			
 			String lastKingId = getLastKing();
 			if(lastKingId != null)
@@ -1304,9 +1302,7 @@ public class RankManager implements Listener
 		long id = System.currentTimeMillis();
 		instance.config.set("Kings." + id + ".PlayerId", playerId.toString());
 		instance.config.set("Kings." + id + ".StartDate", instance.formatter.format(thisDate));
-		
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addowner castle " + playerName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		
+				
 		instance.save();
 	}
 	
@@ -1361,8 +1357,6 @@ public class RankManager implements Listener
 				DramaCraft.log("Error while setting current king to his previous rank '" + currentQueenPreviousRank + "'");
 			}
 
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removeowner castle " + currentQueenName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-
 			String lastQueenId = getLastQueen();
 			if(lastQueenId != null)
 			{
@@ -1386,8 +1380,6 @@ public class RankManager implements Listener
 		//config.set("King.JoinDate", formatter.format(thisDate));
 		instance.config.set("Queen.ElectionTime", instance.formatter.format(thisDate));
 				
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addowner castle " + playerName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		
 		instance.save();
 	}
 
@@ -1419,10 +1411,6 @@ public class RankManager implements Listener
 		setRank(player, "imperial");		
 		setImperialLastLogin(playerId);
 		
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember mansion " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember rebels " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addmember imperials " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-
 		DramaCraft.log(player.getName() + " was set to be an imperial");
 
 		instance.save();
@@ -1436,10 +1424,6 @@ public class RankManager implements Listener
 		setRank(player, "rebel");
 		setRebelLastLogin(playerId);
 		
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember imperials " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addmember rebels " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-
 		DramaCraft.log(player.getName() + " was set to be a rebel");
 
 		instance.save();
@@ -1455,11 +1439,6 @@ public class RankManager implements Listener
 		Date thisDate = new Date();
 		
 		instance.config.set("Imperials." + player.getUniqueId().toString() + ".Noble.JoinDate", instance.formatter.format(thisDate));
-
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember mansion " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember rebels " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addmember imperials " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addmember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 		
 		DramaCraft.log(player.getName() + " was set to be a noble");
 
@@ -1476,12 +1455,7 @@ public class RankManager implements Listener
 		Date thisDate = new Date();
 
 		instance.config.set("Rebels." + playerId.toString() + ".InnerCircle.JoinDate", instance.formatter.format(thisDate));
-		
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember imperials " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addmember rebels " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addmember mansion " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		
+				
 		DramaCraft.log(player.getName() + " was set to be in innercircle");
 
 		instance.save();
@@ -1501,12 +1475,7 @@ public class RankManager implements Listener
 		instance.config.set("Imperials." + playerId.toString(), null);
 
 		updatePrefix(player.getUniqueId());
-						
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember imperials " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember rebels " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember mansion " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		
+								
 		DramaCraft.log(player.getName() + " was set to be neutral");
 
 		instance.save();
@@ -1553,15 +1522,11 @@ public class RankManager implements Listener
 
 		if(instance.config.getString("Imperials." + playerId.toString()) != null)
 		{				
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember imperials " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 			instance.config.set("Imperials." + playerId.toString(), null);
 		}
 		
 		if(instance.config.getString("Rebels." + playerId.toString()) != null)
 		{				
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember mansion " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember rebels " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 			instance.config.set("Rebels." + playerId.toString(), null);
 		}
 
@@ -1583,8 +1548,6 @@ public class RankManager implements Listener
 		
 		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerId);
 
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-
 		instance.config.set("King", null);
 		
 		instance.save();
@@ -1602,8 +1565,6 @@ public class RankManager implements Listener
 		UUID playerId = UUID.fromString(queenId);
 
 		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerId);
-
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removemember castle " + player.getName() + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 
 		instance.config.set("Queen", null);
 						
@@ -1687,8 +1648,6 @@ public class RankManager implements Listener
 			{
 				DramaCraft.log("Error while setting current ringleader1 to his previous rank '" + currentRingleaderPreviousRank + "'");
 			}
-
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removeowner mansion " + currentKingName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 			
 			String lastKingId = getLastKing();
 			if(lastKingId != null)
@@ -1714,9 +1673,7 @@ public class RankManager implements Listener
 		long id = System.currentTimeMillis();
 		instance.config.set("Ringleaders." + id + ".PlayerId", playerId.toString());
 		instance.config.set("Ringleaders." + id + ".StartDate", instance.formatter.format(thisDate));
-		
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addowner mansion " + playerName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		
+				
 		instance.save();
 	}
 	
@@ -1770,8 +1727,6 @@ public class RankManager implements Listener
 			{
 				DramaCraft.log("Error while setting current ringleader2 to his previous rank '" + currentRingleaderPreviousRank + "'");
 			}
-
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region removeowner mansion " + currentKingName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
 			
 			String lastKingId = getLastKing();
 			if(lastKingId != null)
@@ -1797,9 +1752,7 @@ public class RankManager implements Listener
 		long id = System.currentTimeMillis();
 		instance.config.set("Ringleaders." + id + ".PlayerId", playerId.toString());
 		instance.config.set("Ringleaders." + id + ".StartDate", instance.formatter.format(thisDate));
-		
-		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "region addowner mansion " + playerName + " -w " + Bukkit.getServer().getWorlds().get(0).getName());
-		
+				
 		instance.save();
 	}
 	
