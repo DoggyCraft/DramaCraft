@@ -120,6 +120,10 @@ Info:
   - [This is a secret message and can only be seen by Rebels]
   VOTE_BROADCAST_HELP: 
   - /vote yes or /vote no now!
+  VOTING_COMMANDS_VOTE_DESC_INNERCIRCLE:
+  - Vote for a player to become member of the Inner Circle
+  VOTING_COMMANDS_VOTE_DESC_INNERCIRCLE_KICK:
+  - Vote to kick a player from the Inner Circle
   VOTING_COMMANDS_VOTE_DESC_REVOLUTION: 
   - Vote to start a revolution!
   VOTING_COMMANDS_VOTE_DESC_KING:

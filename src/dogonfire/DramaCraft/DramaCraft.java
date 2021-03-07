@@ -228,9 +228,8 @@ public class DramaCraft extends JavaPlugin
 		
 		this.command = new Commands();
 		
-		getCommand("king").setExecutor(KingCommandExecutor.instance());
-		getCommand("queen").setExecutor(KingCommandExecutor.instance());
-
+		//getCommand("king").setExecutor(KingCommandExecutor.instance());
+		//getCommand("queen").setExecutor(KingCommandExecutor.instance());
 
 		this.pluginmanager = getServer().getPluginManager();
 
