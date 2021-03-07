@@ -993,6 +993,15 @@ public class Commands implements Listener
 
 					return true;
 				}
+				else if (args[0].equalsIgnoreCase("phantoms"))
+				{
+					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_DISABLE_PHANTOMS, ""))
+					{
+						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
+					}
+
+					return true;
+				}
 				else if (args[0].equalsIgnoreCase("yes"))
 				{
 					doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
@@ -1007,23 +1016,28 @@ public class Commands implements Listener
 
 					return true;
 				}
-
+				else
+				{
+					sender.sendMessage(ChatColor.DARK_RED + "That is not a valid vote.");
+					sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/vote" + ChatColor.GRAY + " to view valid voting options");
+					return true;
+				}
 			}
 			else if (args.length == 2)
 			{
+				Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
+
+				if (targetPlayer == null)
+				{
+					sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.DARK_RED));
+					return true;
+				}
+				
 				if (args[0].equalsIgnoreCase("king"))
 				{
-					Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
-
-					if (targetPlayer == null)
-					{
-						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.DARK_RED));
-						return true;
-					}
-
 					if (targetPlayer.isOp())
 					{
-						sender.sendMessage(ChatColor.DARK_RED + "No.");
+						sender.sendMessage(ChatColor.DARK_RED + "Admins cannot be voted king.");
 						return true;
 					}
 
@@ -1036,17 +1050,9 @@ public class Commands implements Listener
 				}
 				else if (args[0].equalsIgnoreCase("queen"))
 				{
-					Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
-
-					if (targetPlayer == null)
-					{
-						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.DARK_RED));
-						return true;
-					}
-
 					if (targetPlayer.isOp())
 					{
-						sender.sendMessage(ChatColor.RED + "No.");
+						sender.sendMessage(ChatColor.DARK_RED + "Admins cannot be voted queen.");
 						return true;
 					}
 
@@ -1057,19 +1063,26 @@ public class Commands implements Listener
 
 					return true;
 				}
-				if (args[0].equalsIgnoreCase("noble"))
+				else if (args[0].equalsIgnoreCase("ringleader"))
 				{
-					Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
-
-					if (targetPlayer == null)
+					if (targetPlayer.isOp())
 					{
-						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.DARK_RED));
+						sender.sendMessage(ChatColor.DARK_RED + "Admins cannot be voted ringleader.");
 						return true;
 					}
 
+					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_RINGLEADER1, targetPlayer.getUniqueId().toString()))
+					{
+						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
+					}
+
+					return true;
+				}
+				else if (args[0].equalsIgnoreCase("noble"))
+				{
 					if (targetPlayer.isOp())
 					{
-						sender.sendMessage(ChatColor.RED + "Admins can not be an Imperial Noble.");
+						sender.sendMessage(ChatColor.DARK_RED + "Admins can not be an Imperial Noble.");
 						return true;
 					}
 
@@ -1080,19 +1093,11 @@ public class Commands implements Listener
 
 					return true;
 				}
-				if (args[0].equalsIgnoreCase("innercircle"))
+				else if (args[0].equalsIgnoreCase("innercircle"))
 				{
-					Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
-
-					if (targetPlayer == null)
-					{
-						sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.DARK_RED));
-						return true;
-					}
-
 					if (targetPlayer.isOp())
 					{
-						sender.sendMessage(ChatColor.RED + "Admins can not be in the Rebel Inner Circle.");
+						sender.sendMessage(ChatColor.DARK_RED + "Admins can not be in the Rebel Inner Circle.");
 						return true;
 					}
 
@@ -1101,6 +1106,12 @@ public class Commands implements Listener
 						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
 					}
 
+					return true;
+				}
+				else
+				{
+					sender.sendMessage(ChatColor.DARK_RED + "That is not a valid vote.");
+					sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/vote" + ChatColor.GRAY + " to view valid voting options");
 					return true;
 				}
 			}
