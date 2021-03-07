@@ -231,22 +231,22 @@ Info:
   - We are enough rebels online to start a revolution! Use §f/vote revolution!
   - Do you want to start a revolution? Use §f/vote revolution!
   - Time for a revolution? Use §f/vote revolution!
-  INFO_IMPERIAL_ACTIVE_TRANSMITTERS : 
+  INFO_IMPERIAL_ACTIVE_TRANSMITTERS: 
   - The Rebels has placed $Amount1 transmitters that spread evil lies about Empire! Hunt and destroy those transmitters down with §f/track 
   - The Rebels are spreading lies about our glorious Empire! Hunt and destroy those transmitters down with §f/track 
   - Don't let the rebels get away with their lies! Hunt and destroy those transmitters down with §f/track 
   - Find one of the rebel transmitters and destroy it. It pays 100 wanks! Use §f/track 
   - Earn 100 wanks by destroying one of the rebel transmitters! Use §f/track 
-  INFO_IMPERIAL_VOTE_NOBLES : 
+  INFO_IMPERIAL_VOTE_NOBLES: 
   - We need more imperial nobles! Use §f/vote noble <playername>
-  INFO_IMPERIAL_VOTE_KING : 
+  INFO_IMPERIAL_VOTE_KING: 
   - We do not have a King! Use §f/vote king <playername>
-  INFO_IMPERIAL_VOTE_QUEEN : 
+  INFO_IMPERIAL_VOTE_QUEEN: 
   - We do not have a Queen! Use §f/vote queen <playername>
-  INFO_REBEL_REVOLUTION
+  INFO_REBEL_REVOLUTION:
   - You can now vote for a revolution! Use /vote revolution
   - There are now enough rebels online to vote for a revolution! Use /vote revolution
-  INFO_REBEL_BUILD_TRANSMITTERS : 
+  INFO_REBEL_BUILD_TRANSMITTERS: 
   - The truth must be told about the evil Empire! See how to build a transmitter with §f/rebels help
   - Don't let evil Empire get away with their lies! Tell the truth by building a rebel transmitter with §f/rebels help
   - Build a rebel transmitter and tel everyone the truth about the Empire! Use §f/rebels help
