@@ -1460,12 +1460,12 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/innercircle" + ChatColor.GRAY + " to see info about the Inner Circle");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
 
-		sender.sendMessage(ChatColor.YELLOW + "--------------------------------------------------");		
+		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------------------");		
 	}
 
 	private void royalHelp(CommandSender sender)
 	{	
-		String title = "-------------------- King & Queen -------------------";
+		String title = "--------------------- King & Queen --------------------";
 
 		sender.sendMessage(ChatColor.YELLOW + title);
 		sender.sendMessage("");
@@ -1476,22 +1476,18 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "- Pay the Imperials from the Imperial Treasury");			
 		sender.sendMessage(ChatColor.GRAY + "- Hire guards in order to protect the Imperial treasury");			
 		sender.sendMessage(ChatColor.GRAY + "- Hire knights to attack the Rebel city");			
-		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "- The King & Queen can use /fly");
-		sender.sendMessage(ChatColor.GRAY + "- The King & Queen can use /treasury starthunt");			
-		sender.sendMessage(ChatColor.GRAY + "- The King & Queen can use /treasury buy guard");			
-		sender.sendMessage(ChatColor.GRAY + "- The King & Queen can use /treasury buy attacker");			
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king pay" + ChatColor.GRAY + " to see how to pay your subjects from the treasury");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king addbounty" + ChatColor.GRAY + " to set bounties on rebel players");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king treasurehunt" + ChatColor.GRAY + " to start an Imperial Treasurehunt");			
 
-		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------------");		
+		sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------------");		
 	}
 	
 	private void innercircleHelp(CommandSender sender)
 	{	
-		String title = "-------------------- Inner Circle -------------------";
+		String title = "--------------------- Inner Circle --------------------";
 
 		sender.sendMessage(ChatColor.YELLOW + title);
 		sender.sendMessage("");
@@ -1512,7 +1508,7 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebel revolution" + ChatColor.GRAY + " to see how to start a revolution");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/rebel transmitter" + ChatColor.GRAY + " to see how to build a rebel transmitter");			
 
-		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------------");		
+		sender.sendMessage(ChatColor.YELLOW + "--------------------------------------------------");		
 	}
 	
 	private void nobleHelp(CommandSender sender)
@@ -1558,7 +1554,7 @@ public class Commands implements Listener
 	
 	private void imperialsHelp(CommandSender sender)
 	{	
-		sender.sendMessage(ChatColor.YELLOW + "---------------------- Imperial ---------------------");
+		sender.sendMessage(ChatColor.YELLOW + "----------------------- Imperial ----------------------");
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "As an " + ChatColor.AQUA + "IMPERIAL" + ChatColor.GRAY + " it is your duty to protect the empire and keep the peace!");
 		sender.sendMessage("");
@@ -1569,7 +1565,7 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/donate" + ChatColor.GRAY + " to donate to the imperial treasury");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/noble" + ChatColor.GRAY + " to view info about the Imperial Nobility");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king or /queen" + ChatColor.GRAY + " to view info about the Royal");			
-		sender.sendMessage(ChatColor.YELLOW + "----------------------------------------------------");
+		sender.sendMessage(ChatColor.YELLOW + "-----------------------------------------------------");
 	}
 
 	private void innercircleList(CommandSender sender)
