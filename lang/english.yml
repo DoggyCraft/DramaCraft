@@ -23,7 +23,8 @@ Info:
   - Not enough imperials online to start a vote for that. Please wait until $Amount1 imperial players are online.
   ERROR_TOOFEWREBELS_ONLINE: 
   - Not enough rebels online to start a vote for that. Please wait until $Amount1 rebel players are online.
-  ERROR_TOOSOON: We just had a vote. Please wait before starting a new vote.
+  ERROR_TOOSOON: 
+  - We just had a vote. Please wait $Amount1 seconds before starting a new vote.
   ERROR_ONLYIMPERIALSCANVOTEFORNOBLE: 
   - Only an imperial can vote for a noble, when there are less than 3 nobles
   ERROR_ONLYNOBLESCANVOTEFORNOBLE: 
@@ -110,6 +111,12 @@ Info:
    - The vote for storm SUCCEEDED! Let it storm!
   VOTE_BROADCAST_RAIN_FAILED: 
    - The vote for storm FAILED!
+  VOTE_BROADCAST_PHANTOMS:
+  - Do you want to disable phantoms for $Amount1 minutes?
+  VOTE_BROADCAST_PHANTOMS_SUCCESS:
+  - The vote for disabling phantoms SUCCEEDED! Phantoms are now disabled for $Amount1 minutes!
+  VOTE_BROADCAST_PHANTOMS_FAILED:
+  - The vote for disabling phantoms FAILED!
   VOTE_BROADCAST_GENERAL: 
    - "Question: $PlayerName"
   VOTE_BROADCAST_GENERAL_SUCCESS:

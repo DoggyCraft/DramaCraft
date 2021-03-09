@@ -31,7 +31,7 @@ public abstract class Vote
 	
 	public boolean isCompleted()
 	{			
-		if ((this.yes.size() + this.no.size() >= reqVotes) || (System.nanoTime() - this.startVoteTime > DramaCraft.instance().voteTimeLength))
+		if ((this.yes.size() + this.no.size() >= reqVotes) || (System.currentTimeMillis() - this.startVoteTime > DramaCraft.instance().voteLengthSeconds))
 		{
 			String broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_FINISHED, ChatColor.AQUA);
 

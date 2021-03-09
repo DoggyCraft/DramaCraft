@@ -45,8 +45,9 @@ public class DramaCraft extends JavaPlugin
 	private PluginManager				pluginmanager				= null;
 	public static Economy				economy						= null;
 
-	public long							voteTimeLength				= 800000000000L;
-	public int							voteMinutesBetween			= 1; // 60000000000L
+	public long							voteLengthSeconds				= 800000000000L;
+	public int							voteSecondsBetween			= 1; // 60000000000L
+	public int 							voteBroadcastSeconds		= 20;
 	public double						requiredYesPercentage		= 66;
 	public int							requiredVotes				= 20;
 	public int							votePayment					= 10;
@@ -300,7 +301,7 @@ public class DramaCraft extends JavaPlugin
 
 				if(!revolutionManager.enforceRevolution())
 				{
-					VoteManager.checkVote(20);
+					VoteManager.checkVote();
 				}
 			}
 		}, 20L, 100*20L);		
@@ -323,8 +324,9 @@ public class DramaCraft extends JavaPlugin
 		this.config = getConfig();
 		
 		serverName = this.config.getString("ServerName", "Your Server");
-		voteTimeLength = this.config.getLong("VoteTimeLength", 800000000000L);
-		//voteMinutesBetween = this.config.getLong("voteMinutesBetween", 5L);
+		voteLengthSeconds = this.config.getLong("VoteLengthSeconds", 240L); // 800 seconds ~ 13.3 minutes, 20 seconds
+		voteSecondsBetween = this.config.getInt("VoteSecondsBetween", 300);
+		voteBroadcastSeconds = this.config.getInt("VoteBroadcastSeconds", 20);
 		requiredYesPercentage = this.config.getInt("RequiredYesPercentage", 66);
 		requiredVotes = this.config.getInt("RequiredVotes", 7);
 		votePayment = this.config.getInt("VotePayment", 10);
@@ -334,8 +336,9 @@ public class DramaCraft extends JavaPlugin
 	public void saveSettings()
 	{
 		this.config.set("ServerName", serverName);
-		this.config.set("VoteTimeLength", voteTimeLength);
-		this.config.set("VoteMinutesBetween", voteMinutesBetween);
+		this.config.set("VoteSecondsBetween", voteSecondsBetween);
+		this.config.set("VoteLengthSeconds", voteLengthSeconds);
+		this.config.set("VoteSecondsBetween", voteSecondsBetween);
 		this.config.set("RequiredYesPercentage", requiredYesPercentage);
 		this.config.set("RequiredVotes", requiredVotes);
 		this.config.set("VotePayment", votePayment);

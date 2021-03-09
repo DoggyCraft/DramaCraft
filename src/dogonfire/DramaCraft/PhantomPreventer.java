@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class PhantomPreventer implements Listener
 {
+	public int disableTimeMinutes = 60;
 	static private PhantomPreventer instance;
 	private boolean preventPhantoms = false;
 	private long timeStarted;
@@ -20,9 +21,15 @@ public class PhantomPreventer implements Listener
 		instance = this;
 	}
 	
+	static public int getDisabledTimeMinutes()
+	{
+		return instance.disableTimeMinutes;
+	}
+	
 	static public void disablePhantoms()
 	{
-		
+		instance.preventPhantoms = true;
+		instance.timeStarted = System.currentTimeMillis();
 	}
 	
 	static public void evaluate()
@@ -32,7 +39,7 @@ public class PhantomPreventer implements Listener
 			return;
 		}
 
-		if(System.currentTimeMillis() - instance.timeStarted > 60 * 60 * 1000)
+		if(System.currentTimeMillis() - instance.timeStarted > instance.disableTimeMinutes * 60 * 1000)
 		{
 			instance.preventPhantoms = false;
 		}

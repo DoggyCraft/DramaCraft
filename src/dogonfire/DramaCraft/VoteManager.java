@@ -1,37 +1,31 @@
 package dogonfire.DramaCraft;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
-
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
 
 import dogonfire.DramaCraft.LanguageManager.LANGUAGESTRING;
-import dogonfire.DramaCraft.votes.Vote;
+
 
 public class VoteManager
 {
-	public String	name;
-	public String	voteString;
-	public UUID		lastVoterId = UUID.randomUUID();
-	static private VoteManager instance;
+	public String				name;
+	public String				voteString;
+	public UUID					lastVoterId 		= UUID.randomUUID();
+	private long				startVoteTime		= 0;
+	private long				lastVoteTime		= 0;
+	private VOTE_TYPE			currentVoteType;
+	private Random				random				= new Random();
+	static private VoteManager 	instance;
+
 	
 	public static enum VOTE_TYPE
 	{
@@ -87,14 +81,9 @@ public class VoteManager
 	}
 	*/	
 
-	public List<String>	all				= new ArrayList();
-	public List<String>	yes				= new ArrayList();
-	public List<String>	no				= new ArrayList();
-	private long		startVoteTime	= 0;
-	private long		lastVoteTime	= 0;
-	private VOTE_TYPE	currentVoteType;
-	private Random		random			= new Random();
-	private Vote 		currentVote;
+	public List<String>	all				= new ArrayList<String>();
+	public List<String>	yes				= new ArrayList<String>();
+	public List<String>	no				= new ArrayList<String>();
 	
 		
 	VoteManager()
@@ -109,10 +98,12 @@ public class VoteManager
 		instance.no.clear();
 	}
 		
-	static public void checkVote(int timeFactor)
+	static public void checkVote()
 	{
 		String broadcast = "";
 		boolean success = false;
+		
+		DramaCraft.log("checkVote()");
 		
 		if(RevolutionManager.isRevolution())
 		{
@@ -146,10 +137,8 @@ public class VoteManager
 
 			return;
 		}
-
-		long checkVotePeriod = DramaCraft.instance().voteTimeLength / timeFactor;
-
-		if (System.nanoTime() < instance.lastVoteTime + checkVotePeriod)
+		
+		if (System.currentTimeMillis() - instance.lastVoteTime < (DramaCraft.instance().voteBroadcastSeconds * 1000))
 		{
 			return;
 		}
@@ -193,7 +182,7 @@ public class VoteManager
 			reqVotes = 7;//7
 		}
 
-		if ((instance.yes.size() + instance.no.size() >= reqVotes) || (System.nanoTime() - instance.startVoteTime > DramaCraft.instance().voteTimeLength))
+		if ((instance.yes.size() + instance.no.size() >= reqVotes) || (System.currentTimeMillis() - instance.startVoteTime > (DramaCraft.instance().voteLengthSeconds * 1000)))
 		{
 			broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_FINISHED, ChatColor.AQUA);
 
@@ -209,14 +198,16 @@ public class VoteManager
 
 			success = ((float)instance.yes.size()) / ((float)(instance.no.size() + instance.yes.size())) >= reqYesPercentage;
 			
-			DramaCraft.logDebug("success " + ((float)instance.yes.size()) / ((float)(instance.no.size() + instance.yes.size())));
-			DramaCraft.logDebug("reqYesPercentage/100 " + reqYesPercentage / 100.0);
+			DramaCraft.logDebug("Success " + ((float)instance.yes.size()) / ((float)(instance.no.size() + instance.yes.size())));
+			DramaCraft.logDebug("ReqYesPercentage/100 " + reqYesPercentage / 100.0);
 
 			broadcast = "MISSING_SUCCESS";
 
 			switch (instance.currentVoteType)
 			{
 				case VOTE_DISABLE_PHANTOMS:
+					LanguageManager.setAmount1(PhantomPreventer.getDisabledTimeMinutes());
+
 					if (success)
 					{
 						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_PHANTOMS_SUCCESS, ChatColor.GREEN);
@@ -410,6 +401,7 @@ public class VoteManager
 		switch (instance.currentVoteType)
 		{
 			case VOTE_DISABLE_PHANTOMS:
+				LanguageManager.setAmount1(PhantomPreventer.getDisabledTimeMinutes());
 				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_PHANTOMS, ChatColor.AQUA);
 				break;
 
@@ -527,7 +519,7 @@ public class VoteManager
 		broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_HELP, ChatColor.AQUA);
 		DramaCraft.broadcastMessage(broadcast);
 
-		instance.lastVoteTime = System.nanoTime();
+		instance.lastVoteTime = System.currentTimeMillis();
 	}
 
 	static public VOTE_TYPE getCurrentVoteType()
@@ -541,24 +533,24 @@ public class VoteManager
 
 		int reqVotes = DramaCraft.instance().requiredVotes;
 		int voteCost = 0;//DramaCraft.instance().startVoteCost;
-		long voteInterval = DramaCraft.instance().voteMinutesBetween;
-		long timeIntervalMinutes = (System.currentTimeMillis() - instance.startVoteTime)  / (60 * 1000);
+		long voteInterval = DramaCraft.instance().voteSecondsBetween;
+		long timeIntervalSeconds = (System.currentTimeMillis() - instance.startVoteTime)  / (1000);
 		
-		if (timeIntervalMinutes < voteInterval)
+		if (timeIntervalSeconds < voteInterval)
 		{
-			int time = (int) ((instance.startVoteTime + voteInterval - System.nanoTime()) / 60000000L); // 60000000L
-			LanguageManager.setAmount1(time);
+			int seconds = (int)(instance.startVoteTime + voteInterval) - (int)(System.currentTimeMillis() / 1000);//(int) ((instance.startVoteTime + voteInterval - System.currentTimeMillis()()) / 60000000L); // 60000000L
+			LanguageManager.setAmount1(seconds);
 			voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOSOON, ChatColor.RED));
 			DramaCraft.logDebug(voter.getName() + " tried to start a vote too soon");
 			return false;
 		}
 
-		if (voter.getUniqueId() == instance.lastVoterId)
-		{
-			voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_NOTAGAIN, ChatColor.RED));
-			DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but now allowed to start another one");
-			return false;
-		}
+		//if (voter.getUniqueId() == instance.lastVoterId)
+		//{
+		//	voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_NOTAGAIN, ChatColor.RED));
+		//	DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but now allowed to start another one");
+		//	return false;
+		//}
 
 		if (DramaCraft.economy.getBalance(voter.getName()) < voteCost)
 		{
@@ -807,8 +799,6 @@ public class VoteManager
 	static public void doVote(World world, Player voter, boolean vote, VOTE_TYPE voteType)
 	{
 		boolean firstVote = true;
-
-		Server s = voter.getServer();
 
 		if (voteType == VOTE_TYPE.VOTE_YES)
 		{

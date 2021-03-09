@@ -423,7 +423,7 @@ public class LanguageManager
 		if (strings == null || strings.size() == 0)
 		{
 			DramaCraft.logDebug("WARNING: No language string in " + instance.generalLanguageFileName + " for the info type '" + languageString.name() + "'");
-			return languageString.name() + " MISSING in " + instance.generalLanguageFileName;
+			return ChatColor.DARK_RED + languageString.name() + " MISSING in " + instance.generalLanguageFileName;
 		}
 
 		String text = (String) strings.toArray()[instance.random.nextInt(strings.size())];

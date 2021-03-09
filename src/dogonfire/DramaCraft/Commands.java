@@ -51,7 +51,7 @@ public class Commands implements Listener
 		}*/
 
 		VoteManager.doVote(this.currentWorld, player, true, voteType);
-		VoteManager.checkVote(40);
+		VoteManager.checkVote();
 	}
 
 	static private boolean newVote(CommandSender sender, Player player, VoteManager.VOTE_TYPE voteType, String text)

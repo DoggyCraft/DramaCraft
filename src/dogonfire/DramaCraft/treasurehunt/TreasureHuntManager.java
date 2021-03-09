@@ -223,21 +223,13 @@ public class TreasureHuntManager implements Listener
 	public static void sendStartBroadcast(int value)
 	{
 		Bukkit.broadcastMessage(ChatColor.AQUA + "***** Så er der skattejagt!! *****");
-		if (value <= 1500)
+		if (value <= 2000)
 		{
 			Bukkit.broadcastMessage(ChatColor.AQUA + " En normal skattekiste er dukket op i " + ChatColor.GOLD + "DoggyCraft" + ChatColor.AQUA + "!");
 		}
-		else if (value <= 2500)
+		else if (value <= 5000)
 		{
-			Bukkit.broadcastMessage(ChatColor.AQUA + " En " + ChatColor.YELLOW + "Sjælden" + ChatColor.AQUA + " skattekiste er dukket op i " + ChatColor.GOLD + "DoggyCraft" + ChatColor.AQUA + "!");
-		}
-		else if (value <= 3500)
-		{
-			Bukkit.broadcastMessage(ChatColor.AQUA + " En " + ChatColor.GREEN + "Vild" + ChatColor.AQUA + " skattekiste er dukket op i " + ChatColor.GOLD + "DoggyCraft" + ChatColor.AQUA + "!");
-		}
-		else if (value <= 4500)
-		{
-			Bukkit.broadcastMessage(ChatColor.WHITE + " En " + ChatColor.BLUE + "Sej" + ChatColor.WHITE + " skattekiste er dukket op i DoggyCraft!");
+			Bukkit.broadcastMessage(ChatColor.AQUA + " En " + ChatColor.YELLOW + "Ordentlig syg" + ChatColor.AQUA + " skattekiste er dukket op i " + ChatColor.GOLD + "DoggyCraft" + ChatColor.AQUA + "!");
 		}
 		else
 		{
