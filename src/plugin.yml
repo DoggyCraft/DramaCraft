@@ -1,5 +1,5 @@
 name: DramaCraft
-main: dogonfire.DramaCraft.DramaCraft
+main: com.dogonfire.dramacraft.DramaCraft
 version: ${project.version}
 api-version: 1.14
 authors: [DogOnFire]

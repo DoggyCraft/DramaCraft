@@ -3,9 +3,9 @@ package com.dogonfire.dramacraft.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import dogonfire.DramaCraft.DramaCraft;
-import dogonfire.DramaCraft.PermissionsManager;
-import dogonfire.DramaCraft.RankManager;
+import com.dogonfire.dramacraft.DramaCraft;
+import com.dogonfire.dramacraft.PermissionsManager;
+import com.dogonfire.dramacraft.RankManager;
 
 
 
