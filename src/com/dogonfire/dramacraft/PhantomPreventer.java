@@ -66,6 +66,11 @@ public class PhantomPreventer implements Listener
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
 	{
+		if(!preventPhantoms)
+		{
+			return;
+		}
+
 		Entity damager = event.getDamager();
 		Entity victim = event.getEntity();
 
