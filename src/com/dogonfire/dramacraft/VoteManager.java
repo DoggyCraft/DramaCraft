@@ -1,6 +1,7 @@
 package com.dogonfire.dramacraft;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.dogonfire.dramacraft.LanguageManager.LANGUAGESTRING;
+import com.dogonfire.dramacraft.votes.Vote;
 
 
 public class VoteManager
@@ -142,6 +144,41 @@ public class VoteManager
 		{
 			return;
 		}
+		
+		/*
+		if(instance.currentVote.isCompleted())
+		{
+			String broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_FINISHED, ChatColor.AQUA);
+			DramaCraft.broadcastMessage(broadcast);
+
+			if (instance.yes.size() + instance.no.size() < reqVotes)
+			{
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOT_ENOUGH_VOTES, ChatColor.RED);
+				DramaCraft.broadcastMessage(broadcast);
+				resetVotes();
+				return;
+			}
+
+			success = ((float)instance.yes.size()) / ((float)(instance.no.size() + instance.yes.size())) >= reqYesPercentage;
+			
+			if (instance.isFailed())
+			{
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOT_ENOUGH_VOTES, ChatColor.RED);
+				DramaCraft.broadcastMessage(broadcast);
+				resetVotes();
+				return;
+			}
+			else
+			{			
+				instance.currentVote.success();
+			}
+		}
+		else
+		{
+			instance.currentVote.update();
+		}
+		*/
+		
 
 		double reqYesPercentage = DramaCraft.instance().requiredYesPercentage / 100.0D;
 		int reqVotes = DramaCraft.instance().requiredVotes;
@@ -244,6 +281,34 @@ public class VoteManager
 					}
 					break;
 										
+				case VOTE_INNERCIRCLE:
+					if (success)
+					{
+						OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						LanguageManager.setPlayerName(player.getName());
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE_SUCCESS, ChatColor.GREEN);
+						RankManager.setNoble(UUID.fromString(instance.voteString));
+					}
+					else
+					{
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE_FAILED, ChatColor.RED);
+					}
+					break;
+
+				case VOTE_INNERCIRCLE_KICK:
+					if (success)
+					{
+						OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(UUID.fromString(instance.voteString));
+						LanguageManager.setPlayerName(player.getName());
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE_KICK_SUCCESS, ChatColor.GREEN);
+						RankManager.downgradeRank(player.getUniqueId());
+					}
+					else
+					{
+						broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_INNERCIRCLE_KICK_FAILED, ChatColor.RED);
+					}
+					break;
+
 				case VOTE_NOBLE:
 					if (success)
 					{
@@ -526,6 +591,8 @@ public class VoteManager
 	{
 		return instance.currentVoteType;
 	}
+	
+	private HashMap<VOTE_TYPE, Vote> voteRegistry = new HashMap<VOTE_TYPE, Vote>();
 
 	static public boolean newVote(World world, Player voter, String voteText, boolean vote, VOTE_TYPE voteType)
 	{
@@ -538,7 +605,7 @@ public class VoteManager
 		
 		if (timeIntervalSeconds < voteInterval)
 		{
-			int seconds = (int)(instance.startVoteTime + voteInterval) - (int)(System.currentTimeMillis() / 1000);//(int) ((instance.startVoteTime + voteInterval - System.currentTimeMillis()()) / 60000000L); // 60000000L
+			int seconds = (int)(instance.startVoteTime / 1000 + voteInterval) - (int)(System.currentTimeMillis() / 1000);//(int) ((instance.startVoteTime + voteInterval - System.currentTimeMillis()()) / 60000000L); // 60000000L
 			LanguageManager.setAmount1(seconds);
 			voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOSOON, ChatColor.RED));
 			DramaCraft.logDebug(voter.getName() + " tried to start a vote too soon");
@@ -551,6 +618,9 @@ public class VoteManager
 		//	DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but now allowed to start another one");
 		//	return false;
 		//}
+		
+		//currentVote = voteRegistry[voteType].newVote(world, voter, voteText, vote, voteType);
+		//currentVote.newVote(world, voter, voteText, vote, voteType);
 
 		if (DramaCraft.economy.getBalance(voter.getName()) < voteCost)
 		{
@@ -638,7 +708,6 @@ public class VoteManager
 					DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few imperial nobles online");
 					return false;
 				}
-
 			}
 		}
 		
@@ -690,7 +759,7 @@ public class VoteManager
 			{
 				LanguageManager.setAmount1(reqVotes);
 				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
-				DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few nobels online");
+				DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few noble online");
 				return false;
 			}		
 		}
@@ -703,7 +772,7 @@ public class VoteManager
 			{
 				LanguageManager.setAmount1(reqVotes);
 				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
-				DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few nobels online");
+				DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few noble online");
 				return false;
 			}		
 		}

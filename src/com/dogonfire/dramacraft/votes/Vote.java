@@ -30,6 +30,15 @@ public abstract class Vote
 	public List<String>	no					= new ArrayList<String>();
 	
 	public boolean isCompleted()
+	{
+		boolean enoughVotes = ((float)this.yes.size()) / ((float)(this.no.size() + this.yes.size())) >= reqYesPercentage;
+		boolean timedOut = System.currentTimeMillis() - startVoteTime > (DramaCraft.instance().voteLengthSeconds * 1000);
+		
+		return enoughVotes || timedOut;
+	}
+	
+	/*
+	public boolean isCompleted()
 	{			
 		if ((this.yes.size() + this.no.size() >= reqVotes) || (System.currentTimeMillis() - this.startVoteTime > DramaCraft.instance().voteLengthSeconds))
 		{
@@ -56,9 +65,25 @@ public abstract class Vote
 		}
 		
 		return false;
+	}*/
+	
+	public void broadcastProgress(int yesVotes, int noVotes)
+	{
+		int percent = 100;
+		percent = (int) (100.0F * yesVotes / (yesVotes + noVotes));
+
+		LanguageManager.setAmount1(percent);
+		LanguageManager.setAmount2(yesVotes + noVotes);
+		LanguageManager.setAmount3(reqVotes);
+
+		String broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_PROGRESS, ChatColor.AQUA);
+		DramaCraft.broadcastMessage(broadcast);
+
+		broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_HELP, ChatColor.AQUA);
+		DramaCraft.broadcastMessage(broadcast);		
 	}
 	
-	public abstract boolean newVote(World world, Player voter, String voteText, boolean vote, VOTE_TYPE voteType); // This is called when a player is trying to start the vote
+	public abstract Vote newVote(World world, Player voter, String voteText, boolean vote, VOTE_TYPE voteType); // This is called when a player is trying to start the vote
 	public abstract boolean checkVote(int timeFactor);  // This is called periodically while the vote is running
 	public abstract boolean tryVote(World world, Player voter, boolean vote, VOTE_TYPE voteType); // This is called when a player is voting yes or no towards this vote		
 }

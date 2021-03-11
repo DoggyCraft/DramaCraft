@@ -70,7 +70,7 @@ public class DayVote extends Vote
 		return this.voteType;
 	}
 
-	public boolean newVote(World world, Player voter, String voteText, boolean vote, VOTE_TYPE voteType)
+	public Vote newVote(World world, Player voter, String voteText, boolean vote, VOTE_TYPE voteType)
 	{
 		/*
 		String broadcast = "";
@@ -86,7 +86,7 @@ public class DayVote extends Vote
 
 		DramaCraft.economy.withdrawPlayer(voter, voteCost);
 */
-		return true;
+		return this;
 	}
 
 	public boolean tryVote(World world, Player voter, boolean vote, VOTE_TYPE voteType)

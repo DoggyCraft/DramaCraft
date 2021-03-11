@@ -81,6 +81,7 @@ public class PermissionsManager
 
 		for(String groupName : instance.vaultPermission.getPlayerGroups(worldName, player))
 		{
+			DramaCraft.log("Player Permission Group: " + groupName);
 			if(instance.dramaCraftGroups.contains(groupName))
 			{
 				return groupName;
