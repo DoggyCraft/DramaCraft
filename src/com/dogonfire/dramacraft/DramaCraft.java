@@ -21,7 +21,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.dogonfire.dramacraft.commands.KingCommandExecutor;
 import com.dogonfire.dramacraft.tasks.InfoTask;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -143,7 +142,7 @@ public class DramaCraft extends JavaPlugin
 
 	public static void broadcastMessage(String message)
 	{
-		server.broadcastMessage(ChatColor.AQUA + message);
+		server.broadcastMessage(ChatColor.GRAY + message);
 	}
 	
 	public static void broadcastToRebels(String message)

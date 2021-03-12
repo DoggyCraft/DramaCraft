@@ -42,6 +42,7 @@ public class PhantomPreventer implements Listener
 		if(System.currentTimeMillis() - instance.timeStarted > instance.disableTimeMinutes * 60 * 1000)
 		{
 			instance.preventPhantoms = false;
+			DramaCraft.broadcastMessage("Phantoms are now enabled");
 		}
 	}
 

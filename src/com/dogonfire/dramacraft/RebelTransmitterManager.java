@@ -361,13 +361,11 @@ public class RebelTransmitterManager implements Listener
 			{
 				for (Player rebelPlayer : RankManager.getOnlineRebelPlayers())
 				{
-					DramaCraft.instance().sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_REBEL_BUILD_TRANSMITTERS, ChatColor.AQUA, 0, 120);
+					DramaCraft.sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_REBEL_BUILD_TRANSMITTERS, ChatColor.AQUA, 0, 120);
 
 					DramaCraft.log("Send INFO_REBEL_BUILD_TRANSMITTERS to " + rebelPlayer.getName());
 
 				}
-
-				// plugin.log("transmitMessage rebel CHECK");
 
 				lastRebelHelpTime = System.currentTimeMillis();
 			}
@@ -375,7 +373,6 @@ public class RebelTransmitterManager implements Listener
 		
 		if(transmitters.size()==0)
 		{
-			//plugin.log("transmitMessage NO MESSAGE");
 			return;
 		}
 		
