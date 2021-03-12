@@ -31,6 +31,9 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+
 
 
 
@@ -61,11 +64,11 @@ public class RebelTransmitterManager implements Listener
 
 			this.config = YamlConfiguration.loadConfiguration(this.configFile);
 
-			DramaCraft.log("Loaded " + this.config.getConfigurationSection("transmitters").getKeys(false).size() + " transmitters.");
+			DramaCraft.log("Loaded " + this.config.getConfigurationSection("Transmitters").getKeys(false).size() + " transmitters.");
 
-			for (String hash : this.config.getConfigurationSection("transmitters").getKeys(false))
+			for (String hash : this.config.getConfigurationSection("Transmitters").getKeys(false))
 			{
-				String key = "transmitters." + hash;
+				String key = "Transmitters." + hash;
 				int x = config.getInt(key + ".X");
 				int y = config.getInt(key + ".Y");
 				int z = config.getInt(key + ".Z");
@@ -198,7 +201,7 @@ public class RebelTransmitterManager implements Listener
 			return false;
 		}
 		
-		// Make sure this is not inside a region
+		// Make sure this is not inside a worldguard region
 		RegionContainer container = com.sk89q.worldguard.WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionQuery query = container.createQuery();
 		ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(event.getBlock().getLocation()));
@@ -209,6 +212,14 @@ public class RebelTransmitterManager implements Listener
 			DramaCraft.log("transmitter is inside an region");
 			return false;			
 		}		
+
+		// Make sure this is not inside a grief prevention region
+		Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getBlock().getLocation(), false, null);
+
+		if (claim != null)
+		{
+			return false;
+		}				
 		
 		this.addTransmitter(event.getPlayer(), message, event.getBlock().getLocation());
 
@@ -352,34 +363,29 @@ public class RebelTransmitterManager implements Listener
 	
 	public void transmitMessage()
 	{
-		if(System.currentTimeMillis() > lastRebelHelpTime + (10*60*1000 + 10*60*1000*transmitters.size()))
+		if (transmitters.size() < 3)
 		{
-			for(Player rebelPlayer : RankManager.getOnlineRebelPlayers())
+			if (System.currentTimeMillis() > lastRebelHelpTime + (10 * 60 * 1000 + 10 * 60 * 1000 * transmitters.size()))
 			{
-				DramaCraft.instance().sendInfo(
-					rebelPlayer.getUniqueId(), 
-					LANGUAGESTRING.INFO_REBEL_BUILD_TRANSMITTERS, 
-					ChatColor.AQUA,
-					0,
-					120
-					);
-				
-				DramaCraft.log("Send INFO_REBEL_BUILD_TRANSMITTERS to " + rebelPlayer.getName());
+				for (Player rebelPlayer : RankManager.getOnlineRebelPlayers())
+				{
+					DramaCraft.instance().sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_REBEL_BUILD_TRANSMITTERS, ChatColor.AQUA, 0, 120);
 
+					DramaCraft.log("Send INFO_REBEL_BUILD_TRANSMITTERS to " + rebelPlayer.getName());
+
+				}
+
+				// plugin.log("transmitMessage rebel CHECK");
+
+				lastRebelHelpTime = System.currentTimeMillis();
 			}
-			
-			//plugin.log("transmitMessage rebel CHECK");
-
-			lastRebelHelpTime = System.currentTimeMillis();
-		}
-		
+		}		
 		
 		if(transmitters.size()==0)
 		{
 			//plugin.log("transmitMessage NO MESSAGE");
 			return;
 		}
-
 		
 		Set<String> keys = config.getConfigurationSection("Transmitters").getKeys(false);
 				
@@ -387,7 +393,7 @@ public class RebelTransmitterManager implements Listener
 		{
 			int n = random.nextInt(keys.size());
 			String hash = (String) keys.toArray()[n];
-			String path = "transmitters." + hash;
+			String path = "Transmitters." + hash;
 
 			String message = config.getString(path + ".Message");
 

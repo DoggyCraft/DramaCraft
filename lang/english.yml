@@ -25,18 +25,28 @@ Info:
   - Not enough rebels online to start a vote for that. Please wait until $Amount1 rebel players are online.
   ERROR_TOOSOON: 
   - We just had a vote. Please wait $Amount1 seconds before starting a new vote.
+  ERROR_ONLYIMPERIALSCANVOTEFORKING:
+  - Only an imperial can vote for king or queen
   ERROR_ONLYIMPERIALSCANVOTEFORNOBLE: 
   - Only an imperial can vote for a noble, when there are less than 3 nobles
-  ERROR_ONLYNOBLESCANVOTEFORNOBLE: 
-  - Only a noble can vote for a noble
+  ERROR_ONLYIMPERIALCANVOTEFORNOBLE: 
+  - Only an imperial can vote for a noble
   ERROR_ONLYNOBLESCANBEQUEEN: 
   - Only a noble can become the Queen
+  ERROR_ONLYIMPERIALSCANBENOBLE: 
+  - Only an imperial can become a noble
   ERROR_ONLYNOBLESCANBEKING: 
   - Only a noble can become the King
-  ERROR_ONLYREBELSCANVOTEFORINNERCIRCLE:
-  - Only a noble can vote for a noble
-  ERROR_ONLYINNERCIRCLECANVOTEFORINNERCIRCLE: 
-  - Only a noble can vote for a noble
+  ERROR_ONLYREBELSCANBERINGLEADER:
+  - Only rebels can be ringleader
+  ERROR_ONLYREBELSCANVOTEFORRINGLEADER:
+  - Only rebels can become ringleader
+  ERROR_ONLYREBELSCANBEINNERCIRCLE:
+  - Only a rebel can be member of inner circle
+  ERROR_ONLYREBELCANVOTEFORINNERCIRCLE: 
+  - Only a rebel can vote for inner circle
+  ERROR_ONLYREBELSCANBERINGLEADER:
+  - Only a rebel can be ringleader
   ERROR_ONLYREBELSCANREVOLUTION: 
   - Only rebels can start a revolution
   VOTE_BROADCAST_FINISHED: 
@@ -99,6 +109,8 @@ Info:
   - The vote for kick SUCCEEDED! $PlayerName is no longer in the Inner Circle!
   VOTE_BROADCAST_INNERCIRCLE_KICK_FAILED:
   - The vote for Inner Circle FAILED!
+  VOTE_BROADCAST_REBEL_HIDDEN:
+  - [This vote can only be seen by rebels]
   VOTE_BROADCAST_SUN: 
   - Do you want it to be sun?
   VOTE_BROADCAST_SUN_SUCCESS: 
