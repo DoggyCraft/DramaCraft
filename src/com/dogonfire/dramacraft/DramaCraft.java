@@ -9,6 +9,7 @@ import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -22,6 +23,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.dogonfire.dramacraft.commands.KingCommandExecutor;
 import com.dogonfire.dramacraft.tasks.InfoTask;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
+
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 
 public class DramaCraft extends JavaPlugin
 {
@@ -200,6 +208,21 @@ public class DramaCraft extends JavaPlugin
 		getServer().dispatchCommand(Bukkit.getConsoleSender(), "starthunt" + this.getServer().getWorlds().get(0).getName());		
 	}
 	
+	static public boolean isWorldGuardLocation(Location location)
+	{
+		RegionContainer container = com.sk89q.worldguard.WorldGuard.getInstance().getPlatform().getRegionContainer();
+		RegionQuery query = container.createQuery();
+		ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(location));		
+		return set.size() > 0;
+	}
+	
+	static public boolean isGriefPreventionLocation(Location location)
+	{
+		Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, null);
+
+		return claim != null;
+	}
+
 	public void onDisable()
 	{
 	}

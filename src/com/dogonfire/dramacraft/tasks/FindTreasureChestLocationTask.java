@@ -131,25 +131,22 @@ public class FindTreasureChestLocationTask implements Runnable
 		Location location = new Location(Bukkit.getWorlds().get(0), x, 0, z);
 
 		location = location.getWorld().getHighestBlockAt(location).getLocation().add(0, 1.0, 0);
-
-		Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, null);
-
-		// Check for GriefPrevention region
-		if (claim != null)
+	
+		if(DramaCraft.isWorldGuardLocation(location))
 		{
 			return;
-		}		
+		}
+
+		if(DramaCraft.isGriefPreventionLocation(location))
+		{
+			return;
+		}
 		
 		// Check for worldborder region
 		if (border != null && !border.insideBorder(location))
 		{
 			return;
 		}
-
-		// Check for worldguard region
-		RegionContainer container = com.sk89q.worldguard.WorldGuard.getInstance().getPlatform().getRegionContainer();
-		RegionQuery query = container.createQuery();
-		ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(location));
 
 		do
 		{

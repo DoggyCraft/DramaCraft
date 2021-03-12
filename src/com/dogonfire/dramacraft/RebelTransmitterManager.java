@@ -202,24 +202,16 @@ public class RebelTransmitterManager implements Listener
 		}
 		
 		// Make sure this is not inside a worldguard region
-		RegionContainer container = com.sk89q.worldguard.WorldGuard.getInstance().getPlatform().getRegionContainer();
-		RegionQuery query = container.createQuery();
-		ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(event.getBlock().getLocation()));
-		
-		if(set.size() > 0)
-		{
-			event.getPlayer().sendMessage(ChatColor.DARK_RED + "Transmitter cannot be inside an region");
-			DramaCraft.log("transmitter is inside an region");
-			return false;			
-		}		
-
-		// Make sure this is not inside a grief prevention region
-		Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getBlock().getLocation(), false, null);
-
-		if (claim != null)
+		if(DramaCraft.isWorldGuardLocation(event.getBlock().getLocation()))
 		{
 			return false;
-		}				
+		}
+
+		// Make sure this is not inside a grief prevention region
+		if(DramaCraft.isGriefPreventionLocation(event.getBlock().getLocation()))
+		{
+			return false;
+		}
 		
 		this.addTransmitter(event.getPlayer(), message, event.getBlock().getLocation());
 
@@ -402,21 +394,22 @@ public class RebelTransmitterManager implements Listener
 			// Check for invalid placement
 			Location location = (Location) (transmitters.values().toArray()[random.nextInt(transmitters.keySet().size())]);
 
-			// Make sure this is not inside a region
-			RegionContainer container = com.sk89q.worldguard.WorldGuard.getInstance().getPlatform().getRegionContainer();
-			RegionQuery query = container.createQuery();
-			ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(location));
-			
-			//TODO: Check for GriefPrevention regions as well
-			//ClaimBlockSystem system = griefPrevention.
-			
-			if (set.size() > 0)
+			// Make sure this is not inside a worldguard region
+			if(DramaCraft.isWorldGuardLocation(location))
 			{
 				removeTransmitter(location);
-				DramaCraft.log("Transmitter was located inside an region. Destroyed the transmitter.");
+				DramaCraft.log("Transmitter was located inside an worldguard region. Destroyed the transmitter.");
 				return;
 			}
-			
+
+			// Make sure this is not inside a grief prevention region
+			if(DramaCraft.isGriefPreventionLocation(location))
+			{
+				removeTransmitter(location);
+				DramaCraft.log("Transmitter was located inside an grief prevention region. Destroyed the transmitter.");
+				return;
+			}
+						
 			if (location.getBlock().getType()!=Material.OAK_SIGN)
 			{
 				removeTransmitter(location);
