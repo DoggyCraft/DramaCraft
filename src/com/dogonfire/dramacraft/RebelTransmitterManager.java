@@ -43,16 +43,15 @@ public class RebelTransmitterManager implements Listener
 	private FileConfiguration			config			= null;
 	private File						configFile		= null;
 	private HashMap<Long, Location>  	transmitters 	= new HashMap<Long, Location>(); 
-	private WorldGuardPlugin 			worldGuard	 	= null;
 	//private GriefPrevention 			griefPrevention;
 	private long 						lastRebelHelpTime;
 	private long 						lastImperialHelpTime;
 	static RebelTransmitterManager 		instance;
+	private int 						transmitterBounty = 100;
 	
 	public RebelTransmitterManager()
 	{
 		instance = this;
-		worldGuard = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 		//this.griefPrevention = GriefPrevention.instance;
 	}
 	
@@ -306,9 +305,12 @@ public class RebelTransmitterManager implements Listener
 		
 		if(RankManager.isImperial(player.getUniqueId()))
 		{
-			player.sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + "100 wanks" + ChatColor.GREEN + " for destroying that rebel transmitter!");
-			DramaCraft.instance().getEconomyManager().depositPlayer(player.getName(), 100);
-			Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " destroyed a Rebel Transmitter!");
+			if(TreasuryManager.withdrawFromImperialTreasury(transmitterBounty))
+			{
+				player.sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + transmitterBounty + " wanks" + ChatColor.GREEN + " for destroying that rebel transmitter!");
+				DramaCraft.instance().getEconomyManager().depositPlayer(player.getName(), transmitterBounty);
+				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " received " + ChatColor.GOLD + transmitterBounty + " wanks" + ChatColor.GREEN + " for destroying a Rebel Transmitter!");
+			}
 		}		
 	}
 	

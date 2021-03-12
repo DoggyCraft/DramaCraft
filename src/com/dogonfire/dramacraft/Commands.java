@@ -567,14 +567,19 @@ public class Commands implements Listener
 					treasurehunt((Player) sender, command.getName(), args);
 					return true;
 				}
-				else if(args[0].equals("addbounty"))
+				else if(args[0].equals("rebelbounty"))
 				{
-					addbounty((Player) sender, command.getName(), args);
+					rebelBounty((Player) sender, command.getName(), args);
+					return true;
+				}
+				else if(args[0].equals("transmitterbounty"))
+				{
+					transmitterBounty((Player) sender, command.getName(), args);
 					return true;
 				}
 				else if(args[0].equals("law"))
 				{
-					addbounty((Player) sender, command.getName(), args);
+					rebelBounty((Player) sender, command.getName(), args);
 					return true;
 				}
 			}
@@ -1203,11 +1208,27 @@ public class Commands implements Listener
 	private void pay(Player player, String cmd, String[] args)
 	{
 		float paidAmount = 0;
-		int amount = 100;		
+		int amount = 0;		
 		
 		if(args.length!=2)
 		{
 			player.sendMessage(ChatColor.GRAY + "Usage: " + ChatColor.WHITE + "/" + cmd + " pay <amount>");
+			return;			
+		}
+
+		try
+		{
+			amount = Integer.parseInt(args[1]);
+		}
+		catch(Exception ex)
+		{
+			player.sendMessage(ChatColor.RED + "That is not a real amount.");
+			return;
+		}
+		
+		if(amount <= 0)
+		{
+			player.sendMessage(ChatColor.RED + "That is not a real amount.");
 			return;			
 		}
 
@@ -1236,6 +1257,58 @@ public class Commands implements Listener
 		}
 	}
 	
+	private void transmitterBounty(Player player, String cmd, String[] args)
+	{
+		float paidAmount = 0;
+		int amount = 0;		
+		
+		if(args.length!=2)
+		{
+			player.sendMessage(ChatColor.GRAY + "Usage: " + ChatColor.WHITE + "/" + cmd + " transmitterbounty <amount>");
+			return;			
+		}
+
+		try
+		{
+			amount = Integer.parseInt(args[1]);
+		}
+		catch(Exception ex)
+		{
+			player.sendMessage(ChatColor.RED + "That is not a real amount.");
+			return;
+		}
+		
+		if(amount <= 0)
+		{
+			player.sendMessage(ChatColor.RED + "That is not a real amount.");
+			return;			
+		}
+		
+		if(!TreasuryManager.withdrawFromImperialTreasury(amount))
+		{
+			player.sendMessage(ChatColor.DARK_RED + "The treasury does not have that much.");						
+			return;									
+		}
+		
+		paidAmount = amount / (float)RankManager.getOnlineImperialPlayers().size();
+		
+		for(Player imperialPlayer : RankManager.getOnlineImperialPlayers())
+		{
+			DramaCraft.economy.depositPlayer(imperialPlayer.getName(), paidAmount);
+			imperialPlayer.sendMessage(ChatColor.GREEN + "You recieved " + ChatColor.GOLD + paidAmount + " wanks.");
+		}
+		
+		if(RankManager.isKing(player.getUniqueId()))
+		{
+			DramaCraft.broadcastMessage(ChatColor.GOLD + RankManager.getKingName() + ChatColor.GREEN + " paid " + paidAmount + " wanks to " + RankManager.getOnlineImperialPlayers().size() + " imperials!");
+		}
+
+		if(RankManager.isQueen(player.getUniqueId()))
+		{
+			DramaCraft.broadcastMessage(ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GREEN + " paid " + paidAmount + " wanks to " + RankManager.getOnlineImperialPlayers().size() + " imperials!");
+		}
+	}
+
 	private void treasurehunt(Player player, String cmd, String[] args)
 	{
 		player.sendMessage(ChatColor.DARK_RED + "Not implemented yet :/");						
@@ -1299,7 +1372,7 @@ public class Commands implements Listener
 		
 	}
 	
-	private void addbounty(Player player, String cmd, String[] args)
+	private void rebelBounty(Player player, String cmd, String[] args)
 	{
 		Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
 		int bounty = Integer.parseInt(args[1]);
@@ -1534,7 +1607,8 @@ public class Commands implements Listener
 		sender.sendMessage(ChatColor.GRAY + "- The King & Queen can use /fly");
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king pay" + ChatColor.GRAY + " to see how to pay your subjects from the treasury");			
-		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king addbounty" + ChatColor.GRAY + " to set bounties on rebel players");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king rebelbounty" + ChatColor.GRAY + " to set bounties on rebel players");			
+		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king transmitterbounty" + ChatColor.GRAY + " to set bounties for rebel transmitters");			
 		sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/king treasurehunt" + ChatColor.GRAY + " to start an Imperial Treasurehunt");			
 
 		sender.sendMessage(ChatColor.YELLOW + "---------------------------------------------------");		

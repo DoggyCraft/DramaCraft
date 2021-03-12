@@ -1,8 +1,6 @@
 package com.dogonfire.dramacraft;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -14,8 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Sign;
 
 import com.dogonfire.dramacraft.LanguageManager.LANGUAGESTRING;
 
@@ -114,7 +110,7 @@ public class ImperialManager implements Listener
 
 						for (Player imperialPlayer : RankManager.getOnlineImperialPlayers())
 						{
-							DramaCraft.instance().sendInfo(imperialPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_ACTIVE_TRANSMITTERS, ChatColor.AQUA, 0, 120);
+							DramaCraft.sendInfo(imperialPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_ACTIVE_TRANSMITTERS, ChatColor.AQUA, 0, 120);
 						}
 
 						lastImperialHelpTime = System.currentTimeMillis();
@@ -143,21 +139,21 @@ public class ImperialManager implements Listener
 			{
 				for (Player rebelPlayer : RankManager.getOnlineImperialPlayers())
 				{
-					DramaCraft.instance().sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_NOBLES, ChatColor.AQUA, 0, 120);
+					DramaCraft.sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_NOBLES, ChatColor.AQUA, 0, 120);
 				}
 			}
 			else if (RankManager.getKing() == null)
 			{
 				for (Player rebelPlayer : RankManager.getOnlineNoblePlayers())
 				{
-					DramaCraft.instance().sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_KING, ChatColor.AQUA, 0, 120);
+					DramaCraft.sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_KING, ChatColor.AQUA, 0, 120);
 				}
 			}
 			else if (RankManager.getQueen() == null)
 			{
 				for (Player rebelPlayer : RankManager.getOnlineNoblePlayers())
 				{
-					DramaCraft.instance().sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_QUEEN, ChatColor.AQUA, 0, 120);
+					DramaCraft.sendInfo(rebelPlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_QUEEN, ChatColor.AQUA, 0, 120);
 				}
 			}
 			else
@@ -167,19 +163,19 @@ public class ImperialManager implements Listener
 					case 0: 
 					for (Player noblePlayer : RankManager.getOnlineNoblePlayers())
 					{
-						DramaCraft.instance().sendInfo(noblePlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_KICK_NOBLE, ChatColor.AQUA, 0, 120);
+						DramaCraft.sendInfo(noblePlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_VOTE_KICK_NOBLE, ChatColor.AQUA, 0, 120);
 					} break;
 					
 					case 1: 
 					for (Player noblePlayer : RankManager.getOnlineNoblePlayers())
 					{
-						DramaCraft.instance().sendInfo(noblePlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_ADDBOUNTY, ChatColor.AQUA, 0, 120);
+						DramaCraft.sendInfo(noblePlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_ADDBOUNTY, ChatColor.AQUA, 0, 120);
 					} break;
 					
 					case 2: 
 					for (Player noblePlayer : RankManager.getOnlineNoblePlayers())
 					{
-						DramaCraft.instance().sendInfo(noblePlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_CLAIMBOUNTY, ChatColor.AQUA, 0, 120);
+						DramaCraft.sendInfo(noblePlayer.getUniqueId(), LANGUAGESTRING.INFO_IMPERIAL_CLAIMBOUNTY, ChatColor.AQUA, 0, 120);
 					} break;
 				}
 			}
