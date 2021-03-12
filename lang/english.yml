@@ -37,8 +37,8 @@ Info:
   - Only an imperial can become a noble
   ERROR_ONLYNOBLESCANBEKING: 
   - Only a noble can become the King
-  ERROR_ONLYREBELSCANBERINGLEADER:
-  - Only rebels can be ringleader
+  ERROR_ONLYINNERCIRCLECANBERINGLEADER:
+  - Only member of the inner circle can be ringleader
   ERROR_ONLYREBELSCANVOTEFORRINGLEADER:
   - Only rebels can become ringleader
   ERROR_ONLYREBELSCANBEINNERCIRCLE:

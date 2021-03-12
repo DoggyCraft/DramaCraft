@@ -104,9 +104,7 @@ public class VoteManager
 	{
 		String broadcast = "";
 		boolean success = false;
-		
-		DramaCraft.log("checkVote()");
-		
+				
 		if(RevolutionManager.isRevolution())
 		{
 			Bukkit.broadcastMessage(ChatColor.GRAY + "Revolution!! Will the King and Queen survive the attack by the rebels?");
@@ -655,7 +653,7 @@ public class VoteManager
 		{
 			reqVotes = 5;
 			
-			UUID targetPlayerId = UUID.fromString(instance.voteString);
+			UUID targetPlayerId = UUID.fromString(voteText);
 
 			if(Bukkit.getServer().getOnlinePlayers().size() < reqVotes)
 			{
@@ -679,12 +677,41 @@ public class VoteManager
 				return false;
 			}			
 		}
+		
+		if (voteType == VOTE_TYPE.VOTE_RINGLEADER1 || voteType == VOTE_TYPE.VOTE_RINGLEADER2)
+		{
+			reqVotes = 5;
+			
+			UUID targetPlayerId = UUID.fromString(voteText);
+
+			if(Bukkit.getServer().getOnlinePlayers().size() < reqVotes)
+			{
+				LanguageManager.setAmount1(reqVotes);
+				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWPLAYERS, ChatColor.RED));
+				DramaCraft.logDebug(voter.getName() + " tried to vote ringleader, but there are too few players online");
+				return false;
+			}
+
+			if(!RankManager.isRebel(voter.getUniqueId()))
+			{
+				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_ONLYREBELSCANVOTEFORRINGLEADER, ChatColor.RED));
+				DramaCraft.log(voter.getName() + " tried to vote ringleader but player was not a rebel");
+				return false;
+			}			
+
+			if(!RankManager.isInnerCircle(targetPlayerId))
+			{
+				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_ONLYINNERCIRCLECANBERINGLEADER, ChatColor.RED));
+				DramaCraft.log(voter.getName() + " tried to vote ringleader but target player was not a Inner Circles");
+				return false;
+			}			
+		}		
 
 		if (voteType == VOTE_TYPE.VOTE_INNERCIRCLE)
 		{
 			reqVotes = 5;
 			
-			UUID targetPlayerId = UUID.fromString(instance.voteString);
+			UUID targetPlayerId = UUID.fromString(voteText);
 
 			if(Bukkit.getServer().getOnlinePlayers().size() < reqVotes)
 			{
@@ -703,7 +730,7 @@ public class VoteManager
 
 			if(!RankManager.isInnerCircle(targetPlayerId))
 			{
-				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_ONLYREBELSCANBERINGLEADER, ChatColor.RED));
+				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_ONLYINNERCIRCLECANBERINGLEADER, ChatColor.RED));
 				DramaCraft.log(voter.getName() + " tried to vote ringleader but target player was not a rebel");
 				return false;
 			}			
@@ -713,7 +740,7 @@ public class VoteManager
 		{
 			reqVotes = 5;
 			
-			UUID targetPlayerId = UUID.fromString(instance.voteString);
+			UUID targetPlayerId = UUID.fromString(voteText);
 
 			if(RankManager.getActiveNobles() < 3)
 			{
@@ -744,7 +771,7 @@ public class VoteManager
 				if(!RankManager.isImperial(voter.getUniqueId()))
 				{
 					voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_ONLYIMPERIALCANVOTEFORNOBLE, ChatColor.RED));
-					DramaCraft.log(voter.getName() + " tried to vote but player was not a noble");
+					DramaCraft.log(voter.getName() + " tried to vote but player was not a imperial");
 					return false;
 				}
 				
@@ -769,7 +796,7 @@ public class VoteManager
 		{
 			reqVotes = 5;
 			
-			UUID targetPlayerId = UUID.fromString(instance.voteString);
+			UUID targetPlayerId = UUID.fromString(voteText);
 
 			if(RankManager.getActiveInnerCircle() < 3)
 			{
@@ -971,21 +998,21 @@ public class VoteManager
 			case VOTE_RINGLEADER2:
 				if(!RankManager.isRebel(voter.getUniqueId()))
 				{
-					voter.sendMessage(ChatColor.RED + "You are not a imperial! Only imperial nobles can vote for the king!");
+					voter.sendMessage(ChatColor.RED + "You are not a rebel! Only rebels can vote for the king!");
 					return;
 				} break;
 
 			case VOTE_KING:
 				if(!RankManager.isImperial(voter.getUniqueId()))
 				{
-					voter.sendMessage(ChatColor.RED + "You are not a noble! Only imperial nobles can vote for the king!");
+					voter.sendMessage(ChatColor.RED + "You are not a noble! Only imperials can vote for the king!");
 					return;
 				} break;
 				
 			case VOTE_QUEEN:
 				if(!RankManager.isImperial(voter.getUniqueId()))
 				{
-					voter.sendMessage(ChatColor.RED + "You are not a noble! Only imperial nobles can vote for the queen!");
+					voter.sendMessage(ChatColor.RED + "You are not a noble! Only imperials can vote for the queen!");
 					return;
 				} break;
 				

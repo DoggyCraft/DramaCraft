@@ -61,6 +61,19 @@ public abstract class Vote
 
 			broadcast = "MISSING_SUCCESS";
 			
+			if (instance.yes.size() + instance.no.size() < reqVotes)
+			{
+				broadcast = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_BROADCAST_NOT_ENOUGH_VOTES, ChatColor.RED);
+				DramaCraft.broadcastMessage(broadcast);
+				resetVotes();
+				return;
+			}
+
+			success = ((float)instance.yes.size()) / ((float)(instance.no.size() + instance.yes.size())) >= reqYesPercentage;
+			
+			DramaCraft.logDebug("Success " + ((float)instance.yes.size()) / ((float)(instance.no.size() + instance.yes.size())));
+			DramaCraft.logDebug("ReqYesPercentage/100 " + reqYesPercentage / 100.0);
+			
 			return true;
 		}
 		

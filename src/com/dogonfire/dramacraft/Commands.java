@@ -1248,18 +1248,17 @@ public class Commands implements Listener
 		
 		if(RankManager.isKing(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklærer hermed at alle lovlydige borgere får " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
+			DramaCraft.broadcastMessage("Hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklærer hermed at alle borgere i imperiet får udbetalt " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
 		}
 
 		if(RankManager.isQueen(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklærer hermed at alle lovlydige borgere får " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
+			DramaCraft.broadcastMessage("Hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklærer hermed at alle borgere i imperiet får udbetalt " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
 		}
 	}
 	
 	private void transmitterBounty(Player player, String cmd, String[] args)
 	{
-		float paidAmount = 0;
 		int amount = 0;		
 		
 		if(args.length!=2)
@@ -1468,11 +1467,12 @@ public class Commands implements Listener
 			if(joinDate != null)
 			{
 				sender.sendMessage("");							
-				sender.sendMessage(ChatColor.GRAY + "Joined " + joinDate.toString());						
+				sender.sendMessage(ChatColor.GRAY + "Joined: " + joinDate.toString());						
 			}
 
 			sender.sendMessage("");							
-			sender.sendMessage(ChatColor.GRAY + "Reputation " + "None");						
+			sender.sendMessage(ChatColor.GRAY + "Reputation: " + "None");						
+			
 		}
 		
 		else if(RankManager.isRebel(player.getUniqueId()))
@@ -1487,7 +1487,7 @@ public class Commands implements Listener
 			}
 			else
 			{
-				sender.sendMessage(ChatColor.RED + "Rebel ");							
+				sender.sendMessage(ChatColor.RED + "Rebel");							
 			}			
 	
 			Date joinDate = RankManager.getJoinDate(player.getUniqueId());
@@ -1496,6 +1496,13 @@ public class Commands implements Listener
 			{
 				sender.sendMessage("");							
 				sender.sendMessage(ChatColor.GRAY + "Joined " + joinDate.toString());						
+			}
+
+			int bounty = BountyManager.getBounty(player.getUniqueId());
+			if(bounty > 0)
+			{
+				sender.sendMessage("");							
+				sender.sendMessage(ChatColor.DARK_RED + "Imperial Bounty: " + ChatColor.GOLD + bounty + " wanks");						
 			}
 		}
 
@@ -1778,7 +1785,6 @@ public class Commands implements Listener
 		sender.sendMessage("");
 		sender.sendMessage(ChatColor.YELLOW + "-----------------------------------------------------");
 	}
-
 
 	double roundTwoDecimals(double d)
 	{
