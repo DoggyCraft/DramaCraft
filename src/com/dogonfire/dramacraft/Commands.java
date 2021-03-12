@@ -1248,12 +1248,12 @@ public class Commands implements Listener
 		
 		if(RankManager.isKing(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage(ChatColor.GOLD + RankManager.getKingName() + ChatColor.GREEN + " paid " + paidAmount + " wanks to " + RankManager.getOnlineImperialPlayers().size() + " imperials!");
+			DramaCraft.broadcastMessage("Hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklærer hermed at alle lovlydige borgere får " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
 		}
 
 		if(RankManager.isQueen(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage(ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GREEN + " paid " + paidAmount + " wanks to " + RankManager.getOnlineImperialPlayers().size() + " imperials!");
+			DramaCraft.broadcastMessage("Hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklærer hermed at alle lovlydige borgere får " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
 		}
 	}
 	
@@ -1283,29 +1283,17 @@ public class Commands implements Listener
 			player.sendMessage(ChatColor.RED + "That is not a real amount.");
 			return;			
 		}
-		
-		if(!TreasuryManager.withdrawFromImperialTreasury(amount))
-		{
-			player.sendMessage(ChatColor.DARK_RED + "The treasury does not have that much.");						
-			return;									
-		}
-		
-		paidAmount = amount / (float)RankManager.getOnlineImperialPlayers().size();
-		
-		for(Player imperialPlayer : RankManager.getOnlineImperialPlayers())
-		{
-			DramaCraft.economy.depositPlayer(imperialPlayer.getName(), paidAmount);
-			imperialPlayer.sendMessage(ChatColor.GREEN + "You recieved " + ChatColor.GOLD + paidAmount + " wanks.");
-		}
+				
+		RebelTransmitterManager.setBounty(amount);
 		
 		if(RankManager.isKing(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage(ChatColor.GOLD + RankManager.getKingName() + ChatColor.GREEN + " paid " + paidAmount + " wanks to " + RankManager.getOnlineImperialPlayers().size() + " imperials!");
+			DramaCraft.broadcastMessage("Hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklærer hermed at enhver der ødelægger en rebel transmitter vil modtage " + ChatColor.GOLD + RebelTransmitterManager.getBounty() + " wanks!");
 		}
 
 		if(RankManager.isQueen(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage(ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GREEN + " paid " + paidAmount + " wanks to " + RankManager.getOnlineImperialPlayers().size() + " imperials!");
+			DramaCraft.broadcastMessage("Hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklærer hermed at enhver der ødelægger en rebel transmitter vil modtage " + ChatColor.GOLD + RebelTransmitterManager.getBounty() + " wanks!");
 		}
 	}
 
@@ -1374,21 +1362,38 @@ public class Commands implements Listener
 	
 	private void rebelBounty(Player player, String cmd, String[] args)
 	{
-		Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
-		int bounty = Integer.parseInt(args[1]);
+		int amount = 100;
 
-		if(args.length!=1)
+		if(args.length!=3)
 		{
-			player.sendMessage(ChatColor.GRAY + "Usage: " + ChatColor.WHITE + "/" + cmd + " addbounty <amount>");
+			player.sendMessage(ChatColor.GRAY + "Usage: " + ChatColor.WHITE + "/" + cmd + " addbounty <playername> <amount>");
 			return;			
 		}
 		
+		Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
+
 		if(targetPlayer == null)
 		{
-			DramaCraft.log("No such online player " + args[0]);
+			DramaCraft.log("No such online player " + args[1]);
 			return;
 		}		
 		
+		try
+		{
+			amount = Integer.parseInt(args[2]);
+		}
+		catch(Exception ex)
+		{
+			player.sendMessage(ChatColor.RED + "That is not a real amount.");
+			return;
+		}
+
+		if(amount <= 0)
+		{
+			player.sendMessage(ChatColor.RED + "That is not a real amount.");
+			return;			
+		}
+
 		if(!RankManager.isImperial(player.getUniqueId()))
 		{
 			player.sendMessage(ChatColor.DARK_RED + "Only an imperial can set a bounty a rebel");
@@ -1401,18 +1406,26 @@ public class Commands implements Listener
 			return;			
 		}
 
-		if(!DramaCraft.instance().getEconomyManager().has(player.getName(), bounty))
+		if(!DramaCraft.instance().getEconomyManager().has(player.getName(), amount))
 		{
-			player.sendMessage(ChatColor.DARK_RED + "You do not have " + bounty + " wanks");
+			player.sendMessage(ChatColor.DARK_RED + "You do not have " + amount + " wanks");
 			return;
 		}
 		
-		DramaCraft.instance().getEconomyManager().withdrawPlayer(player.getName(), bounty);
-		BountyManager.addBounty(targetPlayer, bounty);
+		DramaCraft.instance().getEconomyManager().withdrawPlayer(player.getName(), amount);
+		BountyManager.addBounty(targetPlayer, amount);
 		
-		Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "A bounty of " + ChatColor.GOLD + bounty + " wanks " + ChatColor.GRAY + " was put on " + ChatColor.GOLD + targetPlayer.getName());
-		Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "The total bounty on " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " is now " + ChatColor.GOLD + BountyManager.getBounty(targetPlayer.getUniqueId()) + " wanks");
-		
+		player.sendMessage(ChatColor.GRAY + "You added " + ChatColor.GOLD + amount + " wanks " + ChatColor.GRAY + " to the bounty on " + ChatColor.GOLD + targetPlayer.getName());
+
+		if(RankManager.isKing(player.getUniqueId()))
+		{
+			DramaCraft.broadcastMessage("Hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklærer hermed at enhver der dræber " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " vil modtage " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " som dusør!");
+		}
+
+		if(RankManager.isQueen(player.getUniqueId()))
+		{
+			DramaCraft.broadcastMessage("Hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklærer hermed at enhver der dræber " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " vil modtage " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " som dusør!");
+		}		
 	}
 
 	private void playerInfo(CommandSender sender, String[] args)
@@ -1457,6 +1470,9 @@ public class Commands implements Listener
 				sender.sendMessage("");							
 				sender.sendMessage(ChatColor.GRAY + "Joined " + joinDate.toString());						
 			}
+
+			sender.sendMessage("");							
+			sender.sendMessage(ChatColor.GRAY + "Reputation " + "None");						
 		}
 		
 		else if(RankManager.isRebel(player.getUniqueId()))

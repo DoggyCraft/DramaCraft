@@ -106,6 +106,16 @@ public class RebelTransmitterManager implements Listener
 		DramaCraft.log("Saved configuration.");
 	}
 	
+	static public void setBounty(int amount)
+	{
+		instance.transmitterBounty = amount;
+	}
+	
+	static public int getBounty()
+	{
+		return instance.transmitterBounty;
+	}
+
 	public boolean isTransmitterSign(Block block)
 	{
 		if (block == null || block.getType() != Material.OAK_WALL_SIGN)
@@ -310,6 +320,10 @@ public class RebelTransmitterManager implements Listener
 				player.sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + transmitterBounty + " wanks" + ChatColor.GREEN + " for destroying that rebel transmitter!");
 				DramaCraft.instance().getEconomyManager().depositPlayer(player.getName(), transmitterBounty);
 				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " received " + ChatColor.GOLD + transmitterBounty + " wanks" + ChatColor.GREEN + " for destroying a Rebel Transmitter!");
+			}
+			else
+			{
+				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " destroyed a Rebel Transmitter!");				
 			}
 		}		
 	}
