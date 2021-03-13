@@ -704,21 +704,26 @@ public class Commands implements Listener
 			return true;
 		}	
 		
-		/*
-		if(command.getName().equalsIgnoreCase("addbounty"))
+		if(command.getName().equalsIgnoreCase("setimperialbank"))
 		{
-			if(args.length == 2)
+			if(player.isOp())
 			{
-				
-			}								
-			else
-			{
-				sender.sendMessage("Usage: /addbounty <playername> <bounty>");
+				HeistManager.placeImperialBank(player.getUniqueId());
+				player.sendMessage(ChatColor.GREEN + "Click on a block to set the Imperial Bank location");
+				return true;
 			}
-
-			return true;
-		}		*/
+		}			
 			
+		if(command.getName().equalsIgnoreCase("setrebelstash"))
+		{
+			if(player.isOp())
+			{
+				HeistManager.placeRebelStash(player.getUniqueId());
+				player.sendMessage(ChatColor.GREEN + "Click on a block to set the Rebel stash location");
+				return true;
+			}
+		}			
+
 		if(command.getName().equalsIgnoreCase("bounty"))
 		{
 			listBounties(player);

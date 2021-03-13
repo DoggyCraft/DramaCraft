@@ -55,6 +55,9 @@ public class HeistManager implements Listener
 	private UUID imperialLooterPlayerId;
 	private int imperialLootAmount;
 	
+	private UUID placingRebelStashPlayerId;
+	private UUID placingImperialBankPlayerId;
+	
 	private FileConfiguration			config			= null;
 	private File						configFile		= null;
 
@@ -115,12 +118,14 @@ public class HeistManager implements Listener
 	{		
 		Date date = new Date();
 		config.set("Rebels." + hashLocation(location) + ".LastSetTime", formatter.format(date));
+		save();
 	}
 
-	public void setImperialStashLocation(Location location)
+	public void setImperialBankLocation(Location location)
 	{		
 		Date date = new Date();
 		config.set("Imperials." + hashLocation(location) + ".LastSetTime", formatter.format(date));
+		save();
 	}
 	
 	boolean isRebelStashLocation(Location location)
@@ -152,10 +157,42 @@ public class HeistManager implements Listener
 						
 		return isImperialBankLocation(block.getLocation());
 	}
+	
+	static public void placeImperialBank(UUID playerId)
+	{
+		instance.placingImperialBankPlayerId = playerId;		
+	}
+
+	static public void placeRebelStash(UUID playerId)
+	{
+		instance.placingRebelStashPlayerId = playerId;
+	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerSignInteract(PlayerInteractEvent event)
 	{		
+		if(placingRebelStashPlayerId != null)
+		{
+			if(placingRebelStashPlayerId.equals(event.getPlayer().getUniqueId()))
+			{
+				setRebelStashLocation(event.getClickedBlock().getLocation());
+				DramaCraft.broadcastMessage(event.getPlayer().getName() + " placed the Rebel stash.");
+				placingRebelStashPlayerId = null;
+				return;
+			}
+		}
+		
+		if(placingImperialBankPlayerId != null)
+		{
+			if(placingImperialBankPlayerId.equals(event.getPlayer().getUniqueId()))
+			{
+				setImperialBankLocation(event.getClickedBlock().getLocation());
+				DramaCraft.broadcastMessage(event.getPlayer().getName() + " placed the Imperial bank.");
+				placingImperialBankPlayerId = null;
+				return;
+			}
+		}
+
 		if(RankManager.isRebel(event.getPlayer().getUniqueId()))
 		{
 			if (isImperialBankSign(event.getClickedBlock()))
@@ -259,7 +296,23 @@ public class HeistManager implements Listener
 				imperialLootAmount = 0;				
 			}
 		}
-	}	
+		
+		if(placingRebelStashPlayerId != null)
+		{
+			if(placingRebelStashPlayerId.equals(event.getPlayer().getUniqueId()))
+			{
+				placingRebelStashPlayerId = null;
+			}
+		}
+
+		if(placingImperialBankPlayerId != null)
+		{
+			if(placingImperialBankPlayerId.equals(event.getPlayer().getUniqueId()))
+			{
+				placingImperialBankPlayerId = null;
+			}
+		}
+}	
 	
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerDeath(PlayerDeathEvent event)

@@ -72,6 +72,14 @@ commands:
         description: View and propose laws for the Empire
         usage: /law
         permissions: dramacraft.*
+    setimperialbank:
+        description: Set the imperial bank location
+        usage: /setimperialbank
+        permissions: dramacraft.*
+    setrebelstash:
+        description: Set the rebel stash location
+        usage: /setrebelstash
+        permissions: dramacraft.*
     addbounty:
         description: Set a bounty on a player
         usage: /<command> [stuff]
