@@ -35,6 +35,7 @@ public class DramaCraft extends JavaPlugin
 	private Logger						log;
 	private	Commands					command;
 	private VoteManager					voteManager;
+	private HeistManager				heistManager;
 	private RankManager					rankManager;
 	private TreasuryManager				resourceManager;
 	private BodyguardManager			bodyGuardManager;
@@ -284,6 +285,10 @@ public class DramaCraft extends JavaPlugin
 		rebelDetectorManager.load();
 
 		imperialManager = new ImperialManager();
+
+		heistManager = new HeistManager();
+		heistManager.load();
+		getServer().getPluginManager().registerEvents(heistManager, this);
 
 		bountyManager = new BountyManager();
 		bountyManager.load();
