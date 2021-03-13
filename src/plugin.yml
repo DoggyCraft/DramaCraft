@@ -68,6 +68,10 @@ commands:
         description: Donate to your faction treasury
         usage: /donate <amount>
         permissions: dramacraft.*
+    law:
+        description: View and propose laws for the Empire
+        usage: /law
+        permissions: dramacraft.*
     addbounty:
         description: Set a bounty on a player
         usage: /<command> [stuff]

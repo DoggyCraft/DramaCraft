@@ -698,6 +698,12 @@ public class Commands implements Listener
 			return true;
 		}	
 		
+		if(command.getName().equalsIgnoreCase("law"))
+		{
+			lawHelp(player, args);
+			return true;
+		}	
+		
 		/*
 		if(command.getName().equalsIgnoreCase("addbounty"))
 		{
@@ -1318,47 +1324,18 @@ public class Commands implements Listener
 		TreasureHuntManager.startHunt(value);
 	}
 	
-	private void law(Player player, String cmd, String[] args)
+	private void lawHelp(Player player, String[] args)
 	{
-		Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
-		int bounty = Integer.parseInt(args[1]);
+		String title = "--------------------- Laws --------------------";
 
-		if(args.length!=1)
-		{
-			player.sendMessage(ChatColor.GRAY + "Usage: " + ChatColor.WHITE + "/" + cmd + " law <lawtype> <policy>");
-			return;			
-		}
-		
-		if(targetPlayer == null)
-		{
-			DramaCraft.log("No such online player " + args[0]);
-			return;
-		}		
-		
-		if(!RankManager.isRoyal(player.getUniqueId()))
-		{
-			player.sendMessage(ChatColor.DARK_RED + "Only the King or Queen can change laws");
-			return;			
-		}
+		player.sendMessage(ChatColor.YELLOW + title);
+		player.sendMessage("");
+		player.sendMessage(ChatColor.GRAY + "The laws are permanent rules for the entire server, decided by the King & Queen");
+		player.sendMessage("");
+		player.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/law list" + ChatColor.GRAY + " to view the current imperial laws");			
+		player.sendMessage(ChatColor.GRAY + "Use " + ChatColor.WHITE + "/law propose" + ChatColor.GRAY + " to propose a new law");			
 
-		if(!RankManager.isRebel(targetPlayer.getUniqueId()))
-		{
-			player.sendMessage(ChatColor.DARK_RED + "You can only set a bounty on a rebel");
-			return;			
-		}
-
-		if(!DramaCraft.instance().getEconomyManager().has(player.getName(), bounty))
-		{
-			player.sendMessage(ChatColor.DARK_RED + "You do not have " + bounty + " wanks");
-			return;
-		}
-		
-		DramaCraft.instance().getEconomyManager().withdrawPlayer(player.getName(), bounty);
-		BountyManager.addBounty(targetPlayer, bounty);
-		
-		Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "A bounty of " + ChatColor.GOLD + bounty + " wanks " + ChatColor.GRAY + " was put on " + ChatColor.GOLD + targetPlayer.getName());
-		Bukkit.getServer().broadcastMessage(ChatColor.GRAY + "The total bounty on " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " is now " + ChatColor.GOLD + BountyManager.getBounty(targetPlayer.getUniqueId()) + " wanks");
-		
+		player.sendMessage(ChatColor.YELLOW + "---------------------------------------------------");				
 	}
 	
 	private void rebelBounty(Player player, String cmd, String[] args)
