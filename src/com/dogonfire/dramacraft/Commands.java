@@ -62,8 +62,10 @@ public class Commands implements Listener
 
 			switch (VoteManager.getCurrentVoteType())
 			{
-				case VOTE_INNERCIRCLE: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
-				case VOTE_NOBLE: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
+				case VOTE_RINGLEADER1: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_RINGLEADER, ChatColor.RED); break;
+				case VOTE_RINGLEADER2: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_RINGLEADER, ChatColor.RED); break;
+				case VOTE_INNERCIRCLE: 		message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_INNERCIRCLE, ChatColor.RED); break;
+				case VOTE_NOBLE: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_NOBLE, ChatColor.RED); break;
 				case VOTE_KING: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_KING, ChatColor.RED); break;
 				case VOTE_QUEEN: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_QUEEN, ChatColor.RED); break;
 				case VOTE_NIGHT: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_NIGHT, ChatColor.RED); break;
@@ -71,7 +73,7 @@ public class Commands implements Listener
 				case VOTE_SUN: 				message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_SUN, ChatColor.RED); break;
 				case VOTE_RAIN:				message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_RAIN, ChatColor.RED); break;
 				case VOTE_GENERAL: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
-				case VOTE_DISABLE_PHANTOMS:	message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
+				case VOTE_DISABLE_PHANTOMS:	message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_DISABLE_PHANTOMS, ChatColor.RED); break;
 				case VOTE_HELP: 			voteHelp(sender); break;
 				default:					message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
 			}

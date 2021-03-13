@@ -226,7 +226,15 @@ Info:
   VOTE_ALREADY_GENERAL: 
   - A vote question is already in progress. Wait for it to complete!
   VOTE_DAY_ALREADY: 
-  - It's day already. Youre vote is counted anyway
+  - A vote question for day is already in progress. Wait for it to complete!
+  VOTE_ALREADY_DISABLE_PHANTOMS:
+  - A vote for disabling phantoms is already in progress. Wait for it to complete!
+  VOTE_ALREADY_NOBLE:
+  - A vote question for noble is already in progress. Wait for it to complete!
+  VOTE_ALREADY_INNERCIRCLE:
+  - A vote for inner circle is already in progress. Wait for it to complete!
+  VOTE_ALREADY_RINGLEADER:
+  - A vote for ringleader is already in progress. Wait for it to complete!
   VOTE_NIGHT: 
   - You've voted for night
   VOTE_NIGHT_ALREADY: 
