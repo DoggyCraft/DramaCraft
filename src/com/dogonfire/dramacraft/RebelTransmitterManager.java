@@ -47,7 +47,6 @@ public class RebelTransmitterManager implements Listener
 	private long 						lastRebelHelpTime;
 	private long 						lastImperialHelpTime;
 	static RebelTransmitterManager 		instance;
-	private int 						transmitterBounty = 100;
 	
 	public RebelTransmitterManager()
 	{
@@ -108,12 +107,12 @@ public class RebelTransmitterManager implements Listener
 	
 	static public void setBounty(int amount)
 	{
-		instance.transmitterBounty = amount;
+		instance.config.set("Bounty", amount);
 	}
 	
 	static public int getBounty()
 	{
-		return instance.transmitterBounty;
+		return instance.config.getInt("Bounty");
 	}
 
 	public boolean isTransmitterSign(Block block)
@@ -315,11 +314,11 @@ public class RebelTransmitterManager implements Listener
 		
 		if(RankManager.isImperial(player.getUniqueId()))
 		{
-			if(TreasuryManager.withdrawFromImperialTreasury(transmitterBounty))
+			if(TreasuryManager.withdrawFromImperialTreasury(getBounty()))
 			{
-				player.sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + transmitterBounty + " wanks" + ChatColor.GREEN + " for destroying that rebel transmitter!");
-				DramaCraft.instance().getEconomyManager().depositPlayer(player.getName(), transmitterBounty);
-				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " received " + ChatColor.GOLD + transmitterBounty + " wanks" + ChatColor.GREEN + " for destroying a Rebel Transmitter!");
+				player.sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + getBounty() + " wanks" + ChatColor.GREEN + " for destroying that rebel transmitter!");
+				DramaCraft.instance().getEconomyManager().depositPlayer(player.getName(), getBounty());
+				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " received " + ChatColor.GOLD + getBounty() + " wanks" + ChatColor.GREEN + " for destroying a Rebel Transmitter!");
 			}
 			else
 			{

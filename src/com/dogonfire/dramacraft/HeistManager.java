@@ -1,7 +1,10 @@
 package com.dogonfire.dramacraft;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -55,6 +58,9 @@ public class HeistManager implements Listener
 	private FileConfiguration			config			= null;
 	private File						configFile		= null;
 
+	private String 						pattern 	= "HH:mm:ss dd-MM-yyyy";
+	private DateFormat 					formatter 	= new SimpleDateFormat(pattern);
+
 	public HeistManager()
 	{		
 		instance = this;		
@@ -67,26 +73,10 @@ public class HeistManager implements Listener
 			this.configFile = new File(DramaCraft.instance().getDataFolder(), "treasuries.yml");
 
 			this.config = YamlConfiguration.loadConfiguration(this.configFile);
-
-			DramaCraft.log("Loaded " + this.config.getConfigurationSection("Transmitters").getKeys(false).size() + " transmitters.");
-
-			for (String hash : this.config.getConfigurationSection("Transmitters").getKeys(false))
-			{
-				String key = "Transmitters." + hash;
-				int x = config.getInt(key + ".X");
-				int y = config.getInt(key + ".Y");
-				int z = config.getInt(key + ".Z");
-				int yaw = config.getInt(key + ".Yaw");
-				String worldName = config.getString(key + ".World");
-
-				org.bukkit.World world = Bukkit.getServer().getWorld(worldName);
-
-				//transmitters.put(Long.parseLong(hash), new Location(world, x, y, z, yaw, 0));
-			}
 		}
 		catch (Exception ex)
 		{
-			DramaCraft.log("No Transmitters loaded.");
+			DramaCraft.log("No treasuries loaded.");
 		}		
 	}
 	
@@ -121,6 +111,18 @@ public class HeistManager implements Listener
 	     return location.hashCode();
 	}
 
+	public void setRebelStashLocation(Location location)
+	{		
+		Date date = new Date();
+		config.set("Rebels." + hashLocation(location) + ".LastSetTime", formatter.format(date));
+	}
+
+	public void setImperialStashLocation(Location location)
+	{		
+		Date date = new Date();
+		config.set("Imperials." + hashLocation(location) + ".LastSetTime", formatter.format(date));
+	}
+	
 	boolean isRebelStashLocation(Location location)
 	{		
 		return config.getString("Rebels." + hashLocation(location)) != null;
@@ -160,13 +162,20 @@ public class HeistManager implements Listener
 			{
 				if (rebelLooterPlayerId == null)
 				{
-					if (RankManager.getOnlineImperials() > 2)
+					int amount = TreasuryManager.getImperialBalance() / 5;
+					if (amount > 0)
 					{
-						int amount = TreasuryManager.getImperialBalance() / 5;
-						DramaCraft.broadcastMessage("The Imperial Bank was just looted for " + ChatColor.GOLD + amount + " wanks!");
-						rebelLooterPlayerId = event.getPlayer().getUniqueId();
-						rebelLootAmount = amount;
-						return;
+						if (RankManager.getOnlineImperials() > 2)
+						{
+							DramaCraft.broadcastMessage("The Imperial Bank was just looted for " + ChatColor.GOLD + amount + " wanks!");
+							rebelLooterPlayerId = event.getPlayer().getUniqueId();
+							rebelLootAmount = amount;
+							return;
+						}
+					}
+					else
+					{
+						DramaCraft.broadcastMessage(ChatColor.DARK_RED + "The Imperial Bank contains 0 wanks.");
 					}
 				}
 			}
@@ -181,10 +190,17 @@ public class HeistManager implements Listener
 					if (RankManager.getOnlineRebels() > 2)
 					{
 						int amount = TreasuryManager.getRebelsBalance() / 5;
-						DramaCraft.broadcastMessage("" + ChatColor.GOLD + amount + " wanks " + ChatColor.GRAY + " was just confiscated from the Rebel Stash!");
-						imperialLooterPlayerId = event.getPlayer().getUniqueId();
-						imperialLootAmount = amount;
-						return;
+						if(amount > 0)
+						{
+							DramaCraft.broadcastMessage("" + ChatColor.GOLD + amount + " wanks " + ChatColor.GRAY + " was just confiscated from the Rebel Stash!");
+							imperialLooterPlayerId = event.getPlayer().getUniqueId();
+							imperialLootAmount = amount;
+							return;
+						}
+						else
+						{
+							DramaCraft.broadcastMessage(ChatColor.DARK_RED + "The Rebel stash contains 0 wanks.");
+						}
 					}
 				}
 			}
