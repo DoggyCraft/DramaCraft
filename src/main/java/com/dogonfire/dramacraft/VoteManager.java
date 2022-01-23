@@ -28,7 +28,6 @@ public class VoteManager
 	private Random				random				= new Random();
 	static private VoteManager 	instance;
 
-	
 	public static enum VOTE_TYPE
 	{
 		VOTE_NONE,
@@ -58,6 +57,35 @@ public class VoteManager
 		VOTE_FAME,
 		VOTE_SHAME,
 	}
+
+	private static HashMap<VOTE_TYPE, HashMap<String, Integer>> voteInfo = new HashMap<VOTE_TYPE, HashMap<String, Integer>>() {{
+		put(VOTE_TYPE.VOTE_NONE, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_HOF, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_GENERAL, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_INFO, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_HELP, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_YES, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_NO, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_DAY, new HashMap<String, Integer>() {{ put("requiredVotes", 5); put("startVoteCost", 100); put("votePayment", 10); }});
+		put(VOTE_TYPE.VOTE_NIGHT, new HashMap<String, Integer>() {{ put("requiredVotes", 5); put("startVoteCost", 100); put("votePayment", 10); }});
+		put(VOTE_TYPE.VOTE_RAIN, new HashMap<String, Integer>() {{ put("requiredVotes", 5); put("startVoteCost", 100); put("votePayment", 10); }});
+		put(VOTE_TYPE.VOTE_SUN, new HashMap<String, Integer>() {{ put("requiredVotes", 5); put("startVoteCost", 100); put("votePayment", 10); }});
+		put(VOTE_TYPE.VOTE_REVOLUTION, new HashMap<String, Integer>() {{ put("requiredVotes", 5); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_NOBLE, new HashMap<String, Integer>() {{ put("requiredVotes", 5); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_NOBLE_KICK, new HashMap<String, Integer>() {{ put("requiredVotes", 3); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_INNERCIRCLE, new HashMap<String, Integer>() {{ put("requiredVotes", 5); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_INNERCIRCLE_KICK, new HashMap<String, Integer>() {{ put("requiredVotes", 3); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_DISABLE_PHANTOMS, new HashMap<String, Integer>() {{ put("requiredVotes", 5); put("startVoteCost", 100); put("votePayment", 10); }});
+		put(VOTE_TYPE.MASTER_COIN, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.MASTER_LAW, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.MASTER_WAR, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_KING, new HashMap<String, Integer>() {{ put("requiredVotes", 7); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_QUEEN, new HashMap<String, Integer>() {{ put("requiredVotes", 7); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_RINGLEADER1, new HashMap<String, Integer>() {{ put("requiredVotes", 7); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_RINGLEADER2, new HashMap<String, Integer>() {{ put("requiredVotes", 7); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_FAME, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+		put(VOTE_TYPE.VOTE_SHAME, new HashMap<String, Integer>() {{ put("requiredVotes", null); put("startVoteCost", null); put("votePayment", null); }});
+	}};
 	
 	/*
 	most
@@ -180,42 +208,10 @@ public class VoteManager
 
 		double reqYesPercentage = DramaCraft.instance().requiredYesPercentage / 100.0D;
 		int reqVotes = DramaCraft.instance().requiredVotes;
+		if (voteInfo.get(instance.currentVoteType).get("requiredVotes") != null) {
+			reqVotes = voteInfo.get(instance.currentVoteType).get("requiredVotes");
+		}
 		boolean rebelMessage = false;
-
-		if ((instance.currentVoteType == VOTE_TYPE.VOTE_DAY) || instance.currentVoteType == VOTE_TYPE.VOTE_NIGHT || instance.currentVoteType == VOTE_TYPE.VOTE_RAIN || instance.currentVoteType == VOTE_TYPE.VOTE_SUN)
-		{
-			reqVotes = 5;
-		}
-
-		if (instance.currentVoteType == VOTE_TYPE.VOTE_REVOLUTION)
-		{
-			reqVotes = 5; // 7
-		}
-		
-		if (instance.currentVoteType == VOTE_TYPE.VOTE_DISABLE_PHANTOMS)
-		{
-			reqVotes = 5; 
-		}
-
-		if (instance.currentVoteType == VOTE_TYPE.VOTE_KING || instance.currentVoteType == VOTE_TYPE.VOTE_QUEEN)
-		{
-			reqVotes = 7;//7
-		}
-
-		if (instance.currentVoteType == VOTE_TYPE.VOTE_NOBLE || instance.currentVoteType == VOTE_TYPE.VOTE_INNERCIRCLE)
-		{
-			reqVotes = 5;
-		}
-
-		if (instance.currentVoteType == VOTE_TYPE.VOTE_NOBLE_KICK || instance.currentVoteType == VOTE_TYPE.VOTE_INNERCIRCLE_KICK)
-		{
-			reqVotes = 5;
-		}
-
-		if (instance.currentVoteType == VOTE_TYPE.VOTE_RINGLEADER1 || instance.currentVoteType == VOTE_TYPE.VOTE_RINGLEADER2)
-		{
-			reqVotes = 7;//7
-		}
 
 		if ((instance.yes.size() + instance.no.size() >= reqVotes) || (System.currentTimeMillis() - instance.startVoteTime > (DramaCraft.instance().voteLengthSeconds * 1000)))
 		{
@@ -597,7 +593,13 @@ public class VoteManager
 		String broadcast = "";
 
 		int reqVotes = DramaCraft.instance().requiredVotes;
+		if (voteInfo.get(instance.currentVoteType).get("requiredVotes") != null) {
+			reqVotes = voteInfo.get(instance.currentVoteType).get("requiredVotes");
+		}
 		int voteCost = 0;//DramaCraft.instance().startVoteCost;
+		if (voteInfo.get(instance.currentVoteType).get("startVoteCost") != null) {
+			voteCost = voteInfo.get(instance.currentVoteType).get("startVoteCost");
+		}
 		long voteInterval = DramaCraft.instance().voteSecondsBetween;
 		long timeIntervalSeconds = (System.currentTimeMillis() - instance.startVoteTime)  / (1000);
 		
@@ -620,6 +622,8 @@ public class VoteManager
 		//currentVote = voteRegistry[voteType].newVote(world, voter, voteText, vote, voteType);
 		//currentVote.newVote(world, voter, voteText, vote, voteType);
 
+
+		// check if they have enough wanks to pay
 		if (DramaCraft.economy.getBalance(voter) < voteCost)
 		{
 			LanguageManager.setAmount1(DramaCraft.instance().startVoteCost);
@@ -631,9 +635,9 @@ public class VoteManager
 
 		if (voteType == VOTE_TYPE.VOTE_REVOLUTION)
 		{
-			if(RankManager.getOnlineRebels() < 5)
+			if(RankManager.getOnlineRebels() < reqVotes)
 			{
-				LanguageManager.setAmount1(5);
+				LanguageManager.setAmount1(reqVotes);
 				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWREBELS_ONLINE, ChatColor.RED));
 				DramaCraft.logDebug(voter.getName() + " tried to start a vote again, but there are too few rebel players online");
 				return false;
@@ -651,8 +655,6 @@ public class VoteManager
 
 		if (voteType == VOTE_TYPE.VOTE_KING || voteType == VOTE_TYPE.VOTE_QUEEN)
 		{
-			reqVotes = 5;
-			
 			UUID targetPlayerId = UUID.fromString(voteText);
 
 			if(Bukkit.getServer().getOnlinePlayers().size() < reqVotes)
@@ -680,8 +682,6 @@ public class VoteManager
 		
 		if (voteType == VOTE_TYPE.VOTE_RINGLEADER1 || voteType == VOTE_TYPE.VOTE_RINGLEADER2)
 		{
-			reqVotes = 5;
-			
 			UUID targetPlayerId = UUID.fromString(voteText);
 
 			if(Bukkit.getServer().getOnlinePlayers().size() < reqVotes)
@@ -709,8 +709,6 @@ public class VoteManager
 
 		if (voteType == VOTE_TYPE.VOTE_INNERCIRCLE)
 		{
-			reqVotes = 5;
-			
 			UUID targetPlayerId = UUID.fromString(voteText);
 
 			if(Bukkit.getServer().getOnlinePlayers().size() < reqVotes)
@@ -738,11 +736,10 @@ public class VoteManager
 
 		if (voteType == VOTE_TYPE.VOTE_NOBLE)
 		{
-			reqVotes = 5;
-			
 			UUID targetPlayerId = UUID.fromString(voteText);
 
-			if(RankManager.getActiveNobles() < 3)
+			// if not enough nobles online to vote a new noble in by themselves
+			if(RankManager.getActiveNobles() < reqVotes)
 			{
 				if(!RankManager.isImperial(voter.getUniqueId()))
 				{
@@ -794,11 +791,10 @@ public class VoteManager
 		
 		if (voteType == VOTE_TYPE.VOTE_INNERCIRCLE)
 		{
-			reqVotes = 5;
-			
 			UUID targetPlayerId = UUID.fromString(voteText);
 
-			if(RankManager.getActiveInnerCircle() < 3)
+			// if not enough inner circle players online to vote a new inner circle member in by themselves
+			if(RankManager.getActiveInnerCircle() < reqVotes)
 			{
 				if(!RankManager.isRebel(voter.getUniqueId()))
 				{
@@ -850,9 +846,7 @@ public class VoteManager
 
 		if (voteType == VOTE_TYPE.VOTE_NOBLE_KICK)
 		{
-			reqVotes = 3;
-			
-			if(RankManager.getOnlineNobles() < 3)
+			if(RankManager.getOnlineNobles() < reqVotes)
 			{
 				LanguageManager.setAmount1(reqVotes);
 				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWNOBLES_ONLINE, ChatColor.RED));
@@ -863,9 +857,7 @@ public class VoteManager
 
 		if (voteType == VOTE_TYPE.VOTE_INNERCIRCLE_KICK)
 		{
-			reqVotes = 3;
-			
-			if(RankManager.getOnlineRebels() < 3)
+			if(RankManager.getOnlineInnerCircle() < reqVotes)
 			{
 				LanguageManager.setAmount1(reqVotes);
 				voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_TOOFEWINNERCIRCLE_ONLINE, ChatColor.RED));
@@ -1105,12 +1097,18 @@ public class VoteManager
 
 		if (firstVote)
 		{
-			LanguageManager.setAmount1(DramaCraft.instance().votePayment);
+			int votePayment = DramaCraft.instance().votePayment;
+
+			if (voteInfo.get(instance.currentVoteType).get("votePayment") != null) {
+				votePayment = voteInfo.get(instance.currentVoteType).get("votePayment");
+			}
+
+			LanguageManager.setAmount1(votePayment);
 			String message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_PAYMENT, ChatColor.AQUA);
 
 			voter.sendMessage(message);
 
-			DramaCraft.economy.depositPlayer(voter, DramaCraft.instance().votePayment);
+			DramaCraft.economy.depositPlayer(voter, votePayment);
 		}
 	}
 }
