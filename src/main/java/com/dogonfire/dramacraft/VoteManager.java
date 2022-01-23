@@ -208,8 +208,13 @@ public class VoteManager
 
 		double reqYesPercentage = DramaCraft.instance().requiredYesPercentage / 100.0D;
 		int reqVotes = DramaCraft.instance().requiredVotes;
-		if (voteInfo.get(instance.currentVoteType).get("requiredVotes") != null) {
-			reqVotes = voteInfo.get(instance.currentVoteType).get("requiredVotes");
+		if (voteInfo.containsKey(instance.currentVoteType)) {
+			if (voteInfo.get(instance.currentVoteType).get("requiredVotes") != null) {
+				reqVotes = voteInfo.get(instance.currentVoteType).get("requiredVotes");
+			}
+		}
+		else {
+			DramaCraft.logDebug("No value for " + instance.currentVoteType);
 		}
 		boolean rebelMessage = false;
 
@@ -593,13 +598,19 @@ public class VoteManager
 		String broadcast = "";
 
 		int reqVotes = DramaCraft.instance().requiredVotes;
-		if (voteInfo.get(instance.currentVoteType).get("requiredVotes") != null) {
-			reqVotes = voteInfo.get(instance.currentVoteType).get("requiredVotes");
+		int voteCost = DramaCraft.instance().startVoteCost;
+		if (voteInfo.containsKey(voteType)) {
+			if (voteInfo.get(voteType).get("requiredVotes") != null) {
+				reqVotes = voteInfo.get(voteType).get("requiredVotes");
+			}
+			if (voteInfo.get(voteType).get("startVoteCost") != null) {
+				voteCost = voteInfo.get(voteType).get("startVoteCost");
+			}
 		}
-		int voteCost = 0;//DramaCraft.instance().startVoteCost;
-		if (voteInfo.get(instance.currentVoteType).get("startVoteCost") != null) {
-			voteCost = voteInfo.get(instance.currentVoteType).get("startVoteCost");
+		else {
+			DramaCraft.logDebug("No voteinfo for " + voteType);
 		}
+
 		long voteInterval = DramaCraft.instance().voteSecondsBetween;
 		long timeIntervalSeconds = (System.currentTimeMillis() - instance.startVoteTime)  / (1000);
 		
@@ -1098,10 +1109,15 @@ public class VoteManager
 		if (firstVote)
 		{
 			int votePayment = DramaCraft.instance().votePayment;
-
-			if (voteInfo.get(instance.currentVoteType).get("votePayment") != null) {
-				votePayment = voteInfo.get(instance.currentVoteType).get("votePayment");
+			if (voteInfo.containsKey(instance.currentVoteType)) {
+				if (voteInfo.get(instance.currentVoteType).get("votePayment") != null) {
+					votePayment = voteInfo.get(instance.currentVoteType).get("votePayment");
+				}
 			}
+			else {
+				DramaCraft.logDebug("No value for " + instance.currentVoteType);
+			}
+
 
 			LanguageManager.setAmount1(votePayment);
 			String message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_PAYMENT, ChatColor.AQUA);

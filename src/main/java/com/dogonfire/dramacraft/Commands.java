@@ -144,7 +144,7 @@ public class Commands implements Listener
 
 	private void dramaCraftInfo(CommandSender sender)
 	{
-		sender.sendMessage(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
+		sender.sendMessage(ChatColor.YELLOW + "---------------- " + DramaCraft.instance().getDescription().getFullName() + " ----------------");
 		sender.sendMessage(ChatColor.GRAY + "By DogOnFire");
 		sender.sendMessage("");
 		
@@ -301,7 +301,7 @@ public class Commands implements Listener
 		}
 		else
 		{
-			DramaCraft.log(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
+			DramaCraft.log(ChatColor.YELLOW + "---------------- " + DramaCraft.instance().getDescription().getFullName() + " ----------------");
 			DramaCraft.log("" + ChatColor.RED + RankManager.getNumberOfRebels() + " Rebels" + ChatColor.GOLD + " vs " + ChatColor.AQUA + RankManager.getNumberOfImperials() + " Imperials");
 			DramaCraft.log("");
 
@@ -312,7 +312,7 @@ public class Commands implements Listener
 			{
 				if (args.length == 0)
 				{
-					sender.sendMessage(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
+					sender.sendMessage(ChatColor.YELLOW + "---------------- " + DramaCraft.instance().getDescription().getFullName() + " ----------------");
 					sender.sendMessage(ChatColor.GRAY + "By DogOnFire");
 					sender.sendMessage("");
 
