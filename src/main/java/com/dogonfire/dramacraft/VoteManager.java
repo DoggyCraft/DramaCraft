@@ -620,7 +620,7 @@ public class VoteManager
 		//currentVote = voteRegistry[voteType].newVote(world, voter, voteText, vote, voteType);
 		//currentVote.newVote(world, voter, voteText, vote, voteType);
 
-		if (DramaCraft.economy.getBalance(voter.getName()) < voteCost)
+		if (DramaCraft.economy.getBalance(voter) < voteCost)
 		{
 			LanguageManager.setAmount1(DramaCraft.instance().startVoteCost);
 			String message = LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_NOTENOUGHMONEY, ChatColor.RED);

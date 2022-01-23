@@ -1202,7 +1202,7 @@ public class Commands implements Listener
 			return;						
 		}
 		
-		DramaCraft.economy.withdrawPlayer(player.getName(), amount);
+		DramaCraft.economy.withdrawPlayer(player, amount);
 
 		if(RankManager.isImperial(player.getUniqueId()))
 		{
@@ -1255,7 +1255,7 @@ public class Commands implements Listener
 		
 		for(Player imperialPlayer : RankManager.getOnlineImperialPlayers())
 		{
-			DramaCraft.economy.depositPlayer(imperialPlayer.getName(), paidAmount);
+			DramaCraft.economy.depositPlayer(imperialPlayer, paidAmount);
 			imperialPlayer.sendMessage(ChatColor.GREEN + "You recieved " + ChatColor.GOLD + paidAmount + " wanks.");
 		}
 		
@@ -1389,13 +1389,13 @@ public class Commands implements Listener
 			return;			
 		}
 
-		if(!DramaCraft.instance().getEconomyManager().has(player.getName(), amount))
+		if(!DramaCraft.instance().getEconomyManager().has(player, amount))
 		{
 			player.sendMessage(ChatColor.DARK_RED + "You do not have " + amount + " wanks");
 			return;
 		}
 		
-		DramaCraft.instance().getEconomyManager().withdrawPlayer(player.getName(), amount);
+		DramaCraft.instance().getEconomyManager().withdrawPlayer(player, amount);
 		BountyManager.addBounty(targetPlayer, amount);
 		
 		player.sendMessage(ChatColor.GRAY + "You added " + ChatColor.GOLD + amount + " wanks " + ChatColor.GRAY + " to the bounty on " + ChatColor.GOLD + targetPlayer.getName());

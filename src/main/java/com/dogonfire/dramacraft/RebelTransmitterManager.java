@@ -315,7 +315,7 @@ public class RebelTransmitterManager implements Listener
 			if(TreasuryManager.withdrawFromImperialTreasury(getBounty()))
 			{
 				player.sendMessage(ChatColor.GREEN + "You received " + ChatColor.GOLD + getBounty() + " wanks" + ChatColor.GREEN + " for destroying that rebel transmitter!");
-				DramaCraft.instance().getEconomyManager().depositPlayer(player.getName(), getBounty());
+				DramaCraft.instance().getEconomyManager().depositPlayer(player, getBounty());
 				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " received " + ChatColor.GOLD + getBounty() + " wanks" + ChatColor.GREEN + " for destroying a Rebel Transmitter!");
 			}
 			else
