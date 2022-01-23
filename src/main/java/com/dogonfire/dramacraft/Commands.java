@@ -1261,12 +1261,12 @@ public class Commands implements Listener
 		
 		if(RankManager.isKing(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklærer hermed at alle borgere i imperiet får udbetalt " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
+			DramaCraft.broadcastMessage("Hans majestÃ¦t " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklÃ¦rer hermed at alle borgere i imperiet fÃ¥r udbetalt " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
 		}
 
 		if(RankManager.isQueen(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklærer hermed at alle borgere i imperiet får udbetalt " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
+			DramaCraft.broadcastMessage("Hendes majestÃ¦t " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklÃ¦rer hermed at alle borgere i imperiet fÃ¥r udbetalt " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
 		}
 	}
 	
@@ -1300,12 +1300,12 @@ public class Commands implements Listener
 		
 		if(RankManager.isKing(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklærer hermed at enhver der ødelægger en rebel transmitter vil modtage " + ChatColor.GOLD + RebelTransmitterManager.getBounty() + " wanks!");
+			DramaCraft.broadcastMessage("Hans majestÃ¦t " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklÃ¦rer hermed at enhver der Ã¸delÃ¦gger en rebel transmitter vil modtage " + ChatColor.GOLD + RebelTransmitterManager.getBounty() + " wanks!");
 		}
 
 		if(RankManager.isQueen(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklærer hermed at enhver der ødelægger en rebel transmitter vil modtage " + ChatColor.GOLD + RebelTransmitterManager.getBounty() + " wanks!");
+			DramaCraft.broadcastMessage("Hendes majestÃ¦t " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklÃ¦rer hermed at enhver der Ã¸delÃ¦gger en rebel transmitter vil modtage " + ChatColor.GOLD + RebelTransmitterManager.getBounty() + " wanks!");
 		}
 	}
 
@@ -1402,12 +1402,12 @@ public class Commands implements Listener
 
 		if(RankManager.isKing(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklærer hermed at enhver der dræber " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " vil modtage " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " som dusør!");
+			DramaCraft.broadcastMessage("Hans majestÃ¦t " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklÃ¦rer hermed at enhver der drÃ¦ber " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " vil modtage " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " som dusÃ¸r!");
 		}
 
 		if(RankManager.isQueen(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklærer hermed at enhver der dræber " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " vil modtage " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " som dusør!");
+			DramaCraft.broadcastMessage("Hendes majestÃ¦t " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklÃ¦rer hermed at enhver der drÃ¦ber " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " vil modtage " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " som dusÃ¸r!");
 		}		
 	}
 

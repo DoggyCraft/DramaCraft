@@ -119,13 +119,13 @@ public class VoteManager
 				case 0:
 					if(RankManager.getKingName()!=null)
 					{
-						broadcast = "Hil vores konge, hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + " kongen af DoggyCraft!";
+						broadcast = "Hil vores konge, hans majestÃ¦t " + ChatColor.GOLD + RankManager.getKingName() + " kongen af DoggyCraft!";
 					}
 					break;
 				case 1:
 					if(RankManager.getQueenName()!=null)
 					{
-						broadcast = "Hil vores dronning, hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + " dronningen af DoggyCraft!";
+						broadcast = "Hil vores dronning, hendes majestÃ¦t " + ChatColor.GOLD + RankManager.getQueenName() + " dronningen af DoggyCraft!";
 					}
 					break;
 			}

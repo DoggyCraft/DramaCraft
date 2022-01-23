@@ -18,7 +18,7 @@ public class TreasureHuntBlockListener implements Listener
 		
 		if (h != null)
 		{
-			event.getPlayer().sendMessage(ChatColor.GRAY + "Du kan ikke ødelægge en skattekiste eller blokken under den!");
+			event.getPlayer().sendMessage(ChatColor.GRAY + "Du kan ikke Ã¸delÃ¦gge en skattekiste eller blokken under den!");
 			event.setCancelled(true);
 			return;
 		}

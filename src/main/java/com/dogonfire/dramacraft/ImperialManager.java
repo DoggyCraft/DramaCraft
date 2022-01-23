@@ -76,7 +76,7 @@ public class ImperialManager implements Listener
 					continue;
 				}
 				
-				TitleManager.sendTitle(player, 1*20, 3*20, 1*20, ChatColor.GOLD + "The King has arrived", ChatColor.GREEN + "Velkommen til hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GREEN + "!");
+				TitleManager.sendTitle(player, 1*20, 3*20, 1*20, ChatColor.GOLD + "The King has arrived", ChatColor.GREEN + "Velkommen til hans majestÃ¦t " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GREEN + "!");
 			}
 		}		
 		
@@ -89,7 +89,7 @@ public class ImperialManager implements Listener
 					continue;
 				}
 				
-				TitleManager.sendTitle(event.getPlayer(), 1*20, 3*20, 1*20, ChatColor.GOLD + "The Queen has arrived", ChatColor.GREEN + "Velkommen til hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GREEN + "!");
+				TitleManager.sendTitle(event.getPlayer(), 1*20, 3*20, 1*20, ChatColor.GOLD + "The Queen has arrived", ChatColor.GREEN + "Velkommen til hendes majestÃ¦t " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GREEN + "!");
 			}
 		}		
 	}

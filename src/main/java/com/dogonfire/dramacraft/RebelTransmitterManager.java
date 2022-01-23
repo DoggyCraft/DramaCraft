@@ -35,8 +35,6 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 
 
-
-
 public class RebelTransmitterManager implements Listener
 {
 	private Random 						random 			= new Random();

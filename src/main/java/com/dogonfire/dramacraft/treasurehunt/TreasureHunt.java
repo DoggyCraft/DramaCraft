@@ -342,7 +342,7 @@ public class TreasureHunt
 		}
 		else if (this.value <= 2500)
 		{
-			typestring = ChatColor.YELLOW + "Sjældne";
+			typestring = ChatColor.YELLOW + "Sjï¿½ldne";
 		}
 		else if (this.value <= 3500)
 		{
@@ -361,19 +361,19 @@ public class TreasureHunt
 		{
 			if ((int) (currdist / 50) < (int) (playerClosestDistance / 50))
 			{
-				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + current.getName() + ChatColor.AQUA + " er nu kun " + currdist + " blocks væk fra den " + typestring + ChatColor.AQUA + " skat!");
+				Bukkit.getServer().broadcastMessage(ChatColor.GOLD + current.getName() + ChatColor.AQUA + " er nu kun " + currdist + " blocks vÃ¦k fra den " + typestring + ChatColor.AQUA + " skat!");
 			}
 
 			if (current != this.closestplayer)
 			{
 				if (closestplayer != null)
 				{
-					this.closestplayer.sendMessage(ChatColor.RED + "Du er ikke længere den nærmeste spiller i forhold til den " + typestring + ChatColor.RED + " skat!");
+					this.closestplayer.sendMessage(ChatColor.RED + "Du er ikke lÃ¦ngere den nÃ¦rmeste spiller i forhold til den " + typestring + ChatColor.RED + " skat!");
 				}
 
 				this.closestplayer = current;
 
-				this.closestplayer.sendMessage(ChatColor.GREEN + "Du er nu den nærmeste spiller i forhold til den " + typestring + ChatColor.GREEN + " skat!");
+				this.closestplayer.sendMessage(ChatColor.GREEN + "Du er nu den nÃ¦rmeste spiller i forhold til den " + typestring + ChatColor.GREEN + " skat!");
 			}
 
 			playerClosestDistance = currdist;
@@ -420,7 +420,7 @@ public class TreasureHunt
 
 	public void chestFoundBy(Player p)
 	{
-		Bukkit.broadcastMessage(ChatColor.AQUA + "Skatten ved værdien " + ChatColor.GREEN + this.value + ChatColor.AQUA + " blev fundet af " + ChatColor.GOLD + p.getName() + ChatColor.AQUA + "!");
+		Bukkit.broadcastMessage(ChatColor.AQUA + "Skatten ved vÃ¦rdien " + ChatColor.GREEN + this.value + ChatColor.AQUA + " blev fundet af " + ChatColor.GOLD + p.getName() + ChatColor.AQUA + "!");
 		DramaCraft.log("Treasure of value " + this.value + " was found by " + p.getName());
 
 		/*
@@ -519,7 +519,7 @@ public class TreasureHunt
 		
 		if (!this.locked)
 		{
-			Bukkit.broadcastMessage(ChatColor.AQUA + " Skatten med værdien " + ChatColor.GREEN + this.value + ChatColor.AQUA + " " + ChatColor.RED + "forsvandt" + ChatColor.AQUA + " uden at blive fundet...");
+			Bukkit.broadcastMessage(ChatColor.AQUA + " Skatten med vÃ¦rdien " + ChatColor.GREEN + this.value + ChatColor.AQUA + " " + ChatColor.RED + "forsvandt" + ChatColor.AQUA + " uden at blive fundet...");
 		}
 	}
 	

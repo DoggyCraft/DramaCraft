@@ -4,6 +4,9 @@
 /jar
 dependency-reduced-pom.xml
 
+# IDEA
+.idea/
+
 # Eclipse Core
 /bin
 
