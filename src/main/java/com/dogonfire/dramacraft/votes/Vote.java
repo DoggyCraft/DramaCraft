@@ -180,6 +180,7 @@ public abstract class Vote
 	 * The generic broadcast message for the vote.
 	 */
 	public void broadcastVote() {
+		LanguageManager.setPlayerName(voteText);
 		DramaCraft.broadcastMessage(LanguageManager.getLanguageString(LANGUAGESTRING.valueOf("VOTE_BROADCAST_"+voteType), ChatColor.AQUA));
 	}
 
@@ -189,6 +190,7 @@ public abstract class Vote
 	public void broadcastBeginVote() {
 		LanguageManager.setPlayerName(voter.getName());
 		DramaCraft.broadcastMessage(LanguageManager.getLanguageString(LANGUAGESTRING.valueOf("NEW_VOTE_BROADCAST_"+voteType), ChatColor.WHITE));
+		broadcastProgress();
 	}
 
 	/**
