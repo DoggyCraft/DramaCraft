@@ -28,6 +28,18 @@ public class RevolutionVote extends Vote
 	}
 
 	@Override
+	public boolean enoughOnlinePlayers() {
+		if(RankManager.getOnlineRebels() < reqVotes)
+		{
+			LanguageManager.setAmount1(reqVotes);
+			voter.sendMessage(LanguageManager.getLanguageString(LanguageManager.LANGUAGESTRING.ERROR_TOOFEWREBELS_ONLINE, ChatColor.RED));
+			DramaCraft.logDebug(voter.getName() + " tried to vote revolution, but there are too few rebels online");
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public boolean checkSpecialConditions() {
 		if(!RankManager.isRebel(voter.getUniqueId()))
 		{

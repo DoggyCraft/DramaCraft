@@ -63,6 +63,7 @@ public class VoteManager
 		put(VOTE_TYPE.VOTE_NIGHT, "com.dogonfire.dramacraft.votes.general.NightVote");
 		put(VOTE_TYPE.VOTE_RAIN, "com.dogonfire.dramacraft.votes.general.RainVote");
 		put(VOTE_TYPE.VOTE_SUN, "com.dogonfire.dramacraft.votes.general.SunVote");
+		put(VOTE_TYPE.VOTE_GENERAL, "com.dogonfire.dramacraft.votes.general.GeneralVote");
 		put(VOTE_TYPE.VOTE_DISABLE_PHANTOMS, "com.dogonfire.dramacraft.votes.general.DisablePhantomsVote");
 		put(VOTE_TYPE.VOTE_REVOLUTION, "com.dogonfire.dramacraft.votes.drama.RevolutionVote");
 		put(VOTE_TYPE.VOTE_NOBLE, "com.dogonfire.dramacraft.votes.drama.NobleVote");
@@ -146,6 +147,7 @@ public class VoteManager
 		}
 
 		if (vote == null) {
+			voter.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_INVALID_VOTE, ChatColor.RED));
 			DramaCraft.logDebug("No vote object found");
 			return false;
 		}

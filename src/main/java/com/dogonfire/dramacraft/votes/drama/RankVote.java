@@ -17,27 +17,17 @@ public abstract class RankVote extends Vote {
     public RankVote(String voteType, World world, Player voter, String voteText, boolean vote) {
         super(voteType, world, voter, voteText, vote);
         targetPlayerId = UUID.fromString(voteText);
+        this.voteText = Bukkit.getServer().getOfflinePlayer(targetPlayerId).getName();
     }
 
     public RankVote(String voteType, float reqYesPercentage, int reqVotes, int voteCost, int votePayment, World world, Player voter, String voteText, boolean vote) {
         super(voteType, reqYesPercentage, reqVotes, voteCost, votePayment, world, voter, voteText, vote);
         targetPlayerId = UUID.fromString(voteText);
+        this.voteText = Bukkit.getServer().getOfflinePlayer(targetPlayerId).getName();
     }
 
     public RankVote(String voteType, double reqYesPercentage, int reqVotes, int voteCost, int votePayment, World world, Player voter, String voteText, boolean vote) {
         this(voteType, ((float) reqYesPercentage)/100f, reqVotes, voteCost, votePayment, world, voter, voteText, vote);
-    }
-
-    @Override
-    public void broadcastFinishVote(boolean success) {
-        if (success) {
-            OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(targetPlayerId);
-            LanguageManager.setPlayerName(player.getName());
-            DramaCraft.broadcastMessage(LanguageManager.getLanguageString(LanguageManager.LANGUAGESTRING.valueOf("VOTE_BROADCAST_"+voteType+"_SUCCESS"), ChatColor.GREEN));
-        }
-        else {
-            DramaCraft.broadcastMessage(LanguageManager.getLanguageString(LanguageManager.LANGUAGESTRING.valueOf("VOTE_BROADCAST_"+voteType+"_FAILED"), ChatColor.RED));
-        }
     }
 
     @Override

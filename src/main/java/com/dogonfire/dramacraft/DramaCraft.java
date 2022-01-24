@@ -52,7 +52,7 @@ public class DramaCraft extends JavaPlugin
 	private PluginManager				pluginmanager				= null;
 	public static Economy				economy						= null;
 
-	public long							voteLengthSeconds				= 800000000000L;
+	public long							voteLengthSeconds			= 800000000000L;
 	public int							voteSecondsBetween			= 1; // 60000000000L
 	public int 							voteBroadcastSeconds		= 20;
 	public double						requiredYesPercentage		= 60;

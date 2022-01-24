@@ -123,12 +123,14 @@ public abstract class Vote
 
 		DramaCraft.logDebug("Success " + ((float)this.yes.size()) / ((float)(this.no.size() + this.yes.size())));
 		DramaCraft.logDebug("reqYesPercentage " + reqYesPercentage);
+		DramaCraft.logDebug("TimedOut: " + timedOut());
 
-		return (success && enoughVotes() && !timedOut());
+		return (success && enoughVotes());
 	}
 	
 	public boolean voteFinished()
 	{
+		// TODO: should we let the voting continue no matter what until the vote times out..?
 		return voteSuccess() || timedOut();
 	}
 
@@ -195,6 +197,7 @@ public abstract class Vote
 	 * @param success	Whether the vote succeeded or not.
 	 */
 	public void broadcastFinishVote(boolean success) {
+		LanguageManager.setPlayerName(voteText);
 		if (success) {
 			DramaCraft.broadcastMessage(LanguageManager.getLanguageString(LANGUAGESTRING.valueOf("VOTE_BROADCAST_"+voteType+"_SUCCESS"), ChatColor.GREEN));
 		}

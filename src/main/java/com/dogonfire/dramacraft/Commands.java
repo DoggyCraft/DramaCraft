@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import com.dogonfire.dramacraft.votes.NoneVote;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -34,7 +35,7 @@ public class Commands implements Listener
 	
 	private void doVote(CommandSender sender, Player player, boolean voteYes)
 	{
-		if (VoteManager.getCurrentVoteType() == VoteManager.VOTE_TYPE.VOTE_NONE)
+		if (VoteManager.getCurrentVote() instanceof NoneVote)
 		{
 			sender.sendMessage(ChatColor.RED + LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_NOTHING_TO_VOTE, ChatColor.RED));
 			return;
@@ -291,7 +292,7 @@ public class Commands implements Listener
 
 		sender.sendMessage("Prefix updated.");
 	}
-	
+
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
 		Player player;
@@ -1037,6 +1038,13 @@ public class Commands implements Listener
 			}
 			else if (args.length == 2)
 			{
+				if (args[0].equalsIgnoreCase("question"))
+				{
+					sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_QUESTIONTOOSHORT, ChatColor.DARK_RED));
+
+					return true;
+				}
+
 				Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 				if (targetPlayer == null)
@@ -1123,9 +1131,7 @@ public class Commands implements Listener
 
 				questionText = questionText.trim();
 
-				if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_GENERAL, questionText))
-				{
-				}
+				newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_GENERAL, questionText);
 
 				return true;
 			}
