@@ -55,7 +55,7 @@ public class DramaCraft extends JavaPlugin
 	public long							voteLengthSeconds				= 800000000000L;
 	public int							voteSecondsBetween			= 1; // 60000000000L
 	public int 							voteBroadcastSeconds		= 20;
-	public double						requiredYesPercentage		= 66;
+	public double						requiredYesPercentage		= 60;
 	public int							requiredVotes				= 20;
 	public int							votePayment					= 10;
 	public int							startVoteCost				= 10;
