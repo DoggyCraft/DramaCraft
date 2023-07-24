@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import com.dogonfire.dramacraft.votes.NoneVote;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -32,9 +33,9 @@ public class Commands implements Listener
 		instance = this;
 	}
 	
-	private void doVote(CommandSender sender, Player player, VoteManager.VOTE_TYPE voteType)
+	private void doVote(CommandSender sender, Player player, boolean voteYes)
 	{
-		if (VoteManager.getCurrentVoteType() == VoteManager.VOTE_TYPE.VOTE_NONE)
+		if (VoteManager.getCurrentVote() instanceof NoneVote)
 		{
 			sender.sendMessage(ChatColor.RED + LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_NOTHING_TO_VOTE, ChatColor.RED));
 			return;
@@ -50,11 +51,11 @@ public class Commands implements Listener
 			}
 		}*/
 
-		VoteManager.doVote(this.currentWorld, player, true, voteType);
+		VoteManager.doVote(this.currentWorld, player, voteYes);
 		VoteManager.checkVote();
 	}
 
-	static private boolean newVote(CommandSender sender, Player player, VoteManager.VOTE_TYPE voteType, String text)
+	private static boolean newVote(CommandSender sender, Player player, VoteManager.VOTE_TYPE voteType, String text)
 	{
 		if (VoteManager.getCurrentVoteType() != VoteManager.VOTE_TYPE.VOTE_NONE)
 		{
@@ -74,7 +75,6 @@ public class Commands implements Listener
 				case VOTE_RAIN:				message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_RAIN, ChatColor.RED); break;
 				case VOTE_GENERAL: 			message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
 				case VOTE_DISABLE_PHANTOMS:	message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_DISABLE_PHANTOMS, ChatColor.RED); break;
-				case VOTE_HELP: 			voteHelp(sender); break;
 				default:					message = LanguageManager.getLanguageString(LANGUAGESTRING.VOTE_ALREADY_GENERAL, ChatColor.RED); break;
 			}
 			
@@ -144,7 +144,12 @@ public class Commands implements Listener
 
 	private void dramaCraftInfo(CommandSender sender)
 	{
-		sender.sendMessage(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
+		sender.sendMessage(ChatColor.YELLOW + (
+				DramaCraft.instance().getDescription().getFullName().contains("SNAPSHOT") ?
+						("------------- " + DramaCraft.instance().getDescription().getFullName() + " -------------") :
+						("------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------")
+				)
+		);
 		sender.sendMessage(ChatColor.GRAY + "By DogOnFire");
 		sender.sendMessage("");
 		
@@ -287,8 +292,7 @@ public class Commands implements Listener
 
 		sender.sendMessage("Prefix updated.");
 	}
-	
-	@EventHandler
+
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
 		Player player;
@@ -301,18 +305,26 @@ public class Commands implements Listener
 		}
 		else
 		{
-			DramaCraft.log(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
+			DramaCraft.log(ChatColor.YELLOW + (
+					DramaCraft.instance().getDescription().getFullName().contains("SNAPSHOT") ?
+							("------------- " + DramaCraft.instance().getDescription().getFullName() + " -------------") :
+							("------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------")
+			));
 			DramaCraft.log("" + ChatColor.RED + RankManager.getNumberOfRebels() + " Rebels" + ChatColor.GOLD + " vs " + ChatColor.AQUA + RankManager.getNumberOfImperials() + " Imperials");
 			DramaCraft.log("");
 
 			sendKingQueenWho(sender);
 			DramaCraft.log("");
-					
+
 			if (command.getName().equalsIgnoreCase("dc"))
 			{
 				if (args.length == 0)
 				{
-					sender.sendMessage(ChatColor.YELLOW + "------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------");
+					sender.sendMessage(ChatColor.YELLOW + (
+							DramaCraft.instance().getDescription().getFullName().contains("SNAPSHOT") ?
+									("------------- " + DramaCraft.instance().getDescription().getFullName() + " -------------") :
+									("------------------ " + DramaCraft.instance().getDescription().getFullName() + " ------------------")
+					));
 					sender.sendMessage(ChatColor.GRAY + "By DogOnFire");
 					sender.sendMessage("");
 
@@ -536,12 +548,12 @@ public class Commands implements Listener
 					this.updatePrefix(sender, args);
 
 					return true;
-				}		
+				}
 			}
 
 			return false;
 		}
-	
+
 		// Player commands
 		if(command.getName().equalsIgnoreCase("king") || command.getName().equalsIgnoreCase("queen"))
 		{
@@ -550,9 +562,9 @@ public class Commands implements Listener
 				royalHelp(sender);
 				return true;
 			}
-			
+
 			if(!RankManager.isKing(player.getUniqueId()))
-			{			
+			{
 				sender.sendMessage(ChatColor.DARK_RED + "Only imperials can use this command");
 				return true;
 			}
@@ -588,18 +600,18 @@ public class Commands implements Listener
 
 			royalHelp(sender);
 			return true;
-		}	
-		
+		}
+
 		if(command.getName().equalsIgnoreCase("noble"))
 		{
 			if(args.length==0)
 			{
 				nobleHelp(sender);
 				return true;
-			}			
-			
+			}
+
 			if(!RankManager.isNoble(player.getUniqueId()))
-			{			
+			{
 				sender.sendMessage(ChatColor.DARK_RED + "Only imperials nobles can use this command");
 				return true;
 			}
@@ -607,41 +619,41 @@ public class Commands implements Listener
 			if(args.length==1)
 			{
 				if(args[0].equals("list"))
-				{			
+				{
 					nobleList(sender);
 					return true;
 				}
 			}
 
-			nobleHelp(sender);			
+			nobleHelp(sender);
 			return true;
-		}	
-		
+		}
+
 		if(command.getName().equalsIgnoreCase("imperial"))
 		{
 			imperialsHelp(sender);
 			return true;
-		}			
-		
+		}
+
 		if(command.getName().equalsIgnoreCase("rebel"))
 		{
 			if(args.length==1)
 			{
 				if(args[0].equals("revolution"))
-				{			
+				{
 					revolutionHelp(sender);
 					return true;
 				}
 				if(args[0].equals("transmitter"))
-				{			
+				{
 					transmitterHelp(sender);
 					return true;
 				}
 			}
-			
-			rebelsHelp(sender);			
+
+			rebelsHelp(sender);
 			return true;
-		}							
+		}
 
 		if(command.getName().equalsIgnoreCase("innercircle"))
 		{
@@ -649,26 +661,26 @@ public class Commands implements Listener
 			{
 				innercircleHelp(sender);
 				return true;
-			}			
-			
+			}
+
 			if(!RankManager.isInnerCircle(player.getUniqueId()))
-			{			
+			{
 				sender.sendMessage(ChatColor.DARK_RED + "Only Inner Circle rebels can use this command");
 				return true;
 			}
-			
+
 			else if(args.length==1)
 			{
 				if(args[0].equals("list"))
-				{			
+				{
 					innercircleList(sender);
 					return true;
 				}
 			}
 
-			innercircleHelp(sender);			
+			innercircleHelp(sender);
 			return true;
-		}	
+		}
 
 		if(command.getName().equalsIgnoreCase("ringleader"))
 		{
@@ -676,34 +688,34 @@ public class Commands implements Listener
 			{
 				ringleaderHelp(sender);
 				return true;
-			}			
-			
+			}
+
 			if(!RankManager.isRingLeader(player.getUniqueId()))
-			{			
+			{
 				sender.sendMessage(ChatColor.DARK_RED + "Only ring leaders can use this command");
 				return true;
 			}
-			
+
 			else if(args.length==1)
 			{
 			}
 
-			ringleaderHelp(sender);			
+			ringleaderHelp(sender);
 			return true;
-		}	
+		}
 
 		if(command.getName().equalsIgnoreCase("donate"))
 		{
 			donate(player, args);
 			return true;
-		}	
-		
+		}
+
 		if(command.getName().equalsIgnoreCase("law"))
 		{
 			lawHelp(player, args);
 			return true;
-		}	
-		
+		}
+
 		if(command.getName().equalsIgnoreCase("setimperialbank"))
 		{
 			if(player.isOp())
@@ -712,8 +724,8 @@ public class Commands implements Listener
 				player.sendMessage(ChatColor.GREEN + "Click on a block to set the Imperial Bank location");
 				return true;
 			}
-		}			
-			
+		}
+
 		if(command.getName().equalsIgnoreCase("setrebelstash"))
 		{
 			if(player.isOp())
@@ -722,39 +734,39 @@ public class Commands implements Listener
 				player.sendMessage(ChatColor.GREEN + "Click on a block to set the Rebel stash location");
 				return true;
 			}
-		}			
+		}
 
 		if(command.getName().equalsIgnoreCase("bounty"))
 		{
 			listBounties(player);
 
 			return true;
-		}		
+		}
 
 		if(command.getName().equalsIgnoreCase("guard"))
 		{
 			if(RankManager.isNoble(player.getUniqueId()))
-			{			
+			{
 				if(args.length == 0)
 				{
 					BodyguardManager.spawnGuard(player);
-				}	
+				}
 			}
 
 			return true;
-		}		
+		}
 
 		if(command.getName().equalsIgnoreCase("attack"))
 		{
 			//if(plugin.isNoble(player.getUniqueId()))
 			/*
-			{			
+			{
 				if(args.length == 1)
 				{
 					Player target = Bukkit.getServer().getPlayer(args[0]);
 					plugin.getBodyguardManager().spawnTerminator(player, target);
 					plugin.getServer().broadcastMessage(ChatColor.AQUA + "A terminator has been sent towards " + ChatColor.GOLD + target.getName() + ChatColor.AQUA + "...");
-				}	
+				}
 				else
 				{
 					player.sendMessage("Usage: /terminator <playername>");
@@ -763,43 +775,43 @@ public class Commands implements Listener
 			*/
 
 			return true;
-		}		
+		}
 
 		if(command.getName().equalsIgnoreCase("appoint"))
 		{
 			if(args.length!=2)
 			{
-				player.sendMessage(ChatColor.DARK_RED + "Usage: /appoint <playername> <rankname>");													
+				player.sendMessage(ChatColor.DARK_RED + "Usage: /appoint <playername> <rankname>");
 				return false;
 			}
-		
-			String rankname = args[1]; 
-			
+
+			String rankname = args[1];
+
 			if(RankManager.isNoble(player.getUniqueId()))
-			{			
+			{
 				if(rankname.equals("wizard") || rankname.equals("knight") || rankname.equals("farmer") || rankname.equals("treasurer"))
 				{
 					Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
 
 					if(targetPlayer!=null)
-					{					
+					{
 						if(!RankManager.isImperial(player.getUniqueId()))
 						{
 							player.sendMessage(ChatColor.DARK_RED + "Target player must be an Imperial");
-							return true;							
+							return true;
 						}
-						
+
 						if(RankManager.isRoyal(player.getUniqueId()))
 						{
 							player.sendMessage(ChatColor.DARK_RED + "Target player cannot be an Imperial Noble or Royal");
-							return true;							
+							return true;
 						}
 
 						if(rankname.equals("knight"))
 						{
 							rankname = "police";
 						}
-						
+
 						PermissionsManager.setRankGroup(targetPlayer, rankname);
 						RankManager.setNobleClientRank(player, targetPlayer.getUniqueId(), rankname);
 						Bukkit.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " appointed " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " to imperial " + rankname);
@@ -807,32 +819,32 @@ public class Commands implements Listener
 					}
 					else
 					{
-						player.sendMessage(ChatColor.DARK_RED + "Target player must be online to be appointed");													
+						player.sendMessage(ChatColor.DARK_RED + "Target player must be online to be appointed");
 					}
 				}
 				else
 				{
-					player.sendMessage(ChatColor.DARK_RED + "Valid ranks are: wizard, knight, farmer or treasurer");																		
+					player.sendMessage(ChatColor.DARK_RED + "Valid ranks are: wizard, knight, farmer or treasurer");
 				}
 			}
 			else
 			if(RankManager.isInnerCircle(player.getUniqueId()))
-			{			
+			{
 				if(rankname.equals("wizard") || rankname.equals("rogue") || rankname.equals("farmer") || rankname.equals("dealer"))
 				{
 					Player targetPlayer = Bukkit.getServer().getPlayer(args[0]);
 
 					if(targetPlayer!=null)
-					{					
+					{
 						if(!RankManager.isRebel(player.getUniqueId()))
-						{			
-							player.sendMessage(ChatColor.DARK_RED + "Target player must be a Rebel");																											
+						{
+							player.sendMessage(ChatColor.DARK_RED + "Target player must be a Rebel");
 							return true;
 						}
-						
+
 						if(RankManager.isRingLeader(targetPlayer.getUniqueId()))
-						{			
-							player.sendMessage(ChatColor.DARK_RED + "Target player cannot be in the Rebel inner circle or boss");																											
+						{
+							player.sendMessage(ChatColor.DARK_RED + "Target player cannot be in the Rebel inner circle or boss");
 							return true;
 						}
 
@@ -848,30 +860,30 @@ public class Commands implements Listener
 					}
 					else
 					{
-						player.sendMessage(ChatColor.DARK_RED + "Target player must be online to be appointed");													
+						player.sendMessage(ChatColor.DARK_RED + "Target player must be online to be appointed");
 					}
-				}								
+				}
 				else
 				{
-					player.sendMessage(ChatColor.DARK_RED + "Valid ranks are: wizard, rogue, farmer or shopkeeper");																		
+					player.sendMessage(ChatColor.DARK_RED + "Valid ranks are: wizard, rogue, farmer or shopkeeper");
 				}
 			}
 			else
 			{
-				player.sendMessage(ChatColor.DARK_RED + "You do not have the rights to use this command");								
+				player.sendMessage(ChatColor.DARK_RED + "You do not have the rights to use this command");
 			}
 
 			return true;
-		}			
-	
+		}
+
 		if(command.getName().equalsIgnoreCase("dramacraft") || command.getName().equalsIgnoreCase("dc"))
 		{
 			if(args.length == 0)
 			{
-				dramaCraftInfo(sender);				
-				return true;								
+				dramaCraftInfo(sender);
+				return true;
 			}
-			
+
 			else if(args.length == 1)
 			{
 				if (args[0].equalsIgnoreCase("setkinghead"))
@@ -882,9 +894,9 @@ public class Commands implements Listener
 					}
 					else
 					{
-						sender.sendMessage(ChatColor.DARK_RED + "Only players with op can set king head blocks");																		
+						sender.sendMessage(ChatColor.DARK_RED + "Only players with op can set king head blocks");
 					}
-					
+
 					return true;
 				}
 				else if (args[0].equalsIgnoreCase("setqueenhead"))
@@ -895,24 +907,24 @@ public class Commands implements Listener
 					}
 					else
 					{
-						sender.sendMessage(ChatColor.DARK_RED + "Only players with op can set queen head blocks");																		
+						sender.sendMessage(ChatColor.DARK_RED + "Only players with op can set queen head blocks");
 					}
-					
+
 					return true;
 				}
-				else 
+				else
 				{
-					playerInfo(sender, args);				
-					return true;								
+					playerInfo(sender, args);
+					return true;
 				}
 			}
 
 			else if(args.length == 2)
 			{
 			}
-			
+
 			dramaCraftInfo(sender);
-			
+
 			return true;
 		}
 
@@ -921,7 +933,7 @@ public class Commands implements Listener
 			if(RankManager.isImperial(player.getUniqueId()))
 			{
 				double distance = RebelTransmitterManager.getClosestDistanceToTransmitter(player.getLocation());
-				
+
 				if(distance < 999999)
 				{
 					player.sendMessage(ChatColor.GRAY + "Distance to nearest Rebel Transmitter: " + distance + " blocks");
@@ -930,12 +942,12 @@ public class Commands implements Listener
 				{
 					player.sendMessage(ChatColor.RED + "There are no Rebel Transmitters in this world");
 				}
-			}								
+			}
 /*
 			if(plugin.isRebel(player.getUniqueId()))
 			{
 				double distance = plugin.getStatueManager().getClosestDistanceToStatue(player.getLocation());
-				
+
 				if(distance < 999999)
 				{
 					player.sendMessage(ChatColor.GRAY + "Distance to nearest Imperial Statue: " + distance + " blocks");
@@ -944,13 +956,13 @@ public class Commands implements Listener
 				{
 					player.sendMessage(ChatColor.RED + "There are no Imperial Statues in this world");
 				}
-			}								
+			}
 */
 			return true;
-		}			
+		}
 
 
-		
+
 		if (command.getName().equalsIgnoreCase("vote"))
 		{
 			if (args.length == 0)
@@ -969,68 +981,50 @@ public class Commands implements Listener
 
 				else if (args[0].equalsIgnoreCase("day"))
 				{
-					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_DAY, ""))
-					{
-						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					}
+					newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_DAY, "");
 
 					return true;
 				}
 				else if (args[0].equalsIgnoreCase("night"))
 				{
-					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_NIGHT, ""))
-					{
-						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					}
+					newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_NIGHT, "");
 
 					return true;
 				}
 				else if (args[0].equalsIgnoreCase("sun"))
 				{
-					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_SUN, ""))
-					{
-						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					}
+					newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_SUN, "");
 
 					return true;
 				}
 				else if (args[0].equalsIgnoreCase("rain"))
 				{
-					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_RAIN, ""))
-					{
-						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					}
+					newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_RAIN, "");
 
 					return true;
 				}
 				else if (args[0].equalsIgnoreCase("revolution"))
 				{
-					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_REVOLUTION, ""))
-					{
-						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					}
+					newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_REVOLUTION, "");
 
 					return true;
 				}
 				else if (args[0].equalsIgnoreCase("phantoms"))
 				{
-					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_DISABLE_PHANTOMS, ""))
-					{
-						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					}
+					newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_DISABLE_PHANTOMS, "");
 
 					return true;
 				}
 				else if (args[0].equalsIgnoreCase("yes"))
 				{
-					doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
+					doVote(sender, player, true);
 					DramaCraft.log(player.getName() + " voted yes");
 
 					return true;
 				}
 				else if (args[0].equalsIgnoreCase("no"))
 				{
-					doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_NO);
+					doVote(sender, player, false);
 					DramaCraft.log(player.getName() + " voted no");
 
 					return true;
@@ -1044,6 +1038,13 @@ public class Commands implements Listener
 			}
 			else if (args.length == 2)
 			{
+				if (args[0].equalsIgnoreCase("question"))
+				{
+					sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_QUESTIONTOOSHORT, ChatColor.DARK_RED));
+
+					return true;
+				}
+
 				Player targetPlayer = Bukkit.getServer().getPlayer(args[1]);
 
 				if (targetPlayer == null)
@@ -1051,7 +1052,7 @@ public class Commands implements Listener
 					sender.sendMessage(LanguageManager.getLanguageString(LANGUAGESTRING.ERROR_PLAYER_NOT_ONLINE, ChatColor.DARK_RED));
 					return true;
 				}
-				
+
 				if (args[0].equalsIgnoreCase("king"))
 				{
 					if (targetPlayer.isOp())
@@ -1060,10 +1061,7 @@ public class Commands implements Listener
 						return true;
 					}
 
-					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_KING, targetPlayer.getUniqueId().toString()))
-					{
-						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					}
+					newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_KING, targetPlayer.getUniqueId().toString());
 
 					return true;
 				}
@@ -1075,10 +1073,7 @@ public class Commands implements Listener
 						return true;
 					}
 
-					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_QUEEN, targetPlayer.getUniqueId().toString()))
-					{
-						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					}
+					newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_QUEEN, targetPlayer.getUniqueId().toString());
 
 					return true;
 				}
@@ -1090,10 +1085,7 @@ public class Commands implements Listener
 						return true;
 					}
 
-					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_RINGLEADER1, targetPlayer.getUniqueId().toString()))
-					{
-						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					}
+					newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_RINGLEADER1, targetPlayer.getUniqueId().toString());
 
 					return true;
 				}
@@ -1105,10 +1097,7 @@ public class Commands implements Listener
 						return true;
 					}
 
-					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_NOBLE, targetPlayer.getUniqueId().toString()))
-					{
-						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					}
+					newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_NOBLE, targetPlayer.getUniqueId().toString());
 
 					return true;
 				}
@@ -1120,10 +1109,7 @@ public class Commands implements Listener
 						return true;
 					}
 
-					if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_INNERCIRCLE, targetPlayer.getUniqueId().toString()))
-					{
-						doVote(sender, player, VoteManager.VOTE_TYPE.VOTE_YES);
-					}
+					newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_INNERCIRCLE, targetPlayer.getUniqueId().toString());
 
 					return true;
 				}
@@ -1145,9 +1131,7 @@ public class Commands implements Listener
 
 				questionText = questionText.trim();
 
-				if (newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_GENERAL, questionText))
-				{
-				}
+				newVote(sender, player, VoteManager.VOTE_TYPE.VOTE_GENERAL, questionText);
 
 				return true;
 			}
@@ -1202,7 +1186,7 @@ public class Commands implements Listener
 			return;						
 		}
 		
-		DramaCraft.economy.withdrawPlayer(player.getName(), amount);
+		DramaCraft.economy.withdrawPlayer(player, amount);
 
 		if(RankManager.isImperial(player.getUniqueId()))
 		{
@@ -1255,18 +1239,18 @@ public class Commands implements Listener
 		
 		for(Player imperialPlayer : RankManager.getOnlineImperialPlayers())
 		{
-			DramaCraft.economy.depositPlayer(imperialPlayer.getName(), paidAmount);
+			DramaCraft.economy.depositPlayer(imperialPlayer, paidAmount);
 			imperialPlayer.sendMessage(ChatColor.GREEN + "You recieved " + ChatColor.GOLD + paidAmount + " wanks.");
 		}
 		
 		if(RankManager.isKing(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklærer hermed at alle borgere i imperiet får udbetalt " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
+			DramaCraft.broadcastMessage("Hans majestÃ¦t " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklÃ¦rer hermed at alle borgere i imperiet fÃ¥r udbetalt " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
 		}
 
 		if(RankManager.isQueen(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklærer hermed at alle borgere i imperiet får udbetalt " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
+			DramaCraft.broadcastMessage("Hendes majestÃ¦t " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklÃ¦rer hermed at alle borgere i imperiet fÃ¥r udbetalt " + paidAmount + " wanks! (" + RankManager.getOnlineImperialPlayers().size() + " imperials)");
 		}
 	}
 	
@@ -1300,12 +1284,12 @@ public class Commands implements Listener
 		
 		if(RankManager.isKing(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklærer hermed at enhver der ødelægger en rebel transmitter vil modtage " + ChatColor.GOLD + RebelTransmitterManager.getBounty() + " wanks!");
+			DramaCraft.broadcastMessage("Hans majestÃ¦t " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklÃ¦rer hermed at enhver der Ã¸delÃ¦gger en rebel transmitter vil modtage " + ChatColor.GOLD + RebelTransmitterManager.getBounty() + " wanks!");
 		}
 
 		if(RankManager.isQueen(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklærer hermed at enhver der ødelægger en rebel transmitter vil modtage " + ChatColor.GOLD + RebelTransmitterManager.getBounty() + " wanks!");
+			DramaCraft.broadcastMessage("Hendes majestÃ¦t " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklÃ¦rer hermed at enhver der Ã¸delÃ¦gger en rebel transmitter vil modtage " + ChatColor.GOLD + RebelTransmitterManager.getBounty() + " wanks!");
 		}
 	}
 
@@ -1389,25 +1373,25 @@ public class Commands implements Listener
 			return;			
 		}
 
-		if(!DramaCraft.instance().getEconomyManager().has(player.getName(), amount))
+		if(!DramaCraft.instance().getEconomyManager().has(player, amount))
 		{
 			player.sendMessage(ChatColor.DARK_RED + "You do not have " + amount + " wanks");
 			return;
 		}
 		
-		DramaCraft.instance().getEconomyManager().withdrawPlayer(player.getName(), amount);
+		DramaCraft.instance().getEconomyManager().withdrawPlayer(player, amount);
 		BountyManager.addBounty(targetPlayer, amount);
 		
 		player.sendMessage(ChatColor.GRAY + "You added " + ChatColor.GOLD + amount + " wanks " + ChatColor.GRAY + " to the bounty on " + ChatColor.GOLD + targetPlayer.getName());
 
 		if(RankManager.isKing(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hans majestæt " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklærer hermed at enhver der dræber " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " vil modtage " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " som dusør!");
+			DramaCraft.broadcastMessage("Hans majestÃ¦t " + ChatColor.GOLD + RankManager.getKingName() + ChatColor.GRAY + " deklÃ¦rer hermed at enhver der drÃ¦ber " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " vil modtage " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " som dusÃ¸r!");
 		}
 
 		if(RankManager.isQueen(player.getUniqueId()))
 		{
-			DramaCraft.broadcastMessage("Hendes majestæt " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklærer hermed at enhver der dræber " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " vil modtage " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " som dusør!");
+			DramaCraft.broadcastMessage("Hendes majestÃ¦t " + ChatColor.GOLD + RankManager.getQueenName() + ChatColor.GRAY + " deklÃ¦rer hermed at enhver der drÃ¦ber " + ChatColor.GOLD + targetPlayer.getName() + ChatColor.GRAY + " vil modtage " + ChatColor.GOLD + amount + " wanks" + ChatColor.GRAY + " som dusÃ¸r!");
 		}		
 	}
 

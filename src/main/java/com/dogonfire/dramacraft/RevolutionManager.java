@@ -61,8 +61,8 @@ public class RevolutionManager implements Listener
 		motd.add(ChatColor.GREEN + "Der kommer flere updates inden jul!");
 		motd.add(ChatColor.GREEN + "Mere awesome end din mor!");
 		motd.add(ChatColor.GREEN + "Kom ind og hyg!");
-		motd.add(ChatColor.GREEN + "Danmarks ældste server!");
-		motd.add(ChatColor.GREEN + "Vi er fucking mærkelige!");
+		motd.add(ChatColor.GREEN + "Danmarks Ã¦ldste server!");
+		motd.add(ChatColor.GREEN + "Vi er fucking mÃ¦rkelige!");
 		motd.add(ChatColor.GREEN + "A wretched hive of scum and nerdery!");
 		motd.add(ChatColor.GREEN + "Vi laver vores egne plugins!");
 	}

@@ -223,7 +223,7 @@ public class TreasureHuntManager implements Listener
 
 	public static void sendStartBroadcast(int value)
 	{
-		Bukkit.broadcastMessage(ChatColor.AQUA + "***** Så er der skattejagt!! *****");
+		Bukkit.broadcastMessage(ChatColor.AQUA + "***** SÃ¥ er der skattejagt!! *****");
 		if (value <= 2000)
 		{
 			Bukkit.broadcastMessage(ChatColor.AQUA + " En normal skattekiste er dukket op i " + ChatColor.GOLD + "DoggyCraft" + ChatColor.AQUA + "!");

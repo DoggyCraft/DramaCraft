@@ -1,7 +1,7 @@
 Version:
   Name: English general
   Author: DogOnFire
-  Version: 0.2
+  Version: 0.3
 Info:
   ERROR_NOTENOUGHMONEY:
   - You need $Amount1 wanks to start a vote.
@@ -49,12 +49,36 @@ Info:
   - Only a rebel can be ringleader
   ERROR_ONLYREBELSCANREVOLUTION: 
   - Only rebels can start a revolution
+  NEW_VOTE_BROADCAST_KING:
+  - A new vote for King was started by $PlayerName!
+  NEW_VOTE_BROADCAST_NOBLE:
+    - A new vote for Noble was started by $PlayerName!
+  NEW_VOTE_BROADCAST_INNERCIRCLE:
+    - A new vote for Rebel Innercircle was started by $PlayerName!
+  NEW_VOTE_BROADCAST_QUEEN:
+    - A new vote for Queen was started by $PlayerName!
+  NEW_VOTE_BROADCAST_RINGLEADER1:
+    - A new vote for Rebel Ringleader was started by $PlayerName!
+  NEW_VOTE_BROADCAST_RINGLEADER2:
+    - A new vote for Rebel Ringleader was started by $PlayerName!
+  NEW_VOTE_BROADCAST_PHANTOMS:
+    - A new vote for disabling phantoms was started by $PlayerName!
+  NEW_VOTE_BROADCAST_DAY:
+    - A new vote for Day was started by $PlayerName!
+  NEW_VOTE_BROADCAST_NIGHT:
+    - A new vote for Night was started by $PlayerName!
+  NEW_VOTE_BROADCAST_SUN:
+    - A new vote for Sun was started by $PlayerName!
+  NEW_VOTE_BROADCAST_RAIN:
+    - A new vote for Rain was started by $PlayerName!
+  NEW_VOTE_BROADCAST_GENERAL:
+    - A new vote for a question was started by $PlayerName!
+  NEW_VOTE_BROADCAST_REVOLUTION:
+    - A new vote for a REVOLUTION was started by $PlayerName!
   VOTE_BROADCAST_FINISHED: 
   - Vote finished!
   VOTE_BROADCAST_NOT_ENOUGH_VOTES: 
   - Vote FAILED. Not enough players voted.
-  VOTE_BROADCAST_NOBLE: 
-  - Vote for $PlayerName as Imperial Noble!
   VOTE_BROADCAST_KING: 
   - Vote for $PlayerName as King!
   VOTE_BROADCAST_KING_SUCCESS: 
@@ -109,8 +133,14 @@ Info:
   - The vote for kick SUCCEEDED! $PlayerName is no longer in the Inner Circle!
   VOTE_BROADCAST_INNERCIRCLE_KICK_FAILED:
   - The vote for Inner Circle FAILED!
-  VOTE_BROADCAST_REBEL_HIDDEN:
-  - [This vote can only be seen by rebels]
+  VOTE_BROADCAST_RINGLEADER1_SUCCESS:
+    - The vote for Ringleader SUCCEEDED! Welcome $PlayerName to the Nobles!
+  VOTE_BROADCAST_RINGLEADER1_FAILED:
+    - The vote for Ringleader FAILED!
+  VOTE_BROADCAST_RINGLEADER2_SUCCESS:
+    - The vote for Ringleader SUCCEEDED! Welcome $PlayerName to the Nobles!
+  VOTE_BROADCAST_RINGLEADER2_FAILED:
+    - The vote for Ringleader FAILED!
   VOTE_BROADCAST_SUN: 
   - Do you want it to be sun?
   VOTE_BROADCAST_SUN_SUCCESS: 
@@ -163,8 +193,6 @@ Info:
   - Vote for disabling phantoms
   VOTING_COMMANDS_VOTE_DESC_UNDO: 
   - undo (reset) all you votings to default (no)
-  VOTING_COMMANDS_VOTE_DESC_KING: 
-  - Vote a player to be king
   VOTING_COMMANDS_VOTE_DESC_ARCHITECT: 
   - Vote a player to be architect
   VOTING_COMMANDS_VOTE_DESC_INFO: 
@@ -177,28 +205,6 @@ Info:
   - View information about the imperials
   VOTING_COMMANDS_VOTE_DESC_REBELS: 
   - View information about the rebels
-  VOTE_BROADCAST_RINGLEADER1_SUCCESS:
-  - The vote for Ringleader SUCCEEDED! Welcome $PlayerName to the Nobles!
-  VOTE_BROADCAST_RINGLEADER1_FAILED:
-  - The vote for Ringleader FAILED!
-  VOTE_BROADCAST_RINGLEADER2_SUCCESS:
-  - The vote for Ringleader SUCCEEDED! Welcome $PlayerName to the Nobles!
-  VOTE_BROADCAST_RINGLEADER2_FAILED:
-  - The vote for Ringleader FAILED!
-  VOTE_BROADCAST_NOBLE_SUCCESS: 
-  - The vote for Nobility SUCCEEDED! Welcome $PlayerName to the Nobles!
-  VOTE_BROADCAST_NOBLE_FAILED: 
-  - The vote for $PlayerName as Noble FAILED!
-  VOTE_BROADCAST_NOBLE_KICK: 
-  - Vote to remove $PlayerName from the Imperial Nobles! /vote yes or /vote no now!
-  VOTE_BROADCAST_NOBLE_KICK_SUCCESS: 
-  - The vote SUCEEDED! $PlayerName is no longer an Imperial Noble.
-  VOTE_BROADCAST_NOBLE_KICK_FAILED: 
-  - The vote FAILED! $PlayerName is still an Imperial Noble.
-  VOTE_BROADCAST_PHANTOMS_SUCCESS:
-  - The vote for disabling phantoms SUCCEEDED! Phantoms are now disabled for a while!
-  VOTE_BROADCAST_PHANTOMS_FAILED:
-  - The vote for disabling phantoms FAILED!
   VOTE_KING_NONAME: 
   - You need to enter a name to vote for
   VOTE_KING_CHANGE: 
